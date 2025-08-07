@@ -1,0 +1,90 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #111;
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000;
+  padding: 20px 40px;
+  border-bottom: 2px solid #0af;
+}
+
+.logo {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #0af;
+}
+
+nav a {
+  margin-left: 20px;
+  color: #ccc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #0af;
+}
+
+.hero {
+  background: url('https://images.unsplash.com/photo-1617531653332-f88b4c7390d9') no-repeat center center/cover;
+  text-align: center;
+  padding: 150px 20px;
+  background-blend-mode: darken;
+  background-color: rgba(0,0,0,0.7);
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2em;
+  color: #ccc;
+}
+
+.intro, .models {
+  padding: 60px 40px;
+  text-align: center;
+}
+
+h2 {
+  color: #0af;
+  margin-bottom: 20px;
+}
+
+.model-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.model-card {
+  background-color: #222;
+  border: 1px solid #0af;
+  border-radius: 10px;
+  padding: 30px;
+  width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.model-card:hover {
+  transform: scale(1.05);
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #000;
+  border-top: 1px solid #0af;
+  color: #888;
+}
