@@ -1,173 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vortex Research Lab — Nimish Upadhyay, Head Physicist</title>
-  <meta name="description" content="Vortex Research Lab — experimental & theoretical physics research led by Head Physicist Nimish Upadhyay." />
-  <link rel="stylesheet" href="assets/css/styles.css" />
-  <link rel="icon" href="assets/img/favicon.svg" />
-  <!-- Open Graph (for social previews) -->
-  <meta property="og:title" content="Vortex Research Lab — Nimish Upadhyay" />
-  <meta property="og:description" content="Experimental & theoretical physics research, publications, and collaborations." />
-  <meta property="og:type" content="website" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vortex Research Lab — Nimish Upadhyay</title>
+  <meta name="description" content="Advanced experimental and theoretical physics research by Head Physicist Nimish Upadhyay.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="#">Vortex Research</a>
+      <a href="#" class="logo">Vortex Research</a>
       <nav class="nav">
         <a href="#about">About</a>
         <a href="#research">Research</a>
         <a href="#publications">Publications</a>
         <a href="#team">Team</a>
         <a href="#contact">Contact</a>
-        <a class="cta" href="https://github.com/your-org" target="_blank" rel="noopener">GitHub</a>
+        <a class="cta" href="https://github.com" target="_blank">GitHub</a>
       </nav>
-      <button id="mobile-menu-toggle" aria-label="Open menu">☰</button>
+      <button id="mobile-menu-toggle">☰</button>
     </div>
   </header>
 
-  <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container hero-inner">
-        <h1>Engineering the Future of Fundamental Physics</h1>
-        <p class="lead">Precision experiments • High‑energy instrumentation • Quantum sensors</p>
-        <div class="hero-actions">
-          <a class="btn" href="#research">Our Research</a>
-          <a class="btn ghost" href="#publications">Publications</a>
-        </div>
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1>Engineering the Future of Fundamental Physics</h1>
+      <p class="lead">Precision experiments • High-energy instrumentation • Quantum sensors</p>
+      <div class="hero-actions">
+        <a class="btn" href="#research">Our Research</a>
+        <a class="btn ghost" href="#publications">Publications</a>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- About -->
-    <section id="about" class="section dark">
-      <div class="container">
-        <h2>About Vortex Research Lab</h2>
-        <p>Vortex Research Lab conducts advanced experimental and theoretical physics research with a focus on particle instrumentation, precision metrology, and quantum technologies. We collaborate internationally and publish open datasets and software on GitHub.</p>
+  <section id="about" class="section dark">
+    <div class="container">
+      <h2>About Vortex Research Lab</h2>
+      <p>We conduct advanced experimental and theoretical physics research with a focus on particle instrumentation, precision metrology, and quantum technologies. Collaborating internationally, we publish open datasets and software on GitHub.</p>
+    </div>
+  </section>
+
+  <section id="research" class="section">
+    <div class="container grid-3">
+      <div class="card">
+        <h3>Particle Detection</h3>
+        <p>Design and testing of next-generation detectors for high-energy physics experiments and cosmic particle observatories.</p>
       </div>
-    </section>
-
-    <!-- Research -->
-    <section id="research" class="section">
-      <div class="container grid-3">
-        <div class="card">
-          <h3>Particle Detection</h3>
-          <p>Design and testing of next-generation detectors for high-energy physics experiments and cosmic particle observatories.</p>
-        </div>
-        <div class="card">
-          <h3>Quantum Sensors</h3>
-          <p>Development of atomic and solid-state sensors for precision measurements and gravitational tests.</p>
-        </div>
-        <div class="card">
-          <h3>Theoretical Models</h3>
-          <p>Modeling of singularities, quantum gravity approaches, and simulations for early-universe conditions.</p>
-        </div>
+      <div class="card">
+        <h3>Quantum Sensors</h3>
+        <p>Development of atomic and solid-state sensors for precision measurements and gravitational tests.</p>
       </div>
-    </section>
-
-    <!-- Publications -->
-    <section id="publications" class="section dark">
-      <div class="container">
-        <h2>Selected Publications</h2>
-        <ul class="pub-list" id="pub-list">
-          <!-- Example static entries; replace with real ones or fetch from publications.json -->
-          <li>
-            <strong>Upadhyay, N.</strong> et al. (2025). <em>High-resolution interferometry for quantum sensors.</em> Phys. Rev. Applied.
-          </li>
-          <li>
-            <strong>Upadhyay, N.</strong> & Doe, J. (2024). <em>Constraints on micro-singularity models.</em> J. Theor. Phys.
-          </li>
-        </ul>
-        <a class="btn ghost" href="publications.html">All publications →</a>
+      <div class="card">
+        <h3>Theoretical Models</h3>
+        <p>Modeling singularities, quantum gravity approaches, and early-universe simulations.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Team -->
-    <section id="team" class="section">
-      <div class="container">
-        <h2>Team</h2>
-        <div class="team-grid">
-          <div class="person">
-            <img src="assets/img/nimish.jpg" alt="Nimish Upadhyay — Head Physicist" />
-            <h4>Nimish Upadhyay</h4>
-            <p class="role">Head Physicist</p>
-            <p class="bio">Lead experimentalist and theorist. Focus: quantum sensors, high‑energy instrumentation, and singularity research.</p>
-            <p class="links">
-              <a href="mailto:nimish@vortexlab.example">Email</a> ·
-              <a href="https://github.com/NimishUpadhyay" target="_blank" rel="noopener">GitHub</a>
-            </p>
-          </div>
+  <section id="publications" class="section dark">
+    <div class="container">
+      <h2>Selected Publications</h2>
+      <ul class="pub-list">
+        <li><strong>Upadhyay, N.</strong> et al. (2025). <em>High-resolution interferometry for quantum sensors.</em> Phys. Rev. Applied.</li>
+        <li><strong>Upadhyay, N.</strong> & Doe, J. (2024). <em>Constraints on micro-singularity models.</em> J. Theor. Phys.</li>
+      </ul>
+    </div>
+  </section>
 
-          <!-- placeholder team members -->
-          <div class="person">
-            <img src="assets/img/person-placeholder.svg" alt="Team member" />
-            <h4>Dr. A. Collaborator</h4>
-            <p class="role">Senior Researcher</p>
-          </div>
-
-          <div class="person">
-            <img src="assets/img/person-placeholder.svg" alt="Team member" />
-            <h4>Engineer B.</h4>
-            <p class="role">Instrumentation Lead</p>
-          </div>
-        </div>
+  <section id="team" class="section">
+    <div class="container team-grid">
+      <div class="person">
+        <img src="assets/img/nimish.jpg" alt="Nimish Upadhyay">
+        <h4>Nimish Upadhyay</h4>
+        <p class="role">Head Physicist</p>
+        <p>Lead experimentalist and theorist in quantum sensors, high-energy instrumentation, and singularity research.</p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Projects / Open Source -->
-    <section id="projects" class="section dark">
-      <div class="container">
-        <h2>Open Source & Projects</h2>
-        <p>We publish hardware designs, data, and analysis pipelines on GitHub under permissive licenses to accelerate reproducible research.</p>
-        <div class="projects-grid">
-          <a class="project-card" href="https://github.com/your-org/quantum-sensors" target="_blank" rel="noopener">
-            <h4>Quantum-Sensors</h4>
-            <p>Analysis & control software for atomic magnetometers.</p>
-          </a>
-          <a class="project-card" href="https://github.com/your-org/detector-sim" target="_blank" rel="noopener">
-            <h4>Detector-Sim</h4>
-            <p>Simulations of particle interactions in custom detectors.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section">
-      <div class="container narrow">
-        <h2>Contact</h2>
-        <p>For collaboration, media, and speaking requests:</p>
-        <form id="contact-form" action="#" method="post">
-          <label>
-            Name
-            <input type="text" name="name" required />
-          </label>
-          <label>
-            Email
-            <input type="email" name="email" required />
-          </label>
-          <label>
-            Message
-            <textarea name="message" rows="5" required></textarea>
-          </label>
-          <div class="form-actions">
-            <button class="btn" type="submit">Send message</button>
-            <small class="muted">Or email <a href="mailto:info@vortexlab.example">info@vortexlab.example</a></small>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
+  <section id="contact" class="section dark">
+    <div class="container">
+      <h2>Contact</h2>
+      <p>Email us at: <a href="mailto:info@vortexlab.com">info@vortexlab.com</a></p>
+    </div>
+  </section>
 
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div>© <span id="year"></span> Vortex Research Lab — Head Physicist: Nimish Upadhyay</div>
-      <div class="footer-links">
-        <a href="https://github.com/your-org" target="_blank" rel="noopener">GitHub</a>
-        <a href="/privacy.html">Privacy</a>
-      </div>
+      <p>© <span id="year"></span> Vortex Research Lab — Nimish Upadhyay</p>
     </div>
   </footer>
 
