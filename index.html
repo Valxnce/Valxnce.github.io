@@ -3,82 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vortex Lab</title>
+<title>Vortex Lab | Physics & Research</title>
 <style>
     body {
         margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: Arial, Helvetica, sans-serif;
         background-color: #0a0a0a;
-        color: #fff;
-        line-height: 1.6;
+        color: #f4f4f4;
+        scroll-behavior: smooth;
     }
     header {
-        background-color: #111;
-        padding: 20px;
-        text-align: center;
-        border-bottom: 2px solid #0ff;
+        background: linear-gradient(to right, #000000, #111111);
+        padding: 20px 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 2px solid #00ffff;
     }
     header h1 {
+        color: #00ffff;
         margin: 0;
-        font-size: 2.5em;
-        color: #0ff;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-    }
-    nav {
-        margin-top: 10px;
+        font-size: 1.8em;
+        text-shadow: 0 0 15px #00ffff;
     }
     nav a {
-        color: #ccc;
-        margin: 0 15px;
+        color: #f4f4f4;
         text-decoration: none;
+        margin: 0 15px;
         font-weight: bold;
     }
     nav a:hover {
-        color: #0ff;
+        color: #00ffff;
+    }
+    .hero {
+        background: url('https://www.cern.ch/sites/default/files/inline-images/accelerator.jpg') center/cover no-repeat;
+        height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .hero h2 {
+        font-size: 3em;
+        color: #00ffff;
+        text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
     }
     section {
-        padding: 40px;
-        max-width: 1000px;
+        padding: 50px 20px;
+        max-width: 1200px;
         margin: auto;
     }
-    .highlight {
-        color: #0ff;
-        font-weight: bold;
-    }
-    footer {
-        background-color: #111;
+    h2 {
         text-align: center;
-        padding: 20px;
-        border-top: 2px solid #0ff;
+        color: #00ffff;
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px #00ffff;
     }
-    /* Simple fade-in animation */
-    .fade-in {
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeIn 1s ease-out forwards;
-    }
-    @keyframes fadeIn {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    /* Grid layout for research */
     .grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 20px;
     }
     .card {
-        background-color: #1a1a1a;
+        background: #111;
         padding: 20px;
         border-radius: 10px;
-        border: 1px solid #0ff;
-        transition: transform 0.3s ease;
+        box-shadow: 0 0 15px rgba(0,255,255,0.2);
+        transition: transform 0.3s, box-shadow 0.3s;
     }
     .card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 0 25px rgba(0,255,255,0.5);
+    }
+    footer {
+        background: #000;
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9em;
+        border-top: 2px solid #00ffff;
+    }
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #00ffff;
+        color: #000;
+        border-radius: 5px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.3s;
+    }
+    .btn:hover {
+        background: #00cccc;
     }
 </style>
 </head>
@@ -87,67 +105,92 @@
 <header>
     <h1>Vortex Lab</h1>
     <nav>
-        <a href="#home">Home</a>
+        <a href="#about">About</a>
         <a href="#research">Research</a>
+        <a href="#projects">Projects</a>
         <a href="#news">News</a>
         <a href="#contact">Contact</a>
     </nav>
 </header>
 
-<section id="home" class="fade-in">
-    <h2>Welcome to <span class="highlight">Vortex Lab</span></h2>
-    <p>We are dedicated to pushing the boundaries of <span class="highlight">particle physics</span> and 
-    exploring the fundamental laws of the universe. Inspired by CERN, our mission is to unravel the mysteries of space, time, and matter.</p>
+<div class="hero">
+    <h2>Exploring the Frontiers of Physics</h2>
+</div>
+
+<section id="about">
+    <h2>About Vortex Lab</h2>
+    <p>
+        Vortex Lab is a state-of-the-art research center dedicated to unraveling the mysteries of the universe.
+        Led by Head Physicist <strong>Nimish Upadhyay</strong>, we explore quantum mechanics, particle physics, and
+        astrophysical phenomena. Our mission is to push the boundaries of human understanding through innovation and
+        collaboration.
+    </p>
 </section>
 
-<section id="research" class="fade-in">
-    <h2>Our Research</h2>
+<section id="research">
+    <h2>Research Areas</h2>
     <div class="grid">
         <div class="card">
-            <h3>Quantum Entanglement</h3>
-            <p>Investigating the strange connection between particles that transcends space and time.</p>
+            <h3>Quantum Mechanics</h3>
+            <p>Investigating entanglement, superposition, and quantum field theory for breakthroughs in computation and physics.</p>
         </div>
         <div class="card">
-            <h3>Particle Acceleration</h3>
-            <p>Developing next-gen accelerators for deeper exploration into subatomic realms.</p>
+            <h3>Particle Physics</h3>
+            <p>Exploring fundamental particles using high-energy accelerators and detectors inspired by CERN technologies.</p>
         </div>
         <div class="card">
-            <h3>Black Hole Physics</h3>
-            <p>Exploring singularities and Hawking radiation for a deeper understanding of gravity.</p>
+            <h3>Astrophysics</h3>
+            <p>Studying black holes, wormholes, and cosmic singularities to understand the deepest secrets of space-time.</p>
         </div>
     </div>
 </section>
 
-<section id="news" class="fade-in">
-    <h2>Latest News</h2>
-    <ul>
-        <li><span class="highlight">Aug 2025:</span> Successfully simulated quantum wormhole stability in a lab environment.</li>
-        <li><span class="highlight">Jul 2025:</span> Published groundbreaking results on dark matter particle candidates.</li>
-        <li><span class="highlight">Jun 2025:</span> Collaboration with international research centers on AI-driven physics experiments.</li>
-    </ul>
+<section id="projects">
+    <h2>Ongoing Projects</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Quantum Wormhole Simulation</h3>
+            <p>Developing advanced models for traversable wormholes using cutting-edge quantum theory.</p>
+        </div>
+        <div class="card">
+            <h3>Dark Matter Detection</h3>
+            <p>Designing ultra-sensitive detectors to reveal the elusive nature of dark matter particles.</p>
+        </div>
+        <div class="card">
+            <h3>Singularity Problem</h3>
+            <p>Exploring new theories that could solve the black hole singularity paradox.</p>
+        </div>
+    </div>
 </section>
 
-<section id="contact" class="fade-in">
+<section id="news">
+    <h2>Latest News & Publications</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>New Quantum Breakthrough</h3>
+            <p>Our latest research on quantum teleportation achieves record-breaking distances in entangled particle transfer.</p>
+        </div>
+        <div class="card">
+            <h3>International Collaboration</h3>
+            <p>Partnering with leading labs worldwide to advance high-energy physics research.</p>
+        </div>
+        <div class="card">
+            <h3>Journal Feature</h3>
+            <p>Published in "Nature Physics" for groundbreaking work on gravitational wave simulations.</p>
+        </div>
+    </div>
+</section>
+
+<section id="contact">
     <h2>Contact Us</h2>
-    <p>Email: <span class="highlight">info@vortexlab.org</span></p>
-    <p>Location: Vortex Research Facility, Earth</p>
+    <p>Email: contact@vortexlab.org</p>
+    <p>Location: Vortex Lab Headquarters, India</p>
+    <a href="#about" class="btn">Back to Top</a>
 </section>
 
 <footer>
-    &copy; 2025 Vortex Lab. Inspired by CERN.
+    &copy; 2025 Vortex Lab. All rights reserved.
 </footer>
-
-<script>
-    // Smooth scroll
-    document.querySelectorAll('nav a').forEach(link => {
-        link.addEventListener('click', e => {
-            e.preventDefault();
-            document.querySelector(link.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-</script>
 
 </body>
 </html>
