@@ -1,202 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vortex Lab</title>
-    <style>
-        /* =======================
-           RESET AND GLOBAL STYLES
-           ======================= */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vortex Lab</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #0a0a0a;
+        color: #fff;
+        line-height: 1.6;
+    }
+    header {
+        background-color: #111;
+        padding: 20px;
+        text-align: center;
+        border-bottom: 2px solid #0ff;
+    }
+    header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        color: #0ff;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    nav {
+        margin-top: 10px;
+    }
+    nav a {
+        color: #ccc;
+        margin: 0 15px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    nav a:hover {
+        color: #0ff;
+    }
+    section {
+        padding: 40px;
+        max-width: 1000px;
+        margin: auto;
+    }
+    .highlight {
+        color: #0ff;
+        font-weight: bold;
+    }
+    footer {
+        background-color: #111;
+        text-align: center;
+        padding: 20px;
+        border-top: 2px solid #0ff;
+    }
+    /* Simple fade-in animation */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 1s ease-out forwards;
+    }
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        body {
-            background-color: black;
-            color: yellow;
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-        }
-
-        /* =======================
-           HEADER SECTION
-           ======================= */
-        header {
-            background: linear-gradient(to right, #111, #222);
-            border-bottom: 3px solid yellow;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 0 20px yellow;
-        }
-
-        header h1 {
-            font-size: 3em;
-            text-shadow: 0 0 10px yellow, 0 0 20px yellow;
-            letter-spacing: 2px;
-        }
-
-        header p {
-            font-size: 1.2em;
-            color: white;
-        }
-
-        /* =======================
-           NAVIGATION BAR
-           ======================= */
-        nav {
-            background-color: #111;
-            display: flex;
-            justify-content: center;
-            border-bottom: 2px solid yellow;
-        }
-
-        nav a {
-            color: yellow;
-            text-decoration: none;
-            padding: 15px 25px;
-            display: block;
-            font-weight: bold;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        nav a:hover {
-            background-color: yellow;
-            color: black;
-        }
-
-        /* =======================
-           MAIN CONTENT
-           ======================= */
-        main {
-            padding: 40px;
-            text-align: center;
-        }
-
-        main h2 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px yellow;
-        }
-
-        main p {
-            font-size: 1.2em;
-            max-width: 800px;
-            margin: auto;
-            color: white;
-        }
-
-        /* =======================
-           FEATURE BOXES
-           ======================= */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-
-        .feature {
-            background-color: #111;
-            border: 2px solid yellow;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 15px yellow;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .feature:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 25px yellow;
-        }
-
-        .feature h3 {
-            margin-bottom: 10px;
-            color: yellow;
-        }
-
-        .feature p {
-            color: white;
-        }
-
-        /* =======================
-           FOOTER
-           ======================= */
-        footer {
-            background-color: #111;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-            border-top: 3px solid yellow;
-            box-shadow: 0 -5px 20px yellow;
-        }
-
-        footer a {
-            color: yellow;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    }
+    /* Grid layout for research */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .card {
+        background-color: #1a1a1a;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #0ff;
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
 </head>
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <h1>Vortex Lab</h1>
-        <p>Where Creativity Meets Technology</p>
-    </header>
-
-    <!-- NAVIGATION -->
+<header>
+    <h1>Vortex Lab</h1>
     <nav>
-        <a href="#">Home</a>
-        <a href="#">Projects</a>
-        <a href="#">Services</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="#home">Home</a>
+        <a href="#research">Research</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
     </nav>
+</header>
 
-    <!-- MAIN CONTENT -->
-    <main>
-        <h2>Welcome to Vortex Lab</h2>
-        <p>
-            At Vortex Lab, we specialize in blending innovation with practical solutions.
-            Our team of experts is dedicated to delivering high-quality projects that 
-            exceed expectations. Explore our services and see how we can help bring 
-            your vision to life.
-        </p>
+<section id="home" class="fade-in">
+    <h2>Welcome to <span class="highlight">Vortex Lab</span></h2>
+    <p>We are dedicated to pushing the boundaries of <span class="highlight">particle physics</span> and 
+    exploring the fundamental laws of the universe. Inspired by CERN, our mission is to unravel the mysteries of space, time, and matter.</p>
+</section>
 
-        <!-- FEATURE SECTIONS -->
-        <div class="features">
-            <div class="feature">
-                <h3>Innovative Ideas</h3>
-                <p>We brainstorm and create fresh, cutting-edge concepts tailored to your needs.</p>
-            </div>
-            <div class="feature">
-                <h3>Advanced Technology</h3>
-                <p>Utilizing the latest tools and frameworks to deliver robust and scalable solutions.</p>
-            </div>
-            <div class="feature">
-                <h3>24/7 Support</h3>
-                <p>We’re always here to assist you at any time of the day or night.</p>
-            </div>
-            <div class="feature">
-                <h3>Global Reach</h3>
-                <p>Our services extend across the globe, connecting businesses everywhere.</p>
-            </div>
+<section id="research" class="fade-in">
+    <h2>Our Research</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Quantum Entanglement</h3>
+            <p>Investigating the strange connection between particles that transcends space and time.</p>
         </div>
-    </main>
+        <div class="card">
+            <h3>Particle Acceleration</h3>
+            <p>Developing next-gen accelerators for deeper exploration into subatomic realms.</p>
+        </div>
+        <div class="card">
+            <h3>Black Hole Physics</h3>
+            <p>Exploring singularities and Hawking radiation for a deeper understanding of gravity.</p>
+        </div>
+    </div>
+</section>
 
-    <!-- FOOTER -->
-    <footer>
-        <p>&copy; 2025 Vortex Lab | All Rights Reserved</p>
-        <p><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
-    </footer>
+<section id="news" class="fade-in">
+    <h2>Latest News</h2>
+    <ul>
+        <li><span class="highlight">Aug 2025:</span> Successfully simulated quantum wormhole stability in a lab environment.</li>
+        <li><span class="highlight">Jul 2025:</span> Published groundbreaking results on dark matter particle candidates.</li>
+        <li><span class="highlight">Jun 2025:</span> Collaboration with international research centers on AI-driven physics experiments.</li>
+    </ul>
+</section>
+
+<section id="contact" class="fade-in">
+    <h2>Contact Us</h2>
+    <p>Email: <span class="highlight">info@vortexlab.org</span></p>
+    <p>Location: Vortex Research Facility, Earth</p>
+</section>
+
+<footer>
+    &copy; 2025 Vortex Lab. Inspired by CERN.
+</footer>
+
+<script>
+    // Smooth scroll
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            document.querySelector(link.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
