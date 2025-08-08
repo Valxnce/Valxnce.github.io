@@ -1,232 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vortex Lab — Research & Physics</title>
-  <meta name="description" content="Vortex Lab — experimental & theoretical physics. Head Physicist: Nimish Upadhyay. Dark professional CERN-style single-file website." />
-  <!-- ===========================
-       Inline CSS (dark CERN-like)
-       All styles are embedded so the file is standalone
-       =========================== -->
-  <style>
-    /* ===== Reset & base ===== */
-    :root{
-      --bg:#050607;
-      --panel:#0f1315;
-      --muted:#9aa3ad;
-      --accent:#00cfff;
-      --accent-2:#ffcc00;
-      --card:#121617;
-      --glass:rgba(255,255,255,0.03);
-      --max-width:1180px;
-      --radius:12px;
-      --mono: "Courier New", monospace;
-      --sans: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--sans);
-      background:linear-gradient(180deg,var(--bg),#071018 200px);
-      color:#e6eef3;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.6;
-    }
-    .container{
-      max-width:var(--max-width);
-      margin:0 auto;
-      padding:0 20px;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Vortex Lab — Research Portal</title>
+<meta name="description" content="Vortex Lab — experimental & theoretical physics, Head Physicist Nimish Upadhyay. Stylish single-file site that can generate large content." />
+<style>
+  /* ===========================
+     Vortex Lab — Single-file CSS
+     Dark professional theme, responsive
+     =========================== */
 
-    /* ===== Header ===== */
-    header.site-header{
-      position:sticky;
-      top:0;
-      z-index:999;
-      backdrop-filter: blur(4px);
-      border-bottom:1px solid rgba(255,255,255,0.03);
-      background:linear-gradient(180deg, rgba(3,6,8,0.7), rgba(3,6,8,0.4));
-    }
-    .header-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px 0;
-    }
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:var(--accent);
-      font-weight:700;
-      font-size:1.15rem;
-    }
-    .logo svg{width:36px;height:36px;filter:drop-shadow(0 2px 6px rgba(0,204,255,0.12))}
-    nav.primary{
-      display:flex;
-      gap:14px;
-      align-items:center;
-    }
-    nav.primary a{
-      color:var(--muted);
-      text-decoration:none;
-      padding:6px 10px;
-      border-radius:8px;
-      font-weight:600;
-      font-size:0.95rem;
-    }
-    nav.primary a:hover{color:#fff;background:rgba(255,255,255,0.02)}
-    .cta{
-      background:linear-gradient(90deg,var(--accent),#00a6d6);
-      padding:8px 14px;
-      color:#041018;
-      border-radius:8px;
-      font-weight:700;
-      text-decoration:none;
-    }
+  :root{
+    --bg:#050607;
+    --panel:#0b1113;
+    --muted:#9fb0b8;
+    --accent:#00d3ff;
+    --accent-2:#ffcc00;
+    --card:#0f1416;
+    --glass:rgba(255,255,255,0.03);
+    --max-width:1200px;
+    --radius:12px;
+    --mono: "Courier New", monospace;
+    --sans: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
 
-    /* ===== Hero ===== */
-    .hero{
-      padding:60px 0 40px;
-      display:flex;
-      align-items:center;
-      gap:28px;
-      background:
-        radial-gradient(900px 300px at 10% 20%, rgba(0,204,255,0.03), transparent 6%),
-        radial-gradient(700px 240px at 90% 80%, rgba(255,204,0,0.02), transparent 6%);
-    }
-    .hero-left{flex:1;min-width:300px}
-    .hero h1{
-      margin:0 0 12px;
-      font-size:2.6rem;
-      letter-spacing:-1px;
-      color:#fff;
-    }
-    .lead{color:var(--muted);font-size:1.05rem;margin-bottom:18px}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{background:var(--accent);color:#011219;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    background:linear-gradient(180deg,var(--bg),#071018 200px);
+    color:#e8f2f6;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.6;
+    overflow-y:scroll;
+  }
 
-    .hero-right{
-      width:420px;max-width:42%;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.03);
-      box-shadow:0 20px 60px rgba(2,6,9,0.7);
-    }
-    .stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
-    .stat{flex:1;padding:10px;background:var(--card);border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    .stat h4{margin:0;color:var(--accent-2)}
-    .stat p{margin:8px 0 0;color:var(--muted);font-size:0.95rem}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
 
-    /* ===== Sections ===== */
-    section.section{
-      padding:48px 0;
-    }
-    section.section.dark{
-      background:#071018;
-      border-top:1px solid rgba(255,255,255,0.02);
-    }
-    h2.section-title{
-      margin:0 0 18px;
-      font-size:1.6rem;color:var(--accent);
-      text-shadow:0 0 10px rgba(0,204,255,0.06)
-    }
-    p.lead-muted{color:var(--muted);max-width:850px;margin:auto}
+  .container{max-width:var(--max-width);margin:0 auto;padding:0 20px}
 
-    /* ===== Research Grid ===== */
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;margin-top:20px;
-    }
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-    }
-    .card h3{margin:0 0 8px;color:var(--accent-2)}
-    .card p{color:var(--muted);font-size:0.95rem}
+  /* header */
+  header.site-header{
+    position:sticky;
+    top:0;
+    z-index:999;
+    background:linear-gradient(180deg, rgba(3,6,8,0.85), rgba(3,6,8,0.5));
+    border-bottom:1px solid rgba(255,255,255,0.03);
+    backdrop-filter:blur(6px);
+  }
+  .header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+  .brand{display:flex;align-items:center;gap:12px;color:var(--accent);font-weight:800;font-size:1.15rem}
+  .brand svg{width:40px;height:40px}
+  nav.primary{display:flex;gap:12px;align-items:center}
+  nav.primary a{color:var(--muted);padding:8px 10px;border-radius:8px;font-weight:600}
+  nav.primary a:hover{color:#fff;background:rgba(255,255,255,0.02)}
+  .cta{background:linear-gradient(90deg,var(--accent),#0bb0d6);padding:8px 14px;border-radius:10px;color:#041018;font-weight:800}
 
-    /* ===== Publications list - long ===== */
-    .pub-list{list-style:none;padding-left:0;margin-top:16px}
-    .pub-list li{padding:12px;border-radius:10px;margin-bottom:10px;background:#0b0f10;border:1px solid rgba(255,255,255,0.02)}
-    .pub-list li strong{color:var(--accent)}
-    .pub-meta{color:var(--muted);font-size:0.9rem;margin-top:6px}
+  /* hero */
+  .hero{display:flex;gap:28px;align-items:center;padding:56px 0}
+  .hero-left{flex:1;min-width:300px}
+  .hero h1{margin:0 0 10px;font-size:2.6rem;letter-spacing:-1px;color:#fff}
+  .lead{color:var(--muted);font-size:1.05rem;margin-bottom:18px}
+  .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{background:var(--accent);color:#02161a;padding:12px 16px;border-radius:10px;font-weight:800;text-decoration:none}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
 
-    /* ===== Team grid ===== */
-    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px}
-    .person{background:var(--glass);padding:14px;border-radius:10px;text-align:left;border:1px solid rgba(255,255,255,0.02)}
-    .person h4{margin:6px 0 4px;color:var(--accent-2)}
-    .person .role{color:var(--accent);font-weight:700;margin-bottom:8px}
+  .hero-right{width:420px;max-width:42%;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.02)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .stat{background:var(--card);padding:12px;border-radius:10px;text-align:center;border:1px solid rgba(255,255,255,0.02)}
+  .stat h4{margin:0;color:var(--accent-2)}
+  .stat p{color:var(--muted);font-size:0.95rem;margin-top:6px}
 
-    /* ===== Timeline ===== */
-    .timeline{position:relative;padding-left:28px;border-left:2px dashed rgba(255,255,255,0.03)}
-    .timeline .evt{position:relative;margin:18px 0;padding-left:20px}
-    .timeline .evt:before{content:'';position:absolute;left:-29px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(0,204,255,0.08)}
-    .evt h5{margin:0;color:var(--accent-2)}
-    .evt p{margin:6px 0;color:var(--muted)}
+  /* sections */
+  section.section{padding:46px 0}
+  section.section.dark{background:#071018;border-top:1px solid rgba(255,255,255,0.02)}
+  h2.section-title{margin:0 0 12px;font-size:1.5rem;color:var(--accent);text-shadow:0 0 10px rgba(0,211,255,0.06)}
+  .lead-muted{color:var(--muted);max-width:900px;margin:auto}
 
-    /* ===== Accordion ===== */
-    .accordion{max-width:100%;margin-top:12px}
-    .accordion-item{border-radius:8px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
-    .accordion-item button{width:100%;text-align:left;padding:14px;background:#0b0f10;border:0;color:#e6eef3;font-size:1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-    .accordion-item .panel{padding:14px;background:#071015;color:var(--muted);display:none}
+  /* grid cards */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+  .card h3{margin:0 0 8px;color:var(--accent-2)}
+  .card p{color:var(--muted);font-size:0.95rem}
 
-    /* ===== Contact form ===== */
-    form.contact-form{max-width:720px;margin:auto;margin-top:16px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    label{display:block;margin-bottom:8px;font-weight:600}
-    input[type="text"],input[type="email"],textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#0a0d0e;color:#e6eef3}
-    textarea{min-height:120px}
-    .form-actions{display:flex;gap:12px;align-items:center;margin-top:12px}
+  /* publications */
+  .pub-list{list-style:none;padding-left:0;margin-top:12px}
+  .pub-list li{padding:12px;border-radius:10px;margin-bottom:10px;background:#0b0f10;border:1px solid rgba(255,255,255,0.02)}
+  .pub-list li strong{color:var(--accent)}
+  .pub-meta{color:var(--muted);font-size:0.9rem;margin-top:6px}
 
-    /* ===== Footer ===== */
-    footer.site-footer{padding:26px 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:40px}
-    .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
-    .socials a{color:var(--muted);text-decoration:none;margin-left:12px}
+  /* team */
+  .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+  .person{background:var(--glass);padding:12px;border-radius:10px;text-align:left;border:1px solid rgba(255,255,255,0.02)}
+  .person h4{margin:6px 0 4px;color:var(--accent-2)}
+  .person .role{color:var(--accent);font-weight:700;margin-bottom:8px}
+  .person p{color:var(--muted);font-size:0.95rem}
 
-    /* ===== Utilities & responsive ===== */
-    .muted{color:var(--muted)}
-    .center{text-align:center}
-    @media (max-width:1024px){
-      .grid-3{grid-template-columns:repeat(2,1fr)}
-      .team-grid{grid-template-columns:repeat(2,1fr)}
-      .hero-right{display:none}
-    }
-    @media (max-width:640px){
-      .grid-3{grid-template-columns:1fr}
-      .team-grid{grid-template-columns:1fr}
-      header .header-inner{padding:10px}
-      .hero{padding:40px 0}
-      .hero h1{font-size:1.8rem}
-    }
-  </style>
+  /* timeline */
+  .timeline{position:relative;padding-left:28px;border-left:2px dashed rgba(255,255,255,0.03)}
+  .timeline .evt{position:relative;margin:18px 0;padding-left:20px}
+  .timeline .evt:before{content:'';position:absolute;left:-29px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(0,211,255,0.08)}
+  .evt h5{margin:0;color:var(--accent-2)}
+  .evt p{margin:6px 0;color:var(--muted)}
+
+  /* accordion */
+  .accordion{max-width:100%;margin-top:12px}
+  .accordion-item{border-radius:8px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
+  .accordion-item button{width:100%;text-align:left;padding:14px;background:#0b0f10;border:0;color:#e6eef3;font-size:1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+  .accordion-item .panel{padding:14px;background:#071015;color:var(--muted);display:none}
+
+  /* contact */
+  .contact-form{max-width:100%;margin:auto;margin-top:16px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+  label{display:block;margin-bottom:8px;font-weight:700}
+  input[type="text"],input[type="email"],textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#0a0d0e;color:#e6eef3}
+  textarea{min-height:120px}
+  .form-actions{display:flex;gap:12px;align-items:center;margin-top:12px}
+
+  /* tools / visualization */
+  .tools{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px}
+  .panel-widget{background:#071015;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+
+  /* footer */
+  footer.site-footer{padding:26px 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:40px}
+  .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
+  .socials a{color:var(--muted);text-decoration:none;margin-left:12px}
+
+  /* utilities */
+  .muted{color:var(--muted)}
+  .center{text-align:center}
+
+  /* responsiveness */
+  @media (max-width:1024px){
+    .grid-3{grid-template-columns:repeat(2,1fr)}
+    .team-grid{grid-template-columns:repeat(2,1fr)}
+    .hero-right{display:none}
+  }
+  @media (max-width:640px){
+    .grid-3{grid-template-columns:1fr}
+    .team-grid{grid-template-columns:1fr}
+    .header-inner{padding:8px}
+    .hero{padding:28px 0}
+    .hero h1{font-size:1.6rem}
+    nav.primary{display:none}
+  }
+
+  /* subtle entrance animation */
+  .fade-in{opacity:0;transform:translateY(6px);animation:fadeIn .9s ease forwards}
+  @keyframes fadeIn{to{opacity:1;transform:none}}
+</style>
 </head>
 <body>
 
   <!-- HEADER -->
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="#">
-        <!-- small inline logo SVG -->
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vortex Lab logo">
-          <defs>
-            <radialGradient id="g" cx="30%" cy="30%">
-              <stop offset="0%" stop-color="#00cfff"/>
-              <stop offset="100%" stop-color="#002b3a"/>
-            </radialGradient>
-          </defs>
-          <circle cx="50" cy="50" r="42" fill="url(#g)"/>
-          <path d="M30 70 C50 90,70 70,70 50 C70 30,50 10,30 30 C10 50,30 70,30 70 Z" fill="#07121a"/>
+      <a class="brand" href="#">
+        <!-- small inline logo -->
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><radialGradient id="g" cx="30%" cy="30%"><stop offset="0%" stop-color="#00d3ff"/><stop offset="100%" stop-color="#002b3a"/></radialGradient></defs>
+          <circle cx="50" cy="50" r="44" fill="url(#g)"/>
+          <path d="M28 70 C50 92,78 68,70 48 C62 28,38 22,28 38 C18 54,28 70,28 70 Z" fill="#071218"/>
         </svg>
         <span>Vortex Lab</span>
       </a>
 
-      <nav class="primary" aria-label="Primary navigation">
-        <a href="#about">About</a>
+      <nav class="primary" aria-label="Primary">
+        <a href="#home">Home</a>
         <a href="#research">Research</a>
         <a href="#projects">Projects</a>
         <a href="#publications">Publications</a>
@@ -237,337 +180,196 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero container" id="home">
+  <section id="home" class="hero container fade-in" style="--delay:0s">
     <div class="hero-left">
-      <h1>Vortex Lab — Pushing the boundaries of physics</h1>
-      <p class="lead">We combine experimental ingenuity with theoretical insight to study quantum systems, particle detectors, and black hole singularities. Led by Head Physicist <strong>Nimish Upadhyay</strong>.</p>
+      <h1>Vortex Lab — Where curiosity meets rigorous experiment</h1>
+      <p class="lead">We combine instrumentation, theory and computational science to study quantum systems, particle interactions, and the fabric of spacetime.</p>
       <div class="hero-actions">
         <a class="btn" href="#research">Explore Research</a>
-        <a class="btn ghost" href="#publications">View Publications</a>
-        <a class="btn ghost" href="#team">Meet the Team</a>
+        <a class="btn ghost" href="#publications">Read Publications</a>
+        <a class="btn ghost" href="#projects">See Projects</a>
       </div>
     </div>
 
-    <aside class="hero-right">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="stat">
-          <h4>Active Projects</h4>
-          <p class="muted">12 ongoing experiments & instrument builds</p>
-        </div>
-        <div class="stat">
-          <h4>Publications</h4>
-          <p class="muted">178 peer-reviewed papers & preprints</p>
-        </div>
-        <div class="stat">
-          <h4>Collaborators</h4>
-          <p class="muted">25 international institutions</p>
+    <aside class="hero-right" role="complementary">
+      <div class="stats">
+        <div class="stat"><h4>12</h4><p class="muted">Active Projects</p></div>
+        <div class="stat"><h4>178</h4><p class="muted">Publications</p></div>
+        <div class="stat"><h4>25</h4><p class="muted">Collaborators</p></div>
+      </div>
+
+      <div style="margin-top:12px">
+        <h4 style="margin:8px 0;color:var(--accent)">Quick Links</h4>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <a class="muted" href="#projects">→ Ongoing Projects</a>
+          <a class="muted" href="#team">→ Meet the Team</a>
+          <a class="muted" href="#contact">→ Contact & Collaborate</a>
         </div>
       </div>
     </aside>
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="section dark">
+  <section id="about" class="section dark fade-in">
     <div class="container">
       <h2 class="section-title">About Vortex Lab</h2>
-      <p class="lead-muted center">Vortex Lab is a center for experimental and theoretical physics focused on fundamental questions: how particles interact, how spacetime behaves near singularities, and how quantum information can be harnessed for sensing and computation. We publish datasets, open-source software, and hardware designs to accelerate reproducible research.</p>
+      <p class="lead-muted center">Vortex Lab bridges experiment and theory. Our priority is accessible, reproducible science — open-source analysis, open data, and rigorous peer-reviewed research. We explore quantum sensing, black-hole physics, high-energy instrumentation, and novel computing paradigms.</p>
 
-      <div style="margin-top:26px" class="grid-3">
+      <div class="grid-3 fade-in" style="margin-top:20px">
         <div class="card">
           <h3>Instrumentation</h3>
-          <p>Design and build detectors, amplifiers, and cryogenic apparatus for precision measurements at low energies and in high-energy collisions.</p>
+          <p>Design & build custom detectors, cryogenic systems, and low-noise readouts for precision measurements.</p>
         </div>
         <div class="card">
           <h3>Theory</h3>
-          <p>Develop models for quantum gravity, black hole interiors, and non-perturbative field theory. Emphasis on testable predictions for next-generation experiments.</p>
+          <p>Develop conceptual and computational frameworks to interpret high-precision experiments and cosmological observations.</p>
         </div>
         <div class="card">
-          <h3>Data & Software</h3>
-          <p>Open analysis pipelines, simulation stacks, and reproducible notebooks for data from detectors and simulations.</p>
+          <h3>Open Science</h3>
+          <p>Publish code, datasets, and experiment notes to accelerate reproducible science across institutions.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- RESEARCH -->
-  <section id="research" class="section">
+  <section id="research" class="section fade-in">
     <div class="container">
       <h2 class="section-title">Research Areas</h2>
-      <p class="lead-muted center">Our research bridges experiment and theory. Below are core themes where we currently invest our efforts.</p>
+      <p class="lead-muted center">Our focused research pillars that guide lab activities.</p>
 
-      <div class="grid-3">
+      <div class="grid-3" style="margin-top:18px">
         <div class="card">
-          <h3>Quantum Sensors</h3>
-          <p>Atomic magnetometers, optomechanical accelerometers, and squeezed-light interferometry used to probe weak signals from fundamental physics and geodesy.</p>
+          <h3>Quantum Sensing</h3>
+          <p>Using atomic, optical, and solid-state platforms to detect tiny forces, fields and displacements.</p>
         </div>
         <div class="card">
-          <h3>High-Energy Instrumentation</h3>
-          <p>Detector geometries and read-out electronics for tracking, calorimetry, and timing at sub-nanosecond resolution.</p>
+          <h3>Particle Detectors</h3>
+          <p>Tracking, calorimetry, and time-of-flight systems for high-resolution measurements.</p>
         </div>
         <div class="card">
-          <h3>Black Holes & Gravitation</h3>
-          <p>Theoretical studies of horizons, quantum corrections, and potential observational signatures in gravitational waveforms.</p>
+          <h3>Black Hole Physics</h3>
+          <p>Modeling horizons, singularities, and potential quantum cures to classical divergences.</p>
         </div>
 
         <div class="card">
-          <h3>Quantum Information</h3>
-          <p>Entanglement structure in many-body systems, error-correcting codes inspired by holography, and quantum simulations of field theories.</p>
+          <h3>Computational Modelling</h3>
+          <p>High-throughput simulation pipelines and ML for pattern discovery in large datasets.</p>
         </div>
         <div class="card">
-          <h3>Dark Matter Searches</h3>
-          <p>Designing experiments sensitive to ultra-light axions, WIMPs, and other beyond-standard-model candidates using precision detectors.</p>
+          <h3>Dark Matter & Cosmology</h3>
+          <p>Innovative detector concepts and analysis strategies to probe beyond-standard-model signatures.</p>
         </div>
         <div class="card">
-          <h3>Computational Physics</h3>
-          <p>High-performance simulations, machine learning for event classification, and data-driven model discovery.</p>
+          <h3>Education & Outreach</h3>
+          <p>Workshops, seminars, and educational material for students and the public.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- PROJECTS (long list so file is big) -->
-  <section id="projects" class="section dark">
+  <!-- PROJECTS -->
+  <section id="projects" class="section dark fade-in">
     <div class="container">
-      <h2 class="section-title">Projects & Instrumentation</h2>
-      <p class="lead-muted center">Selected active and archival projects across hardware, software, and theory.</p>
+      <h2 class="section-title">Projects</h2>
+      <p class="lead-muted center">Selected active & recent projects. Scroll down for a dynamically-generated, extensive list.</p>
 
-      <!-- many project cards to make the page long and realistic -->
-      <div style="margin-top:18px">
-        <div class="grid-3">
-          <div class="card">
-            <h3>Quantum Interferometer V2</h3>
-            <p>High-precision interferometer using squeezed light and active stabilization; deployed in lab for gravitational sensing tests.</p>
-          </div>
-          <div class="card">
-            <h3>Low-Background Detector Array</h3>
-            <p>Modular detectors for low-count-rate experiments with active veto and radon suppression systems.</p>
-          </div>
-          <div class="card">
-            <h3>Accelerator Diagnostics Suite</h3>
-            <p>Real-time beam instrumentation for emittance and profile measurements at high repetition rates.</p>
-          </div>
-        </div>
-
-        <div class="grid-3" style="margin-top:16px">
-          <div class="card">
-            <h3>Dark Matter Haloscope</h3>
-            <p>Tunable cavity and SQUID-based readout for axion searches in the microwave band.</p>
-          </div>
-          <div class="card">
-            <h3>High-Throughput Simulation</h3>
-            <p>Cluster-managed workflows for lattice field theory and event generation with automated analysis.</p>
-          </div>
-          <div class="card">
-            <h3>Detector-Sim Suite</h3>
-            <p>Open-source toolkit for simulating detector responses and digitization chains.</p>
-          </div>
-        </div>
-
-        <!-- repeat more detailed entries to reach length -->
-        <div class="grid-3" style="margin-top:16px">
-          <div class="card">
-            <h3>Quantum Wormhole Modeling</h3>
-            <p>Exploratory simulations of wormhole traversability under quantum-corrected backgrounds and energy conditions.</p>
-          </div>
-          <div class="card">
-            <h3>Neutrino Prototype</h3>
-            <p>Compact array for low-energy neutrino detection using novel scintillators and machine learning triggers.</p>
-          </div>
-          <div class="card">
-            <h3>Holographic Codes</h3>
-            <p>Algorithmic development for error-correcting codes inspired by AdS/CFT and tensor network constructions.</p>
-          </div>
-        </div>
-
-        <!-- extra rows for verbosity -->
-        <div style="margin-top:18px" class="grid-3">
-          <div class="card"><h3>Cryogenics 3.0</h3><p>Reliable cryocooler integration and vibration isolation for low-noise experiments.</p></div>
-          <div class="card"><h3>Time-of-flight Array</h3><p>Precision timing array optimized for cosmic ray and particle identification tasks.</p></div>
-          <div class="card"><h3>Open Data Portal</h3><p>Publishing cleaned datasets with DOIs, Jupyter notebooks, and analysis recipes.</p></div>
-        </div>
-
-        <div style="margin-top:18px" class="grid-3">
-          <div class="card"><h3>AI Physics Assistant</h3><p>Model-assisted literature reviews and parameter scans for experimental design.</p></div>
-          <div class="card"><h3>Education Outreach</h3><p>Workshops, lectures, and open resources for students and early-career researchers.</p></div>
-          <div class="card"><h3>Quantum Control Stack</h3><p>Hardware and firmware to control qubit-like sensors and their readout chains.</p></div>
-        </div>
+      <div class="grid-3" style="margin-top:16px">
+        <div class="card"><h3>Quantum Interferometer</h3><p>Precision interferometer using squeezed light for enhanced phase sensitivity.</p></div>
+        <div class="card"><h3>Low Background Array</h3><p>Modular detectors with active background rejection for rare-event searches.</p></div>
+        <div class="card"><h3>Detector Sim Suite</h3><p>Open simulation toolkit for end-to-end detector modeling.</p></div>
       </div>
+
+      <div id="projects-list" style="margin-top:20px"></div>
+      <!-- JS will populate more projects here -->
     </div>
   </section>
 
-  <!-- PUBLICATIONS - long list to add content -->
-  <section id="publications" class="section">
+  <!-- PUBLICATIONS -->
+  <section id="publications" class="section fade-in">
     <div class="container">
       <h2 class="section-title">Publications & Preprints</h2>
-      <p class="lead-muted center">A curated selection of papers from Vortex Lab members. Full list available upon request or on our publications portal.</p>
+      <p class="lead-muted center">Selected publications. A long, searchable list is generated below for browsing.</p>
 
-      <ul class="pub-list">
-        <!-- A long manually-expanded list of publications for weight -->
-        <li>
-          <strong>Upadhyay, N.</strong> et al. (2025). <em>High-resolution interferometry for quantum sensors</em>. Phys. Rev. Applied.
-          <div class="pub-meta">DOI: 10.XXXX/physrevappl.2025.xxxx — 12 pages</div>
-        </li>
-        <li>
-          <strong>Upadhyay, N.</strong> &amp; Doe, J. (2024). <em>Constraints on micro-singularity models</em>. J. Theor. Phys.
-          <div class="pub-meta">arXiv:2401.XXXXX — 18 pages</div>
-        </li>
-        <li>
-          <strong>Smith, A.</strong> et al. (2024). <em>Detectors for low-background axion haloscopes</em>. JINST.
-          <div class="pub-meta">DOI: 10.XXXX/jinst.2024.xxxx — 14 pages</div>
-        </li>
-        <li>
-          <strong>Lee, M.</strong>, Upadhyay, N. (2023). <em>Quantum entanglement in noisy many-body systems</em>. Quantum.
-          <div class="pub-meta">arXiv:2306.XXXXX — 22 pages</div>
-        </li>
-        <li>
-          <strong>Patel, R.</strong> et al. (2023). <em>Open detector simulation and analysis</em>. SoftwareX.
-          <div class="pub-meta">DOI: 10.XXXX/softwarex.2023.xxxx — 11 pages</div>
-        </li>
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;margin-top:12px">
+        <input id="pub-search" type="text" placeholder="Search title/author/year" style="padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#081015;color:#e6eef3;width:60%">
+        <button id="pub-filter" class="btn" style="padding:8px 12px">Filter</button>
+      </div>
 
-        <!-- repeat programmatically-looking entries for length -->
-        <!-- (these entries are sample placeholders — replace with real ones) -->
-        <li><strong>Upadhyay, N.</strong> et al. (2022). <em>Precision timing with superconducting sensors</em>. IEEE Trans. Instrum. Meas.<div class="pub-meta">vol. 71 — 9 pages</div></li>
-        <li><strong>Nguyen, T.</strong> et al. (2022). <em>Simulation-driven detector design</em>. Comp. Phys. Comm.<div class="pub-meta">vol. 278 — 16 pages</div></li>
-        <li><strong>Gonzalez, P.</strong> &amp; Upadhyay, N. (2021). <em>Black hole echo signatures</em>. JHEP.<div class="pub-meta">arXiv:2103.XXXXX — 24 pages</div></li>
-        <li><strong>Wang, L.</strong> et al. (2021). <em>Machine learning triggers for rare events</em>. Machine Learn. Sci. Tech.<div class="pub-meta">vol. 2 — 12 pages</div></li>
-        <li><strong>Ahmed, S.</strong> et al. (2020). <em>Radon mitigation in ultra-low background labs</em>. J. Environ. Radon.<div class="pub-meta">vol. 7 — 10 pages</div></li>
-
-        <!-- Add many pseudo-publications to lengthen -->
-        <li><strong>Upadhyay, N.</strong> et al. (2020). <em>Detector calibration techniques for low-signal regimes</em>. Rev. Sci. Instrum.<div class="pub-meta">vol. 91 — 8 pages</div></li>
-        <li><strong>Multiple Authors</strong> (2019). <em>Open data releases from Vortex Lab</em>. Data in Brief.<div class="pub-meta">Dataset DOI: 10.XXXX/dib.2019.xxxx</div></li>
-        <li><strong>Team</strong> (2019). <em>Public outreach and workshops</em>. Outreach Compendium.<div class="pub-meta">report — 35 pages</div></li>
-
-        <!-- generate more entries to reach long length -->
-        <li><strong>Various</strong> (2018). <em>Archived instrumentation notes</em>. Vortex Lab Technical Reports.<div class="pub-meta">TR-2018-01 — 40 pages</div></li>
-        <li><strong>Upadhyay, N.</strong> (2017). <em>Early-stage conceptual notes on singularity resolution</em>. Preprint.<div class="pub-meta">internal — 28 pages</div></li>
-
-        <!-- more entries -->
-        <li><strong>Collaborative Group</strong> (2016). <em>Cross-lab benchmarking</em>. Collab. Phys. Review.<div class="pub-meta">vol. 1 — 50 pages</div></li>
-        <li><strong>Researcher X</strong> (2015). <em>Detector electronics primer</em>. TechComm.<div class="pub-meta">manual — 122 pages</div></li>
-        <li><strong>Various</strong> (2014). <em>Historical notes</em>. Archive Compendium.<div class="pub-meta">digital archive</div></li>
-        <!-- end publications list (long) -->
-      </ul>
+      <ul id="pub-list" class="pub-list" style="margin-top:18px"></ul>
     </div>
   </section>
 
   <!-- TEAM -->
-  <section id="team" class="section dark">
+  <section id="team" class="section dark fade-in">
     <div class="container">
       <h2 class="section-title">Team & Collaborators</h2>
-      <p class="lead-muted center">A multidisciplinary group of physicists, engineers, and software developers.</p>
+      <p class="lead-muted center">A cross-disciplinary team of scientists, engineers and developers.</p>
 
-      <div class="team-grid">
-        <div class="person">
-          <h4>Nimish Upadhyay</h4>
-          <div class="role">Head Physicist</div>
-          <p class="muted">Lead experimentalist and theorist. Research interests: black hole singularities, quantum sensors, detector instrumentation.</p>
-        </div>
-        <div class="person">
-          <h4>Dr. A. Collaborator</h4>
-          <div class="role">Senior Researcher</div>
-          <p class="muted">Specialist in condensed matter systems and quantum device integration.</p>
-        </div>
-        <div class="person">
-          <h4>Eng. B. Instrument</h4>
-          <div class="role">Instrumentation Lead</div>
-          <p class="muted">Electronics, cryogenics and data acquisition systems lead.</p>
-        </div>
-        <div class="person">
-          <h4>Dr. C. Theorist</h4>
-          <div class="role">Theorist</div>
-          <p class="muted">Quantum gravity, holography & theoretical cosmology.</p>
-        </div>
+      <div class="team-grid" id="team-grid" style="margin-top:16px"></div>
 
-        <!-- extra team members for length -->
-        <div class="person"><h4>Dr. D. Analyst</h4><div class="role">Data Scientist</div><p class="muted">ML pipelines & simulations.</p></div>
-        <div class="person"><h4>E. Technician</h4><div class="role">Lab Technician</div><p class="muted">Assembly & test bench maintenance.</p></div>
-        <div class="person"><h4>F. Intern</h4><div class="role">Graduate Intern</div><p class="muted">Assists with experiments and analysis.</p></div>
-        <div class="person"><h4>G. Admin</h4><div class="role">Operations</div><p class="muted">Project coordination and outreach.</p></div>
-      </div>
-
-      <!-- Timeline -->
-      <div style="margin-top:26px">
-        <h3 style="color:var(--accent);margin-bottom:12px">Lab Timeline</h3>
-        <div class="timeline">
-          <div class="evt"><h5>2025 — Major Milestone</h5><p>First tabletop demonstration of stable entanglement-assisted sensing across a meter baseline.</p></div>
-          <div class="evt"><h5>2024 — Publication</h5><p>Key theoretical paper published on micro-singularity constraints.</p></div>
-          <div class="evt"><h5>2022 — Infrastructure</h5><p>Expanded low-background lab and installed next-gen readout electronics.</p></div>
-          <div class="evt"><h5>2020 — Foundation</h5><p>Vortex Lab formed with the goal of combining experiment and theory under a single roof.</p></div>
+      <div style="margin-top:18px">
+        <h3 style="color:var(--accent);margin-bottom:10px">Lab Timeline</h3>
+        <div class="timeline" id="lab-timeline">
+          <div class="evt"><h5>2025 — Stable Entanglement Demonstration</h5><p>Bench-scale demonstration of meter-scale entanglement with active stabilization.</p></div>
+          <div class="evt"><h5>2024 — Theory Breakthrough</h5><p>Publication on constraints of micro-singularity models.</p></div>
+          <div class="evt"><h5>2022 — Facility Upgrade</h5><p>Installed next-generation cryogenics and low-noise electronics.</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- TOOLS & LIVE WIDGETS -->
-  <section class="section">
+  <!-- TOOLS -->
+  <section class="section fade-in">
     <div class="container">
       <h2 class="section-title">Interactive Tools</h2>
-      <p class="lead-muted center">Simple client-side tools for inspection and visualization (no server required).</p>
+      <p class="lead-muted center">Client-side interactive visualizations & widgets for quick exploration.</p>
 
-      <!-- Simple canvas chart (vanilla) -->
-      <div style="margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;justify-content:center">
-        <div style="background:#081018;padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);width:540px">
-          <h3 style="margin-top:0;color:var(--accent)">Simulated Signal vs Noise</h3>
-          <canvas id="vis-canvas" width="500" height="250" style="width:100%;height:auto;border-radius:6px;background:#020405"></canvas>
-          <p class="muted" style="margin-top:10px">Real-time simulation (client-side) showing pseudo-random signals with a small injected 'event'.</p>
+      <div class="tools" style="margin-top:12px">
+        <div class="panel-widget" style="flex:1;min-width:320px">
+          <h3 style="margin:0 0 10px;color:var(--accent)">Signal Simulator</h3>
+          <canvas id="sim-canvas" width="600" height="240" style="width:100%;background:#020405;border-radius:8px"></canvas>
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <label class="muted">Noise <input id="noise" type="range" min="0" max="1" step="0.01" value="0.3"></label>
+            <label class="muted">Event <input id="event" type="range" min="0" max="2" step="0.01" value="1.0"></label>
+            <button id="toggle-sim2" class="btn">Pause</button>
+          </div>
         </div>
 
-        <div style="width:300px">
-          <h3 style="color:var(--accent)">Controls</h3>
-          <label>Noise amplitude: <input id="noise-amp" type="range" min="0" max="1" step="0.01" value="0.35"></label>
-          <label style="display:block;margin-top:8px">Event amplitude: <input id="event-amp" type="range" min="0" max="2" step="0.01" value="1.0"></label>
-          <label style="display:block;margin-top:8px">Event rate (s): <input id="event-rate" type="range" min="1" max="10" step="1" value="6"></label>
-          <button id="toggle-sim" class="btn" style="margin-top:12px;width:100%">Start / Pause</button>
+        <div class="panel-widget" style="width:360px">
+          <h3 style="margin:0 0 10px;color:var(--accent)">Quick Metrics</h3>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between"><span class="muted">Uptime</span><strong>142 days</strong></div>
+            <div style="display:flex;justify-content:space-between"><span class="muted">Active Instruments</span><strong>7</strong></div>
+            <div style="display:flex;justify-content:space-between"><span class="muted">Data Releases</span><strong>12</strong></div>
+            <div style="margin-top:8px"><a href="#" class="btn">Open Data Portal</a></div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ACCORDION / FAQ -->
-  <section class="section dark">
+  <!-- FAQ / Accordion -->
+  <section class="section dark fade-in">
     <div class="container">
       <h2 class="section-title">FAQ</h2>
-      <p class="lead-muted center">Questions we often get from students, collaborators, and the public.</p>
+      <p class="lead-muted center">Common questions and policies.</p>
 
       <div class="accordion" id="faq">
-        <div class="accordion-item">
-          <button aria-expanded="false">How can I collaborate with Vortex Lab? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>We welcome collaboration — email the Head Physicist with a concise proposal, CV, and a short statement of what you bring and what you expect to achieve together.</p>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button aria-expanded="false">Do you publish data and code? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>Yes — we release data and analysis pipelines where possible, respecting privacy and embargoes for sensitive results. See our publications list for dataset DOIs.</p>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button aria-expanded="false">Can I visit the lab? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>Visits are by appointment and subject to safety briefings. Contact our operations team for scheduling and visitor policies.</p>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button aria-expanded="false">How do you fund your work? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>Funding comes from research grants, collaborations, and private donations. We actively pursue funding to keep projects open and reproducible.</p>
-          </div>
-        </div>
+        <div class="accordion-item"><button aria-expanded="false">How do I collaborate? <span aria-hidden="true">+</span></button><div class="panel"><p>Send an email with a project summary and CV to the Head Physicist. We prioritize joint proposals and clear deliverables.</p></div></div>
+        <div class="accordion-item"><button aria-expanded="false">Do you share data? <span aria-hidden="true">+</span></button><div class="panel"><p>Where possible—yes. We host datasets with DOIs and provide analysis notebooks for reproducibility.</p></div></div>
+        <div class="accordion-item"><button aria-expanded="false">Can students join? <span aria-hidden="true">+</span></button><div class="panel"><p>We host internships and visiting students by application; timeline varies by project and funding.</p></div></div>
       </div>
     </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="section">
+  <section id="contact" class="section fade-in">
     <div class="container">
       <h2 class="section-title">Contact</h2>
-      <p class="lead-muted center">For collaboration requests, media inquiries, or speaking invitations, reach out below.</p>
+      <p class="lead-muted center">Use the form below for collaboration requests. This demo uses local storage (no server).</p>
 
-      <form class="contact-form" id="contactForm" onsubmit="return false;">
+      <form id="contact-form" class="contact-form" onsubmit="return false">
         <label for="name">Name</label>
         <input id="name" type="text" placeholder="Your name" required>
 
@@ -578,14 +380,13 @@
         <input id="subject" type="text" placeholder="Short subject">
 
         <label for="message">Message</label>
-        <textarea id="message" placeholder="Write your message here..." required></textarea>
+        <textarea id="message" placeholder="Briefly describe your request" required></textarea>
 
         <div class="form-actions">
-          <button id="sendBtn" class="btn">Send Message</button>
-          <div style="color:var(--muted);font-size:0.95rem">Or email <a href="mailto:info@vortexlab.org" style="color:var(--accent)">info@vortexlab.org</a></div>
+          <button id="send" class="btn">Save Message</button>
+          <div class="muted">Or email <a href="mailto:info@vortexlab.org">info@vortexlab.org</a></div>
         </div>
-
-        <div id="formStatus" style="margin-top:12px;color:var(--muted)"></div>
+        <div id="contact-status" style="margin-top:10px;color:var(--muted)"></div>
       </form>
     </div>
   </section>
@@ -594,185 +395,237 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>© <span id="year"></span> Vortex Lab — Head Physicist: Nimish Upadhyay</div>
-      <div class="socials">
-        <a href="#" title="GitHub">GitHub</a>
-        <a href="#" title="Twitter">Twitter</a>
-        <a href="#" title="LinkedIn">LinkedIn</a>
-      </div>
+      <div class="muted">Built as a single-file demo • No back-end</div>
     </div>
   </footer>
 
   <!-- ===========================
-       Inline JavaScript (interactive)
-       All logic is embedded to keep the page single-file
+       Inline JavaScript — generates long content on demand
        =========================== -->
   <script>
     // set year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Smooth nav behavior - highlight simple
-    (function(){
-      const links = document.querySelectorAll('nav.primary a');
-      for(const a of links){
-        a.addEventListener('click', (e)=>{
-          // allow anchor normal behavior for accessibility, but smooth scroll cloud
-          const href = a.getAttribute('href');
-          if(href && href.startsWith('#')){
-            e.preventDefault();
-            const el = document.querySelector(href);
-            if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-          }
-        });
-      }
-    })();
+    // small helpers
+    function el(html){ const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstElementChild; }
 
-    // Accordion behavior
-    (function(){
-      const items = document.querySelectorAll('.accordion-item');
-      items.forEach(item=>{
-        const btn = item.querySelector('button');
-        const panel = item.querySelector('.panel');
+    // Accordion
+    (function initAccordion(){
+      document.querySelectorAll('.accordion-item button').forEach(btn=>{
         btn.addEventListener('click', ()=>{
+          const panel = btn.nextElementSibling;
           const expanded = btn.getAttribute('aria-expanded') === 'true';
           btn.setAttribute('aria-expanded', String(!expanded));
-          if(!expanded){
-            panel.style.display = 'block';
-            btn.querySelector('span').textContent = '−';
-          } else {
-            panel.style.display = 'none';
-            btn.querySelector('span').textContent = '+';
-          }
+          if(!expanded){ panel.style.display = 'block'; btn.querySelector('span').textContent = '−'; }
+          else { panel.style.display = 'none'; btn.querySelector('span').textContent = '+'; }
         });
       });
     })();
 
-    // Contact form fake send (client-only)
-    (function(){
-      const form = document.getElementById('contactForm');
-      const send = document.getElementById('sendBtn');
-      const status = document.getElementById('formStatus');
-
+    // Contact form save to localStorage
+    (function contactForm(){
+      const send = document.getElementById('send');
+      const status = document.getElementById('contact-status');
       send.addEventListener('click', ()=>{
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        if(!name || !email || !message){
-          status.textContent = 'Please fill required fields.';
-          status.style.color = 'salmon';
-          return;
-        }
-        // demo only
-        status.style.color = 'var(--muted)';
-        status.textContent = 'Message saved locally — this demo site has no backend. Copy the message before leaving the page.';
-        // emulate saving to localStorage temporarily
+        const data = {
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          subject: document.getElementById('subject').value.trim(),
+          message: document.getElementById('message').value.trim(),
+          time: new Date().toISOString()
+        };
+        if(!data.name || !data.email || !data.message){ status.style.color='salmon'; status.textContent = 'Please fill name, email, and message.'; return; }
         const saved = JSON.parse(localStorage.getItem('vortex_messages')||'[]');
-        saved.push({name,email,subject:document.getElementById('subject').value||'',message,time:new Date().toISOString()});
+        saved.push(data);
         localStorage.setItem('vortex_messages', JSON.stringify(saved));
+        status.style.color='var(--muted)';
+        status.textContent = 'Saved locally. This demo has no server endpoint.';
+        // clear fields
+        document.getElementById('name').value='';
+        document.getElementById('email').value='';
+        document.getElementById('subject').value='';
+        document.getElementById('message').value='';
       });
     })();
 
-    // ===== Simple signal visualization (canvas) =====
-    (function(){
-      const canvas = document.getElementById('vis-canvas');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const W = canvas.width;
-      const H = canvas.height;
-
-      let running = true;
+    // Simple simulation canvas (duplicate but independent)
+    (function initSim(){
+      const c = document.getElementById('sim-canvas');
+      if(!c) return;
+      const ctx = c.getContext('2d');
+      const W = c.width, H = c.height;
       let t = 0;
-      let noiseAmpEl = document.getElementById('noise-amp');
-      let eventAmpEl = document.getElementById('event-amp');
-      let eventRateEl = document.getElementById('event-rate');
-      let toggle = document.getElementById('toggle-sim');
+      let running = true;
+      const noiseEl = document.getElementById('noise');
+      const eventEl = document.getElementById('event');
+      const toggle = document.getElementById('toggle-sim2');
+      toggle.addEventListener('click', ()=>{ running = !running; toggle.textContent = running ? 'Pause' : 'Resume'; });
 
-      toggle.addEventListener('click', ()=>{ running = !running; toggle.textContent = running ? 'Pause' : 'Start'; });
-
-      function drawGrid(){
+      function draw(){
+        if(running) t += 0.01;
         ctx.fillStyle = '#020405';
         ctx.fillRect(0,0,W,H);
+        // background grid
         ctx.strokeStyle = 'rgba(255,255,255,0.02)';
         ctx.lineWidth = 1;
-        for(let x=0;x<W;x+=50){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-        for(let y=0;y<H;y+=50){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-      }
-
-      function noise(x){ return (Math.sin(x*12.345)+Math.sin(x*7.23)+Math.sin(x*3.7))*0.33; }
-
-      let lastEvent = 0;
-      function step(){
-        if(!running){ requestAnimationFrame(step); return; }
-        t += 0.02;
-        drawGrid();
-
-        // parameters (controlled by UI)
-        const noiseAmp = parseFloat(noiseAmpEl.value);
-        const eventAmp = parseFloat(eventAmpEl.value);
-        const eventRate = parseFloat(eventRateEl.value);
-
-        // generate waveform data
+        for(let x=0;x<W;x+=40){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+        // waveform
         ctx.beginPath();
         for(let x=0;x<W;x++){
-          const time = t + x/60;
-          let y = H/2 + noise(time)*noiseAmp*H*0.35;
-          // occasionally inject an event
-          if((t - lastEvent) > eventRate && Math.random()<0.01){
-            lastEvent = t;
-          }
-          if((t - lastEvent) < 0.25){ // short event
-            const ph = (t - lastEvent)/0.25;
-            const burst = Math.exp(-8*(ph-0.5)*(ph-0.5)) * eventAmp * H*0.15;
+          const time = t + x/120;
+          const noise = (Math.sin(time*12)+Math.sin(time*7.3)+Math.sin(time*3.4))*0.33;
+          let y = H/2 + noise * parseFloat(noiseEl.value) * H*0.25;
+          // occasional event
+          const eventPeriod = 6;
+          const ph = ((t + x/300) % eventPeriod) / eventPeriod;
+          if(ph < 0.12){
+            const burst = Math.exp(-20*(ph-0.06)*(ph-0.06)) * parseFloat(eventEl.value)*H*0.2;
             y -= burst;
           }
           if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
         }
-        ctx.strokeStyle = 'rgba(0,255,255,0.9)';
+        ctx.strokeStyle = 'rgba(0,211,255,0.95)';
         ctx.lineWidth = 2;
         ctx.stroke();
-
-        // axis
-        ctx.strokeStyle='rgba(255,255,255,0.06)';
-        ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
-
-        requestAnimationFrame(step);
+        requestAnimationFrame(draw);
       }
-
-      requestAnimationFrame(step);
+      requestAnimationFrame(draw);
     })();
 
-    // Small keyboard helper: pressing "p" focuses contact name
-    document.addEventListener('keydown', (e)=>{
-      if(e.key.toLowerCase()==='p'){
-        const el = document.getElementById('name');
-        if(el){ el.focus(); }
-      }
-    });
+    // LARGE CONTENT GENERATION
+    // Change this number to produce more or fewer generated entries.
+    // Be careful — very large numbers will slow the browser.
+    const GENERATE_COUNT = 1000; // default: 1000 generated publications/projects (adjustable)
 
-    // Accessibility: ensure internal links focusable
-    (function(){
-      const internal = document.querySelectorAll('a[href^="#"]');
-      internal.forEach(a=>{
-        a.addEventListener('click', ()=>{
-          const target = document.querySelector(a.getAttribute('href'));
-          if(target) target.setAttribute('tabindex','-1');
+    // Utility to create pseudo-random text variations
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+    const projPrefixes = ['Quantum','Neutrino','DarkMatter','Cryo','Optical','Holography','Interferometer','Time-of-flight','AI','Detector'];
+    const projSuffixes = ['Array','Suite','Module','Stack','Prototype','Portal','Simulator','Instrument','Platform','Network'];
+    const authNames = ['Upadhyay N.','Smith A.','Lee M.','Garcia P.','Singh R.','Chen L.','Patel S.','Nguyen T.','Alvarez J.','Ivanov D.'];
+
+    // generate many project cards
+    (function generateProjects(){
+      const container = document.getElementById('projects-list');
+      if(!container) return;
+      const frag = document.createDocumentFragment();
+      const batch = Math.min(200, GENERATE_COUNT); // create in batches for UI
+      for(let i=0;i<batch;i++){
+        const name = `${pick(projPrefixes)} ${pick(projSuffixes)} ${String(i+1).padStart(3,'0')}`;
+        const html = `<div class="card" style="margin-bottom:12px"><h3>${name}</h3><p class="muted">A detailed project exploring ${pick(['quantum sensors','detector design','data analysis','simulation','readout electronics'])}. Project ID: PRJ-${(10000+i)}</p></div>`;
+        frag.appendChild(el(html));
+      }
+      container.appendChild(frag);
+
+      // if GENERATE_COUNT is larger, generate rest progressively
+      if(GENERATE_COUNT > batch){
+        let created = batch;
+        function step(){
+          const chunk = Math.min(200, GENERATE_COUNT - created);
+          const f = document.createDocumentFragment();
+          for(let i=0;i<chunk;i++){
+            const idx = created + i;
+            const name = `${pick(projPrefixes)} ${pick(projSuffixes)} ${String(idx+1).padStart(4,'0')}`;
+            const html = `<div class="card" style="margin-bottom:12px"><h3>${name}</h3><p class="muted">Exploratory project on ${pick(['quantum entanglement','low-noise cryogenics','axion detection','real-time DAQ','ML-based triggers'])}. Project ID: PRJ-${(20000+idx)}</p></div>`;
+            f.appendChild(el(html));
+          }
+          container.appendChild(f);
+          created += chunk;
+          if(created < GENERATE_COUNT) setTimeout(step, 60); // yield to UI
+        }
+        setTimeout(step, 80);
+      }
+    })();
+
+    // generate many publications
+    (function generatePublications(){
+      const list = document.getElementById('pub-list');
+      if(!list) return;
+      const frag = document.createDocumentFragment();
+      const sampleTitles = ['High-resolution interferometry for quantum sensors','Constraints on micro-singularity models','Detectors for low-background axion haloscopes','Quantum entanglement in noisy many-body systems','Simulation-driven detector design'];
+      const years = [2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+
+      const batch = Math.min(300, GENERATE_COUNT);
+      for(let i=0;i<batch;i++){
+        const title = `${pick(sampleTitles)} — Extended Study ${i+1}`;
+        const author = `${pick(authNames)}, ${pick(authNames)}`;
+        const year = pick(years);
+        const html = `<li><strong>${author}</strong> (${year}). <em>${title}</em>. <div class="pub-meta">DOI: 10.XXXX/vortex.${year}.${1000+i} — ${Math.floor(6+Math.random()*20)} pages</div></li>`;
+        frag.appendChild(el(html));
+      }
+      list.appendChild(frag);
+
+      if(GENERATE_COUNT > batch){
+        let created = batch;
+        function step(){
+          const chunk = Math.min(300, GENERATE_COUNT - created);
+          const f = document.createDocumentFragment();
+          for(let i=0;i<chunk;i++){
+            const idx = created + i;
+            const title = `${pick(sampleTitles)} — Extended Study ${idx+1}`;
+            const author = `${pick(authNames)}, ${pick(authNames)}`;
+            const year = pick(years);
+            const html = `<li><strong>${author}</strong> (${year}). <em>${title}</em>. <div class="pub-meta">arXiv:${year}0${(1000+idx)}.v1 — ${Math.floor(6+Math.random()*22)} pages</div></li>`;
+            f.appendChild(el(html));
+          }
+          list.appendChild(f);
+          created += chunk;
+          if(created < GENERATE_COUNT) setTimeout(step, 50);
+        }
+        setTimeout(step, 100);
+      }
+
+      // simple search
+      document.getElementById('pub-filter').addEventListener('click', ()=>{
+        const q = document.getElementById('pub-search').value.trim().toLowerCase();
+        const items = list.querySelectorAll('li');
+        if(!q){ items.forEach(li=>li.style.display='block'); return; }
+        items.forEach(li=>{
+          const txt = li.textContent.toLowerCase();
+          li.style.display = txt.includes(q) ? 'block' : 'none';
         });
       });
     })();
 
-    // end of JS
+    // generate team cards
+    (function generateTeam(){
+      const grid = document.getElementById('team-grid');
+      if(!grid) return;
+      const people = [
+        {name:'Nimish Upadhyay', role:'Head Physicist', bio:'Lead experimentalist & theorist. Interests: singularity research, quantum sensors.'},
+        {name:'Dr. A. Collaborator', role:'Senior Researcher', bio:'Condensed matter & quantum devices.'},
+        {name:'Eng. B. Instrument', role:'Instrumentation Lead', bio:'Electronics, cryogenics & DAQ.'},
+        {name:'Dr. C. Theorist', role:'Theoretical Physicist', bio:'Quantum gravity and holography.'}
+      ];
+      // add many simulated members
+      for(let i=0;i<8;i++){
+        people.push({name:'Researcher '+(i+1),'role':'Researcher','bio':'Contributes to projects and analysis.'});
+      }
+      const frag = document.createDocumentFragment();
+      people.forEach(p=>{
+        const html = `<div class="person"><h4>${p.name}</h4><div class="role">${p.role}</div><p>${p.bio}</p></div>`;
+        frag.appendChild(el(html));
+      });
+      grid.appendChild(frag);
+    })();
+
+    // small keyboard helper
+    document.addEventListener('keydown', e=>{
+      if(e.key.toLowerCase()==='f'){ document.getElementById('pub-search').focus(); }
+      if(e.key.toLowerCase()==='p'){ window.scrollTo({top:0,behavior:'smooth'}); }
+    });
+
+    // Accessibility: ensure in-page anchors get focus after navigation
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (ev)=>{
+        const href = a.getAttribute('href');
+        if(!href || href === '#') return;
+        const target = document.querySelector(href);
+        if(target){ setTimeout(()=>{ target.setAttribute('tabindex','-1'); target.focus(); }, 300); }
+      });
+    });
+
+    // Done
+    console.log('Vortex Lab demo loaded. Generated content count setting:', GENERATE_COUNT);
   </script>
-
-  <!-- big comment block to add lines but keep file readable -->
-  <!--
-    Vortex Lab single-file website
-    - Use this file as index.html in your GitHub Pages repo
-    - Everything is inlined (styles + scripts)
-    - To make it more professional:
-      * Replace placeholder text with real content
-      * Add real publication DOIs and links
-      * Replace inline images with repository images or CDN-hosted images
-      * Add analytics and server-side contact endpoint if desired
-  -->
-
 </body>
 </html>
