@@ -3,547 +3,370 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MathVis — Interactive Math Visualizer</title>
+<title>Ivy League Explorer</title>
 <style>
-  /* Basic layout */
+  /* ===========================
+     Ivy League Explorer — Inline CSS
+     Modern, compact, responsive
+     =========================== */
   :root{
-    --bg:#0f1724;
-    --panel:#0b1220;
-    --accent:#06b6d4;
-    --muted:#94a3b8;
-    --card:#0b1220aa;
-    --glass: rgba(255,255,255,0.02);
+    --bg: #0f1724;
+    --card: #071126;
+    --muted: #94a3b8;
+    --accent: #60a5fa;
+    --glass: rgba(255,255,255,0.03);
+    --success: #34d399;
+    --danger: #fb7185;
+    --radius: 12px;
+    --maxw: 1100px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color-scheme: dark;
   }
-  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef6;background:linear-gradient(180deg,#061025 0%, #061427 60%);-webkit-font-smoothing:antialiased}
-  .wrap{display:flex;flex-direction:column;height:100vh;gap:10px;padding:14px;box-sizing:border-box}
-  header{display:flex;align-items:center;gap:12px}
-  header h1{font-size:18px;margin:0;color:var(--accent)}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#021025 0%, #07172a 60%);color:#e6eef6}
+  .wrap{max-width:var(--maxw);margin:24px auto;padding:18px;box-sizing:border-box}
+  header{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  header h1{margin:0;font-size:20px;color:var(--accent)}
   header p{margin:0;color:var(--muted);font-size:13px}
-  .main{display:flex;flex:1;gap:12px;min-height:0}
-  /* Left controls panel */
-  .panel{width:340px;max-width:40%;background:var(--panel);border-radius:12px;padding:14px;box-sizing:border-box;box-shadow:0 6px 18px rgba(2,6,23,0.6);overflow:auto}
-  .panel label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
-  .input, .row{display:flex;gap:8px;align-items:center}
-  .input input[type="text"], .input select{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eef2ff;font-size:14px}
+  .toolbar{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .search{flex:1;min-width:220px;display:flex;gap:8px;align-items:center}
+  .search input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;outline:none}
+  .btn{background:var(--accent);border:none;padding:10px 12px;border-radius:10px;color:#042027;font-weight:700;cursor:pointer}
+  .chip{background:var(--glass);padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);color:var(--muted);cursor:pointer}
+  .controls{display:flex;gap:8px;align-items:center}
+  main{margin-top:18px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media (max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .grid{grid-template-columns:1fr} .toolbar{flex-direction:column;align-items:stretch} }
+
+  /* Card */
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:10px;border:1px solid rgba(255,255,255,0.03)}
+  .card .top{display:flex;align-items:center;gap:12px}
+  .logo{width:64px;height:64px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#042027}
+  .meta{flex:1}
+  .meta h3{margin:0;font-size:16px}
+  .meta p{margin:2px 0 0 0;font-size:13px;color:var(--muted)}
+  .tags{display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-size:12px;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:var(--muted)}
+  .actions{display:flex;gap:8px;align-items:center}
   .small{font-size:13px;color:var(--muted)}
-  .btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:#042027;cursor:pointer;font-weight:600}
-  .control{background:var(--glass);padding:10px;border-radius:8px;margin-bottom:10px}
-  .slider{width:100%}
-  .presets{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}
-  /* Right canvas area */
-  .viewer{flex:1;display:flex;flex-direction:column;gap:10px}
-  .canvas-card{flex:1;border-radius:12px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02);display:flex;flex-direction:column;min-height:0}
-  canvas{border-radius:8px;display:block;width:100%;height:100%}
-  .toolbar{display:flex;gap:8px;align-items:center}
-  .status{margin-left:auto;color:var(--muted);font-size:13px}
-  footer{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
-  .legend{display:flex;gap:10px;align-items:center}
-  .legend span{display:inline-flex;gap:6px;align-items:center}
-  .swatch{width:12px;height:6px;border-radius:2px;display:inline-block}
-  @media (max-width:880px){
-    .main{flex-direction:column}
-    .panel{width:100%;max-width:none;order:2}
-    .viewer{order:1}
-  }
+
+  /* Compare bar */
+  .compare-bar{position:fixed;left:18px;right:18px;bottom:18px;background:linear-gradient(180deg,#02111b,#041827);border-radius:14px;padding:10px;border:1px solid rgba(255,255,255,0.04);display:flex;align-items:center;gap:10px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+  .compare-list{display:flex;gap:8px;flex:1;flex-wrap:wrap}
+  .compare-item{background:rgba(255,255,255,0.02);padding:6px 10px;border-radius:10px;font-size:13px;display:flex;gap:8px;align-items:center}
+  .compare-button{background:var(--success);border:none;padding:8px 12px;border-radius:10px;color:#022;cursor:pointer;font-weight:700}
+
+  /* Modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:24px;z-index:40}
+  .modal{width:100%;max-width:900px;background:linear-gradient(180deg,#061425,#07172a);border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 12px 40px rgba(2,8,23,0.7)}
+  .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .modal h2{margin:0}
+  .close{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;color:var(--muted);cursor:pointer}
+
+  footer{margin-top:18px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  a.link{color:var(--accent);text-decoration:none}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" role="main">
   <header>
-    <h1>MathVis</h1>
-    <p>Interactive math visualizer — enter functions, zoom/pan, show derivative & integral.</p>
+    <div>
+      <h1>Ivy League Explorer</h1>
+      <p>Quick, searchable profiles of the eight Ivy League universities — compare, favorite, export.</p>
+    </div>
+
+    <div class="toolbar" style="margin-left:auto">
+      <div class="search" role="search">
+        <input id="search" placeholder="Search by name, city, keyword (e.g. research, engineering)" aria-label="Search Ivy schools" />
+        <button id="clearSearch" class="chip" title="Clear">✕</button>
+      </div>
+
+      <div class="controls">
+        <select id="sort" class="chip" aria-label="Sort">
+          <option value="name">Sort: Name (A→Z)</option>
+          <option value="year">Sort: Founded (old→new)</option>
+          <option value="city">Sort: City (A→Z)</option>
+        </select>
+
+        <button id="exportCSV" class="btn" title="Export CSV">Export CSV</button>
+      </div>
+    </div>
   </header>
 
-  <div class="main">
-    <aside class="panel" aria-label="Controls">
-      <div class="control" style="margin-bottom:12px;">
-        <label for="fn">Function f(x) — use a and b as parameters</label>
-        <div class="input">
-          <input id="fn" type="text" value="a*sin(b*x) + 0.2*x" aria-label="Function input" />
-          <button id="plotBtn" class="btn" title="Plot">Plot</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <button class="chip" data-preset="sin">a*sin(b*x)</button>
-          <button class="chip" data-preset="poly">x^3 - 3*x</button>
-          <button class="chip" data-preset="gauss">exp(-x^2)</button>
-          <button class="chip" data-preset="recip">1/x</button>
-        </div>
+  <main>
+    <section id="cards" class="grid" aria-live="polite"></section>
+    <div id="empty" style="display:none;margin-top:18px;color:var(--muted)">No results. Try clearing filters.</div>
+  </main>
+
+  <footer>
+    <div>Built with ❤️ — single-file demo</div>
+    <div class="small">Data is summary only — visit official sites for latest admissions & stats.</div>
+  </footer>
+</div>
+
+<!-- Compare bar -->
+<div id="compareBar" class="compare-bar" style="display:none" aria-hidden="true">
+  <div><strong>Compare</strong></div>
+  <div id="compareList" class="compare-list" role="list"></div>
+  <button id="openCompare" class="compare-button" title="Open compare">Open</button>
+</div>
+
+<!-- Modal for compare / details -->
+<div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" role="document">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px">
+      <h2 id="modalTitle">Compare</h2>
+      <div>
+        <button id="closeModal" class="close">Close</button>
       </div>
-
-      <div class="control">
-        <label class="small">Parameters</label>
-        <div style="display:flex;gap:10px;align-items:center">
-          <div style="flex:1">
-            <label class="small">a = <span id="aval">1</span></label>
-            <input id="a" class="slider" type="range" min="-5" max="5" step="0.01" value="1" />
-          </div>
-          <div style="flex:1">
-            <label class="small">b = <span id="bval">1</span></label>
-            <input id="b" class="slider" type="range" min="-10" max="10" step="0.01" value="1" />
-          </div>
-        </div>
-      </div>
-
-      <div class="control">
-        <label class="small">Viewport / Sampling</label>
-        <div class="row" style="gap:6px;">
-          <label class="small">x-min</label>
-          <input id="xmin" type="number" value="-10" style="width:70px;padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#eef2ff" />
-          <label class="small">x-max</label>
-          <input id="xmax" type="number" value="10" style="width:70px;padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#eef2ff" />
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-          <label style="font-size:13px;color:var(--muted)"><input id="gridToggle" type="checkbox" checked /> Grid</label>
-          <label style="font-size:13px;color:var(--muted)"><input id="derivToggle" type="checkbox" /> Derivative</label>
-          <label style="font-size:13px;color:var(--muted)"><input id="intToggle" type="checkbox" /> Integral area</label>
-        </div>
-      </div>
-
-      <div class="control">
-        <label class="small">Tools</label>
-        <div style="display:flex;gap:8px">
-          <button id="resetView" class="chip">Reset view</button>
-          <button id="exportPNG" class="chip">Export PNG</button>
-          <button id="help" class="chip">Help</button>
-        </div>
-        <p class="small" style="margin-top:8px">Use mouse wheel to zoom, drag to pan, hover to see coordinates. Function parser accepts ^ for power, and standard names like sin, cos, exp, ln.</p>
-      </div>
-
-      <div class="control">
-        <label class="small">Presets / Examples</label>
-        <div class="presets">
-          <button class="chip" data-fn="sin(x) * exp(-x/5)">Damped sine</button>
-          <button class="chip" data-fn="0.1*x^3 - x">Cubic</button>
-          <button class="chip" data-fn="3/(1 + x^2)">Lorentzian</button>
-          <button class="chip" data-fn="a*exp(-b*(x-2)^2)">Gaussian</button>
-        </div>
-      </div>
-
-      <footer>
-        <div class="small">MathVis • JavaScript only</div>
-        <div class="small">zoom: wheel • pan: drag</div>
-      </footer>
-    </aside>
-
-    <section class="viewer" aria-label="Graph viewer">
-      <div class="canvas-card">
-        <div class="toolbar" style="margin-bottom:6px">
-          <div class="legend">
-            <span><i class="swatch" style="background:#06b6d4"></i> f(x)</span>
-            <span><i class="swatch" style="background:#f97316;width:12px;height:6px"></i> derivative</span>
-            <span><i class="swatch" style="background:#22c55e;width:12px;height:6px"></i> integral</span>
-          </div>
-          <div class="status" id="coordStatus">x: — , y: —</div>
-        </div>
-
-        <div style="flex:1;min-height:0">
-          <canvas id="graph"></canvas>
-        </div>
-      </div>
-    </section>
+    </div>
+    <div id="modalContent" class="modal-grid"></div>
   </div>
 </div>
 
 <script>
-/* MathVis — inline JS
-   Features:
-   - parse simple math expressions with known functions
-   - draw grid/axes, plot function
-   - zoom/pan, mouse coords
-   - derivative (numerical), integral shading (Riemann)
-   - export PNG
-*/
+/* ===========================
+   Ivy League Explorer — Inline JS
+   - Data array for 8 Ivy schools
+   - Search, sort, favorite (localStorage)
+   - Compare up to 3 schools
+   - Export CSV
+   =========================== */
 
-/* ---------- Utilities: expression -> JS function ---------- */
-function sanitizeExpr(expr) {
-  // Lowercase, remove dangerous characters (keep letters, numbers, operators, parentheses, ., ^ , spaces)
-  // Allow letters for function names (a..z) and x
-  expr = expr.replace(/[^0-9a-zA-Z+\-*/^().,_\s%]/g, '');
-  // replace caret with ** for power
-  expr = expr.replace(/\^/g, '**');
-  // function name replacements to Math.* (ln -> Math.log, log -> Math.log10 if specified, but use Math.log for ln)
-  const fnMap = {
-    'sin': 'Math.sin','cos':'Math.cos','tan':'Math.tan',
-    'asin':'Math.asin','acos':'Math.acos','atan':'Math.atan',
-    'sqrt':'Math.sqrt','exp':'Math.exp','ln':'Math.log',
-    'log':'Math.log','abs':'Math.abs','ceil':'Math.ceil','floor':'Math.floor',
-    'round':'Math.round','pow':'Math.pow'
-  };
-  // replace function names with Math.<name>
-  Object.keys(fnMap).forEach(k => {
-    // word boundary to avoid replacing inside variable names
-    const re = new RegExp('\\b'+k+'\\s*\\(', 'gi');
-    expr = expr.replace(re, fnMap[k] + '(');
-  });
-  // constants
-  expr = expr.replace(/\bpi\b/gi, 'Math.PI');
-  expr = expr.replace(/\be\b/gi, 'Math.E');
-  return expr;
-}
+const SCHOOLS = [
+  {id:'harvard', name:'Harvard University', city:'Cambridge, MA', year:1636,
+   desc:'Oldest institution of higher learning in the U.S. Strong across sciences, law, business, medicine.',
+   colors: ['#A51C30','#000000'], url:'https://www.harvard.edu'},
+  {id:'yale', name:'Yale University', city:'New Haven, CT', year:1701,
+   desc:'Known for humanities, law, drama, and a strong research presence.',
+   colors: ['#0F4D92','#FFFFFF'], url:'https://www.yale.edu'},
+  {id:'princeton', name:'Princeton University', city:'Princeton, NJ', year:1746,
+   desc:'Excellent undergraduate focus and strong programs in engineering, humanities, and natural sciences.',
+   colors: ['#E87722','#000000'], url:'https://www.princeton.edu'},
+  {id:'columbia', name:'Columbia University', city:'New York, NY', year:1754,
+   desc:'Ivy in Manhattan — strengths in research, journalism, business, and engineering.',
+   colors: ['#6F9FD8','#FFFFFF'], url:'https://www.columbia.edu'},
+  {id:'upenn', name:'University of Pennsylvania', city:'Philadelphia, PA', year:1740,
+   desc:'Known for business (Wharton), medicine, engineering; strong interdisciplinary focus.',
+   colors: ['#011F5B','#A31F34'], url:'https://www.upenn.edu'},
+  {id:'brown', name:'Brown University', city:'Providence, RI', year:1764,
+   desc:'Open curriculum, strengths in liberal arts, medicine, and growing research programs.',
+   colors: ['#381C00','#FFFFFF'], url:'https://www.brown.edu'},
+  {id:'dartmouth', name:'Dartmouth College', city:'Hanover, NH', year:1769,
+   desc:'Small, undergraduate-focused Ivy with strong liberal arts and research opportunities.',
+   colors: ['#00693e','#FFFFFF'], url:'https://home.dartmouth.edu'},
+  {id:'cornell', name:'Cornell University', city:'Ithaca, NY', year:1865,
+   desc:'Large research university with strong engineering, agriculture, hotel management, and life sciences.',
+   colors: ['#B31B1B','#000000'], url:'https://www.cornell.edu'}
+];
 
-function makeFunction(expr) {
-  // Returns function(x, params) -> number or throws
-  const sanitized = sanitizeExpr(expr);
-  // We'll allow parameters a,b,... by keeping them as variables defined inside function via params object
-  const code = `
-    "use strict";
-    const {a=1,b=1} = params || {};
-    return (function(x){
-      try{
-        return Number(${sanitized});
-      }catch(e){
-        return NaN;
-      }
-    })(x);
-  `;
-  // Use new Function to create a wrapper that accepts x and params
-  try{
-    return new Function('x','params', code);
-  }catch(e){
-    // fallback: return a function that yields NaN
-    return function(){ return NaN; };
-  }
-}
-
-/* ---------- Canvas & plotting setup ---------- */
-const canvas = document.getElementById('graph');
-const ctx = canvas.getContext('2d');
-
-let DPR = Math.max(window.devicePixelRatio || 1, 1);
-function fixDPR(){
-  DPR = Math.max(window.devicePixelRatio || 1, 1);
-  const rect = canvas.getBoundingClientRect();
-  canvas.width = Math.round(rect.width * DPR);
-  canvas.height = Math.round(rect.height * DPR);
-  ctx.setTransform(DPR,0,0,DPR,0,0);
-}
-window.addEventListener('resize', () => { fixDPR(); draw(); });
-
-/* Viewport in math coords */
-let view = {
-  xmin: -10, xmax: 10,
-  ymin: -6, ymax: 6
+/* ---------- State ---------- */
+let state = {
+  q: '',
+  sort: 'name',
+  favorites: new Set(JSON.parse(localStorage.getItem('ivy.favs')||'[]')),
+  compare: new Set(JSON.parse(localStorage.getItem('ivy.comp')||'[]'))
 };
 
-function resetViewFromX(minX,maxX){
-  view.xmin = minX; view.xmax = maxX;
-  const w = view.xmax - view.xmin;
-  // choose a default vertical range
-  view.ymin = -Math.max(6, w*0.5); view.ymax = Math.max(6, w*0.5);
+/* ---------- Utility helpers ---------- */
+function $(sel, el=document){ return el.querySelector(sel); }
+function $all(sel, el=document){ return Array.from(el.querySelectorAll(sel)); }
+
+function renderCards(){
+  const container = $('#cards');
+  container.innerHTML = '';
+  const q = state.q.trim().toLowerCase();
+  let list = SCHOOLS.filter(s=>{
+    if(!q) return true;
+    return s.name.toLowerCase().includes(q) || s.city.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+  });
+
+  // sort
+  list.sort((a,b)=>{
+    if(state.sort === 'name') return a.name.localeCompare(b.name);
+    if(state.sort === 'year') return a.year - b.year;
+    if(state.sort === 'city') return a.city.localeCompare(b.city);
+    return 0;
+  });
+
+  if(list.length === 0){ $('#empty').style.display = 'block'; } else { $('#empty').style.display = 'none'; }
+
+  for(const s of list){
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="top">
+        <div class="logo" style="background:${s.colors[0]};color:${s.colors[1]};font-size:20px;">
+          ${logoText(s.name)}
+        </div>
+        <div class="meta">
+          <h3>${s.name}</h3>
+          <p class="small">${s.city} • Founded ${s.year}</p>
+        </div>
+        <div class="actions">
+          <button class="chip" data-id="${s.id}" data-action="details">Details</button>
+          <button class="chip" data-id="${s.id}" data-action="fav">${state.favorites.has(s.id)?'★ Favorited':'☆ Favorite'}</button>
+          <button class="chip" data-id="${s.id}" data-action="compare">${state.compare.has(s.id)?'✓ In compare':'＋ Compare'}</button>
+        </div>
+      </div>
+      <div>
+        <p class="small">${s.desc}</p>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+        <div class="tags">
+          <span class="tag">Open curriculum: ${s.id==='brown'?'Yes':'Varies'}</span>
+          <span class="tag">Website</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <a class="link" href="${s.url}" target="_blank" rel="noopener">Visit</a>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  }
+
+  // wire card buttons
+  $all('.card .chip').forEach(btn=>{
+    btn.onclick = (ev)=>{
+      const id = btn.dataset.id;
+      const action = btn.dataset.action;
+      const school = SCHOOLS.find(x=>x.id===id);
+      if(action==='details') openDetails(school);
+      if(action==='fav'){ toggleFavorite(id); renderCards(); }
+      if(action==='compare'){ toggleCompare(id); renderCards(); }
+    };
+  });
+
+  updateCompareBar();
 }
 
-/* transform helpers */
-function xToPx(x){
-  const rect = canvas.getBoundingClientRect();
-  const w = rect.width;
-  return (x - view.xmin) / (view.xmax - view.xmin) * w;
-}
-function yToPx(y){
-  const rect = canvas.getBoundingClientRect();
-  const h = rect.height;
-  return (1 - (y - view.ymin) / (view.ymax - view.ymin)) * h;
-}
-function pxToX(px){ const rect = canvas.getBoundingClientRect(); return view.xmin + (px/rect.width)*(view.xmax-view.xmin); }
-function pyToY(py){ const rect = canvas.getBoundingClientRect(); return view.ymin + (1 - py/rect.height)*(view.ymax-view.ymin); }
-
-/* ---------- Drawing ---------- */
-function clear(){
-  const rect = canvas.getBoundingClientRect();
-  ctx.clearRect(0,0,rect.width,rect.height);
-  // background
-  ctx.fillStyle = '#051122';
-  ctx.fillRect(0,0,rect.width,rect.height);
+/* Small logo text helper */
+function logoText(name){
+  return name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
 }
 
-function drawGrid(){
-  const rect = canvas.getBoundingClientRect();
-  const w = rect.width, h = rect.height;
-  // nice tick spacing based on view width
-  const xRange = view.xmax - view.xmin;
-  const yRange = view.ymax - view.ymin;
-  const xStep = niceStep(xRange/10);
-  const yStep = niceStep(yRange/8);
-  ctx.lineWidth = 1;
-  // vertical grid lines
-  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-  for(let x = Math.floor(view.xmin/xStep)*xStep; x<=view.xmax; x+=xStep){
-    const px = xToPx(x);
-    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
-  }
-  // horizontal grid
-  for(let y = Math.floor(view.ymin/yStep)*yStep; y<=view.ymax; y+=yStep){
-    const py = yToPx(y);
-    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
-  }
-  // axes
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-  // y axis (x=0)
-  if(view.xmin <= 0 && view.xmax >= 0){
-    const px = xToPx(0);
-    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
-  }
-  // x axis (y=0)
-  if(view.ymin <= 0 && view.ymax >= 0){
-    const py = yToPx(0);
-    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
-  }
-  // axis labels
-  ctx.fillStyle = '#9fb6c9';
-  ctx.font = '11px system-ui, Arial';
-  for(let x = Math.floor(view.xmin/xStep)*xStep; x<=view.xmax; x+=xStep){
-    const px = xToPx(x);
-    const py = yToPx(0);
-    ctx.fillText(+x.toFixed(2), px+4, Math.min(h-6, py-6));
-  }
-  for(let y = Math.floor(view.ymin/yStep)*yStep; y<=view.ymax; y+=yStep){
-    const py = yToPx(y);
-    ctx.fillText(+y.toFixed(2), 4, py-4);
-  }
-}
-function niceStep(raw){
-  // approximate to 1,2,5 * 10^n
-  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
-  const base = raw / pow;
-  if(base <= 1.5) return 1*pow;
-  if(base <= 3) return 2*pow;
-  if(base <= 7) return 5*pow;
-  return 10*pow;
+/* ---------- Search & sort ---------- */
+$('#search').addEventListener('input', (e)=>{ state.q = e.target.value; renderCards(); });
+$('#clearSearch').addEventListener('click', ()=>{ $('#search').value=''; state.q=''; renderCards(); });
+$('#sort').addEventListener('change', (e)=>{ state.sort = e.target.value; renderCards(); });
+
+/* ---------- Favorites (localStorage) ---------- */
+function toggleFavorite(id){
+  if(state.favorites.has(id)) state.favorites.delete(id); else state.favorites.add(id);
+  localStorage.setItem('ivy.favs', JSON.stringify(Array.from(state.favorites)));
 }
 
-function sampleFunction(fn, samples){
-  const rect = canvas.getBoundingClientRect();
-  const w = rect.width;
-  const points = [];
-  const step = (view.xmax - view.xmin) / samples;
-  for(let i=0;i<=samples;i++){
-    const x = view.xmin + i*step;
-    let y = fn(x);
-    if(!isFinite(y)) y = NaN;
-    points.push({x,y});
+/* ---------- Compare ---------- */
+function toggleCompare(id){
+  if(state.compare.has(id)) state.compare.delete(id); else {
+    if(state.compare.size >= 3){ alert('Compare supports up to 3 schools. Remove one first.'); return; }
+    state.compare.add(id);
   }
-  return points;
+  localStorage.setItem('ivy.comp', JSON.stringify(Array.from(state.compare)));
+  updateCompareBar();
 }
 
-function drawFunction(points, style){
-  ctx.lineWidth = style.width || 2;
-  ctx.strokeStyle = style.color || '#06b6d4';
-  ctx.beginPath();
-  let started=false;
-  for(let i=0;i<points.length;i++){
-    const p = points[i];
-    if(Number.isFinite(p.y)){
-      const px = xToPx(p.x);
-      const py = yToPx(p.y);
-      if(!started){ ctx.moveTo(px,py); started=true; } else ctx.lineTo(px,py);
-    } else {
-      started=false;
-    }
-  }
-  ctx.stroke();
-}
-
-function drawDerivative(fn, samples){
-  // numerical derivative using central difference
-  const rect = canvas.getBoundingClientRect();
-  const w = rect.width;
-  const pts = [];
-  const dx = (view.xmax - view.xmin) / (samples*8);
-  for(let i=0;i<=samples;i++){
-    const x = view.xmin + (i/samples)*(view.xmax-view.xmin);
-    const y1 = fn(x-dx), y2 = fn(x+dx);
-    const dy = (y2 - y1)/(2*dx);
-    pts.push({x, y: dy});
-  }
-  drawFunction(pts, {color:'#f97316', width:1.6});
-}
-
-function drawIntegral(fn, samples){
-  // simple Riemann sum shading between xmin..xmax
-  const rect = canvas.getBoundingClientRect();
-  const w = rect.width;
-  const dx = (view.xmax - view.xmin) / samples;
-  ctx.fillStyle = 'rgba(34,197,94,0.12)';
-  ctx.beginPath();
-  for(let i=0;i<=samples;i++){
-    const x = view.xmin + i*dx;
-    const y = fn(x);
-    if(!isFinite(y)){ // skip discontinuities: close path and start new
-      continue;
-    }
-    const px = xToPx(x);
-    const py = yToPx(y);
-    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
-  }
-  // close shape to x-axis
-  const xend = xToPx(view.xmax);
-  const xstart = xToPx(view.xmin);
-  const y0 = yToPx(0);
-  ctx.lineTo(xend, y0);
-  ctx.lineTo(xstart, y0);
-  ctx.closePath();
-  ctx.fill();
-}
-
-/* ---------- Interaction & state ---------- */
-let currentFnText = document.getElementById('fn').value;
-let fn = makeFunction(currentFnText);
-
-function draw(){
-  fixDPR();
-  clear();
-  const rect = canvas.getBoundingClientRect();
-  // grid
-  if(document.getElementById('gridToggle').checked) drawGrid();
-  // sample count depends on width for smoothness
-  const samples = Math.max(300, Math.round(rect.width * 1.1));
-  // draw integral first (so function is on top)
-  if(document.getElementById('intToggle').checked){
-    try{ drawIntegral((x)=>safeEval(fn,x), samples); }catch(e){}
-  }
-  // function
-  try{
-    const pts = sampleFunction((x)=>safeEval(fn,x), Math.round(samples));
-    drawFunction(pts, {color:'#06b6d4', width:2.5});
-  }catch(e){}
-  // derivative
-  if(document.getElementById('derivToggle').checked){
-    try{ drawDerivative((x)=>safeEval(fn,x), Math.round(samples/2)); }catch(e){}
-  }
-  // coordinate overlay (already handled in mousemove)
-}
-
-/* safeEval wrapper to call the compiled function and protect from exceptions */
-function safeEval(func, x){
-  try{
-    const aVal = Number(document.getElementById('a').value) || 0;
-    const bVal = Number(document.getElementById('b').value) || 0;
-    const res = func(x, {a: aVal, b: bVal});
-    if(typeof res === 'number' && !Number.isFinite(res)) return NaN;
-    return Number(res);
-  }catch(e){
-    return NaN;
+function updateCompareBar(){
+  const bar = $('#compareBar');
+  const listEl = $('#compareList');
+  listEl.innerHTML = '';
+  if(state.compare.size === 0){ bar.style.display = 'none'; bar.setAttribute('aria-hidden','true'); return; }
+  bar.style.display = 'flex'; bar.setAttribute('aria-hidden','false');
+  for(const id of state.compare){
+    const s = SCHOOLS.find(x=>x.id===id);
+    const el = document.createElement('div');
+    el.className = 'compare-item';
+    el.innerHTML = `<strong>${s.name.split(' ')[0]}</strong><button class="chip" data-id="${s.id}" title="Remove">✕</button>`;
+    listEl.appendChild(el);
+    el.querySelector('button').onclick = ()=>{ toggleCompare(s.id); renderCards(); };
   }
 }
 
-/* ---------- UI wiring ---------- */
-document.getElementById('plotBtn').addEventListener('click', ()=>{
-  currentFnText = document.getElementById('fn').value;
-  fn = makeFunction(currentFnText);
-  // update view bounds from inputs
-  const xmin = Number(document.getElementById('xmin').value);
-  const xmax = Number(document.getElementById('xmax').value);
-  if(isFinite(xmin) && isFinite(xmax) && xmax > xmin) resetViewFromX(xmin,xmax);
-  draw();
+/* Open compare modal */
+$('#openCompare').addEventListener('click', ()=>{
+  const items = Array.from(state.compare).map(id=>SCHOOLS.find(s=>s.id===id));
+  openCompareModal(items);
 });
-document.getElementById('a').addEventListener('input', (e)=>{ document.getElementById('aval').textContent = e.target.value; draw(); });
-document.getElementById('b').addEventListener('input', (e)=>{ document.getElementById('bval').textContent = e.target.value; draw(); });
-document.querySelectorAll('.chip[data-preset]').forEach(btn=>{
-  btn.addEventListener('click', ()=>{ document.getElementById('fn').value = btn.dataset.preset; document.getElementById('plotBtn').click(); });
-});
-document.querySelectorAll('.presets .chip').forEach(btn=>{
-  btn.addEventListener('click', ()=>{ document.getElementById('fn').value = btn.dataset.fn; document.getElementById('plotBtn').click(); });
-});
-document.getElementById('resetView').addEventListener('click', ()=>{
-  const xmin = Number(document.getElementById('xmin').value);
-  const xmax = Number(document.getElementById('xmax').value);
-  resetViewFromX(xmin || -10, xmax || 10);
-  draw();
-});
-document.getElementById('exportPNG').addEventListener('click', ()=>{
-  // create a temp canvas to export at higher resolution
-  const rect = canvas.getBoundingClientRect();
-  const tmp = document.createElement('canvas');
-  const scale = 2;
-  tmp.width = rect.width*scale; tmp.height = rect.height*scale;
-  const tctx = tmp.getContext('2d');
-  // paint white background to avoid transparent export
-  tctx.fillStyle = '#00121a';
-  tctx.fillRect(0,0,tmp.width,tmp.height);
-  // draw the current canvas scaled (just copy)
-  tctx.drawImage(canvas, 0, 0, tmp.width, tmp.height);
-  const dataUrl = tmp.toDataURL('image/png');
+
+/* ---------- Details / Compare modal ---------- */
+const backdrop = $('#modalBackdrop');
+function openDetails(school){
+  const content = $('#modalContent');
+  $('#modalTitle').textContent = school.name;
+  content.innerHTML = `
+    <div>
+      <h3>${school.name}</h3>
+      <p class="small">${school.city} • Founded ${school.year}</p>
+      <p class="small" style="margin-top:8px">${school.desc}</p>
+      <p style="margin-top:8px"><a class="link" href="${school.url}" target="_blank">${school.url}</a></p>
+    </div>
+    <div>
+      <h4>Quick facts</h4>
+      <ul class="small">
+        <li>Type: Private research university</li>
+        <li>Notable: Strong research and graduate programs</li>
+        <li>Colors: ${school.colors.join(', ')}</li>
+      </ul>
+      <div style="margin-top:12px">
+        <button class="btn" onclick="toggleCompare('${school.id}'); renderCards();">Toggle Compare</button>
+        <button class="chip" onclick="toggleFavorite('${school.id}'); renderCards();">Toggle Favorite</button>
+      </div>
+    </div>
+  `;
+  showModal();
+}
+
+function openCompareModal(items){
+  $('#modalTitle').textContent = 'Compare — ' + items.map(i=>i.name.split(' ')[0]).join(' / ');
+  const content = $('#modalContent');
+  // For compare, show side-by-side summary cards
+  content.innerHTML = items.map(s=>`
+    <div style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.01)">
+      <h3>${s.name}</h3>
+      <p class="small">${s.city} • Founded ${s.year}</p>
+      <p class="small" style="margin-top:8px">${s.desc}</p>
+      <p style="margin-top:10px"><a class="link" href="${s.url}" target="_blank">Official site</a></p>
+    </div>
+  `).join('') + (items.length<2?`<div style="padding:8px;color:${'#f59e0b'}">Select at least 2 schools to compare</div>`:'');
+
+  showModal();
+}
+
+function showModal(){
+  backdrop.style.display = 'flex';
+  backdrop.setAttribute('aria-hidden','false');
+}
+$('#closeModal').addEventListener('click', closeModal);
+backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeModal(); });
+function closeModal(){ backdrop.style.display = 'none'; backdrop.setAttribute('aria-hidden','true'); }
+
+/* ---------- Export selected (CSV) ---------- */
+$('#exportCSV').addEventListener('click', ()=>{
+  // Export either compared schools if any, otherwise all visible
+  let rows = [];
+  const compareIds = Array.from(state.compare);
+  const list = compareIds.length ? compareIds.map(id=>SCHOOLS.find(s=>s.id===id)) : SCHOOLS;
+  rows.push(['Name','City','Founded','Description','Website']);
+  for(const s of list) rows.push([s.name, s.city, s.year, s.desc, s.url]);
+  const csv = rows.map(r => r.map(cell => `"${String(cell).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = dataUrl; a.download = 'mathvis.png';
-  document.body.appendChild(a); a.click(); a.remove();
+  a.href = url; a.download = 'ivy_schools.csv'; document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
 });
 
-/* ---------- Mouse interaction: zoom, pan, coords ---------- */
-let isPanning=false, panStart=null;
-canvas.addEventListener('mousedown', (ev)=>{
-  isPanning=true;
-  panStart = {x: ev.clientX, y: ev.clientY, view: {...view}};
-  canvas.style.cursor = 'grabbing';
-});
-window.addEventListener('mouseup', ()=>{ isPanning=false; canvas.style.cursor='default'; });
-window.addEventListener('mousemove', (ev)=>{
-  const rect = canvas.getBoundingClientRect();
-  const relX = ev.clientX - rect.left;
-  const relY = ev.clientY - rect.top;
-  const x = pxToX(relX);
-  const y = pyToY(relY);
+/* ---------- Init ---------- */
+renderCards();
 
-  document.getElementById('coordStatus').textContent = `x: ${x.toFixed(4)} , y: ${y.toFixed(4)}`;
+/* Expose small helpers for modal buttons */
+window.toggleCompare = toggleCompare;
+window.toggleFavorite = toggleFavorite;
 
-  if(isPanning && panStart){
-    const dxPix = ev.clientX - panStart.x;
-    const dyPix = ev.clientY - panStart.y;
-    const rect = canvas.getBoundingClientRect();
-    const dx = (dxPix/rect.width) * (panStart.view.xmax - panStart.view.xmin);
-    const dy = (dyPix/rect.height) * (panStart.view.ymax - panStart.view.ymin);
-    view.xmin = panStart.view.xmin - dx;
-    view.xmax = panStart.view.xmax - dx;
-    view.ymin = panStart.view.ymin + dy;
-    view.ymax = panStart.view.ymax + dy;
-    draw();
-  }
-});
-
-canvas.addEventListener('wheel', (ev)=>{
-  ev.preventDefault();
-  const rect = canvas.getBoundingClientRect();
-  const mouseX = ev.clientX - rect.left;
-  const mouseY = ev.clientY - rect.top;
-  const zoomFactor = ev.deltaY > 0 ? 1.12 : 0.88; // zoom out/in
-  const wx = view.xmin + (mouseX/rect.width)*(view.xmax - view.xmin);
-  const wy = view.ymin + (1 - mouseY/rect.height)*(view.ymax - view.ymin);
-  // new ranges
-  const newWidth = (view.xmax - view.xmin) * zoomFactor;
-  const newHeight = (view.ymax - view.ymin) * zoomFactor;
-  view.xmin = wx - (mouseX/rect.width)*newWidth;
-  view.xmax = view.xmin + newWidth;
-  view.ymin = wy - (1 - mouseY/rect.height)*newHeight;
-  view.ymax = view.ymin + newHeight;
-  draw();
-}, {passive:false});
-
-/* ---------- Expression safety note
-   We compile the expression to JS, mapping common math functions to Math.*, and using new Function.
-   This is simple and works well for typical analytic expressions. Avoid executing untrusted code.
----------- */
-
-/* ---------- small helper to update on startup ---------- */
-function init(){
-  // set canvas size and initial view from inputs
-  const xmin = Number(document.getElementById('xmin').value);
-  const xmax = Number(document.getElementById('xmax').value);
-  resetViewFromX(isFinite(xmin)?xmin:-10, isFinite(xmax)?xmax:10);
-  fn = makeFunction(document.getElementById('fn').value);
-  fixDPR();
-  draw();
-}
-init();
-
-/* ---------- keyboard shortcuts ---------- */
+/* Accessibility: keyboard shortcut to open compare (c) */
 window.addEventListener('keydown', (e)=>{
-  if(e.key === 'r' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); document.getElementById('plotBtn').click(); }
-  if(e.key === 'h'){ alert('MathVis help:\\n- Plot: click Plot\\n- Zoom: mouse wheel\\n- Pan: drag\\n- Derivative/Integral: toggles in left panel\\n- Use ^ for power, sin(), cos(), exp(), ln(), sqrt(), pi, e'); }
+  if(e.key.toLowerCase() === 'c' && state.compare.size > 0){ $('#openCompare').click(); }
 });
-
-/* ---------- small helpful inline tests for common JS parse issues ---------- */
-/* Not necessary but keeps drawing stable */
-setInterval(()=>{ /* tick to keep canvas crisp if something else changed */ }, 5000);
 </script>
 </body>
 </html>
