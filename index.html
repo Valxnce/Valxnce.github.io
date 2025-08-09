@@ -1,778 +1,549 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vortex Lab — Research & Physics</title>
-  <meta name="description" content="Vortex Lab — experimental & theoretical physics. Head Physicist: Nimish Upadhyay. Dark professional CERN-style single-file website." />
-  <!-- ===========================
-       Inline CSS (dark CERN-like)
-       All styles are embedded so the file is standalone
-       =========================== -->
-  <style>
-    /* ===== Reset & base ===== */
-    :root{
-      --bg:#050607;
-      --panel:#0f1315;
-      --muted:#9aa3ad;
-      --accent:#00cfff;
-      --accent-2:#ffcc00;
-      --card:#121617;
-      --glass:rgba(255,255,255,0.03);
-      --max-width:1180px;
-      --radius:12px;
-      --mono: "Courier New", monospace;
-      --sans: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--sans);
-      background:linear-gradient(180deg,var(--bg),#071018 200px);
-      color:#e6eef3;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.6;
-    }
-    .container{
-      max-width:var(--max-width);
-      margin:0 auto;
-      padding:0 20px;
-    }
-
-    /* ===== Header ===== */
-    header.site-header{
-      position:sticky;
-      top:0;
-      z-index:999;
-      backdrop-filter: blur(4px);
-      border-bottom:1px solid rgba(255,255,255,0.03);
-      background:linear-gradient(180deg, rgba(3,6,8,0.7), rgba(3,6,8,0.4));
-    }
-    .header-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding:16px 0;
-    }
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:var(--accent);
-      font-weight:700;
-      font-size:1.15rem;
-    }
-    .logo svg{width:36px;height:36px;filter:drop-shadow(0 2px 6px rgba(0,204,255,0.12))}
-    nav.primary{
-      display:flex;
-      gap:14px;
-      align-items:center;
-    }
-    nav.primary a{
-      color:var(--muted);
-      text-decoration:none;
-      padding:6px 10px;
-      border-radius:8px;
-      font-weight:600;
-      font-size:0.95rem;
-    }
-    nav.primary a:hover{color:#fff;background:rgba(255,255,255,0.02)}
-    .cta{
-      background:linear-gradient(90deg,var(--accent),#00a6d6);
-      padding:8px 14px;
-      color:#041018;
-      border-radius:8px;
-      font-weight:700;
-      text-decoration:none;
-    }
-
-    /* ===== Hero ===== */
-    .hero{
-      padding:60px 0 40px;
-      display:flex;
-      align-items:center;
-      gap:28px;
-      background:
-        radial-gradient(900px 300px at 10% 20%, rgba(0,204,255,0.03), transparent 6%),
-        radial-gradient(700px 240px at 90% 80%, rgba(255,204,0,0.02), transparent 6%);
-    }
-    .hero-left{flex:1;min-width:300px}
-    .hero h1{
-      margin:0 0 12px;
-      font-size:2.6rem;
-      letter-spacing:-1px;
-      color:#fff;
-    }
-    .lead{color:var(--muted);font-size:1.05rem;margin-bottom:18px}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{background:var(--accent);color:#011219;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
-
-    .hero-right{
-      width:420px;max-width:42%;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:14px;padding:16px;border:1px solid rgba(255,255,255,0.03);
-      box-shadow:0 20px 60px rgba(2,6,9,0.7);
-    }
-    .stats{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
-    .stat{flex:1;padding:10px;background:var(--card);border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    .stat h4{margin:0;color:var(--accent-2)}
-    .stat p{margin:8px 0 0;color:var(--muted);font-size:0.95rem}
-
-    /* ===== Sections ===== */
-    section.section{
-      padding:48px 0;
-    }
-    section.section.dark{
-      background:#071018;
-      border-top:1px solid rgba(255,255,255,0.02);
-    }
-    h2.section-title{
-      margin:0 0 18px;
-      font-size:1.6rem;color:var(--accent);
-      text-shadow:0 0 10px rgba(0,204,255,0.06)
-    }
-    p.lead-muted{color:var(--muted);max-width:850px;margin:auto}
-
-    /* ===== Research Grid ===== */
-    .grid-3{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:18px;margin-top:20px;
-    }
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-      padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-    }
-    .card h3{margin:0 0 8px;color:var(--accent-2)}
-    .card p{color:var(--muted);font-size:0.95rem}
-
-    /* ===== Publications list - long ===== */
-    .pub-list{list-style:none;padding-left:0;margin-top:16px}
-    .pub-list li{padding:12px;border-radius:10px;margin-bottom:10px;background:#0b0f10;border:1px solid rgba(255,255,255,0.02)}
-    .pub-list li strong{color:var(--accent)}
-    .pub-meta{color:var(--muted);font-size:0.9rem;margin-top:6px}
-
-    /* ===== Team grid ===== */
-    .team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:18px}
-    .person{background:var(--glass);padding:14px;border-radius:10px;text-align:left;border:1px solid rgba(255,255,255,0.02)}
-    .person h4{margin:6px 0 4px;color:var(--accent-2)}
-    .person .role{color:var(--accent);font-weight:700;margin-bottom:8px}
-
-    /* ===== Timeline ===== */
-    .timeline{position:relative;padding-left:28px;border-left:2px dashed rgba(255,255,255,0.03)}
-    .timeline .evt{position:relative;margin:18px 0;padding-left:20px}
-    .timeline .evt:before{content:'';position:absolute;left:-29px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px rgba(0,204,255,0.08)}
-    .evt h5{margin:0;color:var(--accent-2)}
-    .evt p{margin:6px 0;color:var(--muted)}
-
-    /* ===== Accordion ===== */
-    .accordion{max-width:100%;margin-top:12px}
-    .accordion-item{border-radius:8px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,0.02)}
-    .accordion-item button{width:100%;text-align:left;padding:14px;background:#0b0f10;border:0;color:#e6eef3;font-size:1rem;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-    .accordion-item .panel{padding:14px;background:#071015;color:var(--muted);display:none}
-
-    /* ===== Contact form ===== */
-    form.contact-form{max-width:720px;margin:auto;margin-top:16px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
-    label{display:block;margin-bottom:8px;font-weight:600}
-    input[type="text"],input[type="email"],textarea,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:#0a0d0e;color:#e6eef3}
-    textarea{min-height:120px}
-    .form-actions{display:flex;gap:12px;align-items:center;margin-top:12px}
-
-    /* ===== Footer ===== */
-    footer.site-footer{padding:26px 0;border-top:1px solid rgba(255,255,255,0.03);margin-top:40px}
-    .footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center;flex-wrap:wrap}
-    .socials a{color:var(--muted);text-decoration:none;margin-left:12px}
-
-    /* ===== Utilities & responsive ===== */
-    .muted{color:var(--muted)}
-    .center{text-align:center}
-    @media (max-width:1024px){
-      .grid-3{grid-template-columns:repeat(2,1fr)}
-      .team-grid{grid-template-columns:repeat(2,1fr)}
-      .hero-right{display:none}
-    }
-    @media (max-width:640px){
-      .grid-3{grid-template-columns:1fr}
-      .team-grid{grid-template-columns:1fr}
-      header .header-inner{padding:10px}
-      .hero{padding:40px 0}
-      .hero h1{font-size:1.8rem}
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MathVis — Interactive Math Visualizer</title>
+<style>
+  /* Basic layout */
+  :root{
+    --bg:#0f1724;
+    --panel:#0b1220;
+    --accent:#06b6d4;
+    --muted:#94a3b8;
+    --card:#0b1220aa;
+    --glass: rgba(255,255,255,0.02);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef6;background:linear-gradient(180deg,#061025 0%, #061427 60%);-webkit-font-smoothing:antialiased}
+  .wrap{display:flex;flex-direction:column;height:100vh;gap:10px;padding:14px;box-sizing:border-box}
+  header{display:flex;align-items:center;gap:12px}
+  header h1{font-size:18px;margin:0;color:var(--accent)}
+  header p{margin:0;color:var(--muted);font-size:13px}
+  .main{display:flex;flex:1;gap:12px;min-height:0}
+  /* Left controls panel */
+  .panel{width:340px;max-width:40%;background:var(--panel);border-radius:12px;padding:14px;box-sizing:border-box;box-shadow:0 6px 18px rgba(2,6,23,0.6);overflow:auto}
+  .panel label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+  .input, .row{display:flex;gap:8px;align-items:center}
+  .input input[type="text"], .input select{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eef2ff;font-size:14px}
+  .small{font-size:13px;color:var(--muted)}
+  .btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:#042027;cursor:pointer;font-weight:600}
+  .control{background:var(--glass);padding:10px;border-radius:8px;margin-bottom:10px}
+  .slider{width:100%}
+  .presets{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}
+  /* Right canvas area */
+  .viewer{flex:1;display:flex;flex-direction:column;gap:10px}
+  .canvas-card{flex:1;border-radius:12px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02);display:flex;flex-direction:column;min-height:0}
+  canvas{border-radius:8px;display:block;width:100%;height:100%}
+  .toolbar{display:flex;gap:8px;align-items:center}
+  .status{margin-left:auto;color:var(--muted);font-size:13px}
+  footer{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+  .legend{display:flex;gap:10px;align-items:center}
+  .legend span{display:inline-flex;gap:6px;align-items:center}
+  .swatch{width:12px;height:6px;border-radius:2px;display:inline-block}
+  @media (max-width:880px){
+    .main{flex-direction:column}
+    .panel{width:100%;max-width:none;order:2}
+    .viewer{order:1}
+  }
+</style>
 </head>
 <body>
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="#">
-        <!-- small inline logo SVG -->
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vortex Lab logo">
-          <defs>
-            <radialGradient id="g" cx="30%" cy="30%">
-              <stop offset="0%" stop-color="#00cfff"/>
-              <stop offset="100%" stop-color="#002b3a"/>
-            </radialGradient>
-          </defs>
-          <circle cx="50" cy="50" r="42" fill="url(#g)"/>
-          <path d="M30 70 C50 90,70 70,70 50 C70 30,50 10,30 30 C10 50,30 70,30 70 Z" fill="#07121a"/>
-        </svg>
-        <span>Vortex Lab</span>
-      </a>
-
-      <nav class="primary" aria-label="Primary navigation">
-        <a href="#about">About</a>
-        <a href="#research">Research</a>
-        <a href="#projects">Projects</a>
-        <a href="#publications">Publications</a>
-        <a href="#team">Team</a>
-        <a href="#contact" class="cta">Contact</a>
-      </nav>
-    </div>
+<div class="wrap">
+  <header>
+    <h1>MathVis</h1>
+    <p>Interactive math visualizer — enter functions, zoom/pan, show derivative & integral.</p>
   </header>
 
-  <!-- HERO -->
-  <section class="hero container" id="home">
-    <div class="hero-left">
-      <h1>Vortex Lab — Pushing the boundaries of physics</h1>
-      <p class="lead">We combine experimental ingenuity with theoretical insight to study quantum systems, particle detectors, and black hole singularities. Led by Head Physicist <strong>Nimish Upadhyay</strong>.</p>
-      <div class="hero-actions">
-        <a class="btn" href="#research">Explore Research</a>
-        <a class="btn ghost" href="#publications">View Publications</a>
-        <a class="btn ghost" href="#team">Meet the Team</a>
+  <div class="main">
+    <aside class="panel" aria-label="Controls">
+      <div class="control" style="margin-bottom:12px;">
+        <label for="fn">Function f(x) — use a and b as parameters</label>
+        <div class="input">
+          <input id="fn" type="text" value="a*sin(b*x) + 0.2*x" aria-label="Function input" />
+          <button id="plotBtn" class="btn" title="Plot">Plot</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="chip" data-preset="sin">a*sin(b*x)</button>
+          <button class="chip" data-preset="poly">x^3 - 3*x</button>
+          <button class="chip" data-preset="gauss">exp(-x^2)</button>
+          <button class="chip" data-preset="recip">1/x</button>
+        </div>
       </div>
-    </div>
 
-    <aside class="hero-right">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <div class="stat">
-          <h4>Active Projects</h4>
-          <p class="muted">12 ongoing experiments & instrument builds</p>
-        </div>
-        <div class="stat">
-          <h4>Publications</h4>
-          <p class="muted">178 peer-reviewed papers & preprints</p>
-        </div>
-        <div class="stat">
-          <h4>Collaborators</h4>
-          <p class="muted">25 international institutions</p>
+      <div class="control">
+        <label class="small">Parameters</label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="flex:1">
+            <label class="small">a = <span id="aval">1</span></label>
+            <input id="a" class="slider" type="range" min="-5" max="5" step="0.01" value="1" />
+          </div>
+          <div style="flex:1">
+            <label class="small">b = <span id="bval">1</span></label>
+            <input id="b" class="slider" type="range" min="-10" max="10" step="0.01" value="1" />
+          </div>
         </div>
       </div>
+
+      <div class="control">
+        <label class="small">Viewport / Sampling</label>
+        <div class="row" style="gap:6px;">
+          <label class="small">x-min</label>
+          <input id="xmin" type="number" value="-10" style="width:70px;padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#eef2ff" />
+          <label class="small">x-max</label>
+          <input id="xmax" type="number" value="10" style="width:70px;padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#eef2ff" />
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <label style="font-size:13px;color:var(--muted)"><input id="gridToggle" type="checkbox" checked /> Grid</label>
+          <label style="font-size:13px;color:var(--muted)"><input id="derivToggle" type="checkbox" /> Derivative</label>
+          <label style="font-size:13px;color:var(--muted)"><input id="intToggle" type="checkbox" /> Integral area</label>
+        </div>
+      </div>
+
+      <div class="control">
+        <label class="small">Tools</label>
+        <div style="display:flex;gap:8px">
+          <button id="resetView" class="chip">Reset view</button>
+          <button id="exportPNG" class="chip">Export PNG</button>
+          <button id="help" class="chip">Help</button>
+        </div>
+        <p class="small" style="margin-top:8px">Use mouse wheel to zoom, drag to pan, hover to see coordinates. Function parser accepts ^ for power, and standard names like sin, cos, exp, ln.</p>
+      </div>
+
+      <div class="control">
+        <label class="small">Presets / Examples</label>
+        <div class="presets">
+          <button class="chip" data-fn="sin(x) * exp(-x/5)">Damped sine</button>
+          <button class="chip" data-fn="0.1*x^3 - x">Cubic</button>
+          <button class="chip" data-fn="3/(1 + x^2)">Lorentzian</button>
+          <button class="chip" data-fn="a*exp(-b*(x-2)^2)">Gaussian</button>
+        </div>
+      </div>
+
+      <footer>
+        <div class="small">MathVis • JavaScript only</div>
+        <div class="small">zoom: wheel • pan: drag</div>
+      </footer>
     </aside>
-  </section>
 
-  <!-- ABOUT -->
-  <section id="about" class="section dark">
-    <div class="container">
-      <h2 class="section-title">About Vortex Lab</h2>
-      <p class="lead-muted center">Vortex Lab is a center for experimental and theoretical physics focused on fundamental questions: how particles interact, how spacetime behaves near singularities, and how quantum information can be harnessed for sensing and computation. We publish datasets, open-source software, and hardware designs to accelerate reproducible research.</p>
+    <section class="viewer" aria-label="Graph viewer">
+      <div class="canvas-card">
+        <div class="toolbar" style="margin-bottom:6px">
+          <div class="legend">
+            <span><i class="swatch" style="background:#06b6d4"></i> f(x)</span>
+            <span><i class="swatch" style="background:#f97316;width:12px;height:6px"></i> derivative</span>
+            <span><i class="swatch" style="background:#22c55e;width:12px;height:6px"></i> integral</span>
+          </div>
+          <div class="status" id="coordStatus">x: — , y: —</div>
+        </div>
 
-      <div style="margin-top:26px" class="grid-3">
-        <div class="card">
-          <h3>Instrumentation</h3>
-          <p>Design and build detectors, amplifiers, and cryogenic apparatus for precision measurements at low energies and in high-energy collisions.</p>
-        </div>
-        <div class="card">
-          <h3>Theory</h3>
-          <p>Develop models for quantum gravity, black hole interiors, and non-perturbative field theory. Emphasis on testable predictions for next-generation experiments.</p>
-        </div>
-        <div class="card">
-          <h3>Data & Software</h3>
-          <p>Open analysis pipelines, simulation stacks, and reproducible notebooks for data from detectors and simulations.</p>
+        <div style="flex:1;min-height:0">
+          <canvas id="graph"></canvas>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
+</div>
 
-  <!-- RESEARCH -->
-  <section id="research" class="section">
-    <div class="container">
-      <h2 class="section-title">Research Areas</h2>
-      <p class="lead-muted center">Our research bridges experiment and theory. Below are core themes where we currently invest our efforts.</p>
+<script>
+/* MathVis — inline JS
+   Features:
+   - parse simple math expressions with known functions
+   - draw grid/axes, plot function
+   - zoom/pan, mouse coords
+   - derivative (numerical), integral shading (Riemann)
+   - export PNG
+*/
 
-      <div class="grid-3">
-        <div class="card">
-          <h3>Quantum Sensors</h3>
-          <p>Atomic magnetometers, optomechanical accelerometers, and squeezed-light interferometry used to probe weak signals from fundamental physics and geodesy.</p>
-        </div>
-        <div class="card">
-          <h3>High-Energy Instrumentation</h3>
-          <p>Detector geometries and read-out electronics for tracking, calorimetry, and timing at sub-nanosecond resolution.</p>
-        </div>
-        <div class="card">
-          <h3>Black Holes & Gravitation</h3>
-          <p>Theoretical studies of horizons, quantum corrections, and potential observational signatures in gravitational waveforms.</p>
-        </div>
+/* ---------- Utilities: expression -> JS function ---------- */
+function sanitizeExpr(expr) {
+  // Lowercase, remove dangerous characters (keep letters, numbers, operators, parentheses, ., ^ , spaces)
+  // Allow letters for function names (a..z) and x
+  expr = expr.replace(/[^0-9a-zA-Z+\-*/^().,_\s%]/g, '');
+  // replace caret with ** for power
+  expr = expr.replace(/\^/g, '**');
+  // function name replacements to Math.* (ln -> Math.log, log -> Math.log10 if specified, but use Math.log for ln)
+  const fnMap = {
+    'sin': 'Math.sin','cos':'Math.cos','tan':'Math.tan',
+    'asin':'Math.asin','acos':'Math.acos','atan':'Math.atan',
+    'sqrt':'Math.sqrt','exp':'Math.exp','ln':'Math.log',
+    'log':'Math.log','abs':'Math.abs','ceil':'Math.ceil','floor':'Math.floor',
+    'round':'Math.round','pow':'Math.pow'
+  };
+  // replace function names with Math.<name>
+  Object.keys(fnMap).forEach(k => {
+    // word boundary to avoid replacing inside variable names
+    const re = new RegExp('\\b'+k+'\\s*\\(', 'gi');
+    expr = expr.replace(re, fnMap[k] + '(');
+  });
+  // constants
+  expr = expr.replace(/\bpi\b/gi, 'Math.PI');
+  expr = expr.replace(/\be\b/gi, 'Math.E');
+  return expr;
+}
 
-        <div class="card">
-          <h3>Quantum Information</h3>
-          <p>Entanglement structure in many-body systems, error-correcting codes inspired by holography, and quantum simulations of field theories.</p>
-        </div>
-        <div class="card">
-          <h3>Dark Matter Searches</h3>
-          <p>Designing experiments sensitive to ultra-light axions, WIMPs, and other beyond-standard-model candidates using precision detectors.</p>
-        </div>
-        <div class="card">
-          <h3>Computational Physics</h3>
-          <p>High-performance simulations, machine learning for event classification, and data-driven model discovery.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS (long list so file is big) -->
-  <section id="projects" class="section dark">
-    <div class="container">
-      <h2 class="section-title">Projects & Instrumentation</h2>
-      <p class="lead-muted center">Selected active and archival projects across hardware, software, and theory.</p>
-
-      <!-- many project cards to make the page long and realistic -->
-      <div style="margin-top:18px">
-        <div class="grid-3">
-          <div class="card">
-            <h3>Quantum Interferometer V2</h3>
-            <p>High-precision interferometer using squeezed light and active stabilization; deployed in lab for gravitational sensing tests.</p>
-          </div>
-          <div class="card">
-            <h3>Low-Background Detector Array</h3>
-            <p>Modular detectors for low-count-rate experiments with active veto and radon suppression systems.</p>
-          </div>
-          <div class="card">
-            <h3>Accelerator Diagnostics Suite</h3>
-            <p>Real-time beam instrumentation for emittance and profile measurements at high repetition rates.</p>
-          </div>
-        </div>
-
-        <div class="grid-3" style="margin-top:16px">
-          <div class="card">
-            <h3>Dark Matter Haloscope</h3>
-            <p>Tunable cavity and SQUID-based readout for axion searches in the microwave band.</p>
-          </div>
-          <div class="card">
-            <h3>High-Throughput Simulation</h3>
-            <p>Cluster-managed workflows for lattice field theory and event generation with automated analysis.</p>
-          </div>
-          <div class="card">
-            <h3>Detector-Sim Suite</h3>
-            <p>Open-source toolkit for simulating detector responses and digitization chains.</p>
-          </div>
-        </div>
-
-        <!-- repeat more detailed entries to reach length -->
-        <div class="grid-3" style="margin-top:16px">
-          <div class="card">
-            <h3>Quantum Wormhole Modeling</h3>
-            <p>Exploratory simulations of wormhole traversability under quantum-corrected backgrounds and energy conditions.</p>
-          </div>
-          <div class="card">
-            <h3>Neutrino Prototype</h3>
-            <p>Compact array for low-energy neutrino detection using novel scintillators and machine learning triggers.</p>
-          </div>
-          <div class="card">
-            <h3>Holographic Codes</h3>
-            <p>Algorithmic development for error-correcting codes inspired by AdS/CFT and tensor network constructions.</p>
-          </div>
-        </div>
-
-        <!-- extra rows for verbosity -->
-        <div style="margin-top:18px" class="grid-3">
-          <div class="card"><h3>Cryogenics 3.0</h3><p>Reliable cryocooler integration and vibration isolation for low-noise experiments.</p></div>
-          <div class="card"><h3>Time-of-flight Array</h3><p>Precision timing array optimized for cosmic ray and particle identification tasks.</p></div>
-          <div class="card"><h3>Open Data Portal</h3><p>Publishing cleaned datasets with DOIs, Jupyter notebooks, and analysis recipes.</p></div>
-        </div>
-
-        <div style="margin-top:18px" class="grid-3">
-          <div class="card"><h3>AI Physics Assistant</h3><p>Model-assisted literature reviews and parameter scans for experimental design.</p></div>
-          <div class="card"><h3>Education Outreach</h3><p>Workshops, lectures, and open resources for students and early-career researchers.</p></div>
-          <div class="card"><h3>Quantum Control Stack</h3><p>Hardware and firmware to control qubit-like sensors and their readout chains.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PUBLICATIONS - long list to add content -->
-  <section id="publications" class="section">
-    <div class="container">
-      <h2 class="section-title">Publications & Preprints</h2>
-      <p class="lead-muted center">A curated selection of papers from Vortex Lab members. Full list available upon request or on our publications portal.</p>
-
-      <ul class="pub-list">
-        <!-- A long manually-expanded list of publications for weight -->
-        <li>
-          <strong>Upadhyay, N.</strong> et al. (2025). <em>High-resolution interferometry for quantum sensors</em>. Phys. Rev. Applied.
-          <div class="pub-meta">DOI: 10.XXXX/physrevappl.2025.xxxx — 12 pages</div>
-        </li>
-        <li>
-          <strong>Upadhyay, N.</strong> &amp; Doe, J. (2024). <em>Constraints on micro-singularity models</em>. J. Theor. Phys.
-          <div class="pub-meta">arXiv:2401.XXXXX — 18 pages</div>
-        </li>
-        <li>
-          <strong>Smith, A.</strong> et al. (2024). <em>Detectors for low-background axion haloscopes</em>. JINST.
-          <div class="pub-meta">DOI: 10.XXXX/jinst.2024.xxxx — 14 pages</div>
-        </li>
-        <li>
-          <strong>Lee, M.</strong>, Upadhyay, N. (2023). <em>Quantum entanglement in noisy many-body systems</em>. Quantum.
-          <div class="pub-meta">arXiv:2306.XXXXX — 22 pages</div>
-        </li>
-        <li>
-          <strong>Patel, R.</strong> et al. (2023). <em>Open detector simulation and analysis</em>. SoftwareX.
-          <div class="pub-meta">DOI: 10.XXXX/softwarex.2023.xxxx — 11 pages</div>
-        </li>
-
-        <!-- repeat programmatically-looking entries for length -->
-        <!-- (these entries are sample placeholders — replace with real ones) -->
-        <li><strong>Upadhyay, N.</strong> et al. (2022). <em>Precision timing with superconducting sensors</em>. IEEE Trans. Instrum. Meas.<div class="pub-meta">vol. 71 — 9 pages</div></li>
-        <li><strong>Nguyen, T.</strong> et al. (2022). <em>Simulation-driven detector design</em>. Comp. Phys. Comm.<div class="pub-meta">vol. 278 — 16 pages</div></li>
-        <li><strong>Gonzalez, P.</strong> &amp; Upadhyay, N. (2021). <em>Black hole echo signatures</em>. JHEP.<div class="pub-meta">arXiv:2103.XXXXX — 24 pages</div></li>
-        <li><strong>Wang, L.</strong> et al. (2021). <em>Machine learning triggers for rare events</em>. Machine Learn. Sci. Tech.<div class="pub-meta">vol. 2 — 12 pages</div></li>
-        <li><strong>Ahmed, S.</strong> et al. (2020). <em>Radon mitigation in ultra-low background labs</em>. J. Environ. Radon.<div class="pub-meta">vol. 7 — 10 pages</div></li>
-
-        <!-- Add many pseudo-publications to lengthen -->
-        <li><strong>Upadhyay, N.</strong> et al. (2020). <em>Detector calibration techniques for low-signal regimes</em>. Rev. Sci. Instrum.<div class="pub-meta">vol. 91 — 8 pages</div></li>
-        <li><strong>Multiple Authors</strong> (2019). <em>Open data releases from Vortex Lab</em>. Data in Brief.<div class="pub-meta">Dataset DOI: 10.XXXX/dib.2019.xxxx</div></li>
-        <li><strong>Team</strong> (2019). <em>Public outreach and workshops</em>. Outreach Compendium.<div class="pub-meta">report — 35 pages</div></li>
-
-        <!-- generate more entries to reach long length -->
-        <li><strong>Various</strong> (2018). <em>Archived instrumentation notes</em>. Vortex Lab Technical Reports.<div class="pub-meta">TR-2018-01 — 40 pages</div></li>
-        <li><strong>Upadhyay, N.</strong> (2017). <em>Early-stage conceptual notes on singularity resolution</em>. Preprint.<div class="pub-meta">internal — 28 pages</div></li>
-
-        <!-- more entries -->
-        <li><strong>Collaborative Group</strong> (2016). <em>Cross-lab benchmarking</em>. Collab. Phys. Review.<div class="pub-meta">vol. 1 — 50 pages</div></li>
-        <li><strong>Researcher X</strong> (2015). <em>Detector electronics primer</em>. TechComm.<div class="pub-meta">manual — 122 pages</div></li>
-        <li><strong>Various</strong> (2014). <em>Historical notes</em>. Archive Compendium.<div class="pub-meta">digital archive</div></li>
-        <!-- end publications list (long) -->
-      </ul>
-    </div>
-  </section>
-
-  <!-- TEAM -->
-  <section id="team" class="section dark">
-    <div class="container">
-      <h2 class="section-title">Team & Collaborators</h2>
-      <p class="lead-muted center">A multidisciplinary group of physicists, engineers, and software developers.</p>
-
-      <div class="team-grid">
-        <div class="person">
-          <h4>Nimish Upadhyay</h4>
-          <div class="role">Head Physicist</div>
-          <p class="muted">Lead experimentalist and theorist. Research interests: black hole singularities, quantum sensors, detector instrumentation.</p>
-        </div>
-        <div class="person">
-          <h4>Dr. A. Collaborator</h4>
-          <div class="role">Senior Researcher</div>
-          <p class="muted">Specialist in condensed matter systems and quantum device integration.</p>
-        </div>
-        <div class="person">
-          <h4>Eng. B. Instrument</h4>
-          <div class="role">Instrumentation Lead</div>
-          <p class="muted">Electronics, cryogenics and data acquisition systems lead.</p>
-        </div>
-        <div class="person">
-          <h4>Dr. C. Theorist</h4>
-          <div class="role">Theorist</div>
-          <p class="muted">Quantum gravity, holography & theoretical cosmology.</p>
-        </div>
-
-        <!-- extra team members for length -->
-        <div class="person"><h4>Dr. D. Analyst</h4><div class="role">Data Scientist</div><p class="muted">ML pipelines & simulations.</p></div>
-        <div class="person"><h4>E. Technician</h4><div class="role">Lab Technician</div><p class="muted">Assembly & test bench maintenance.</p></div>
-        <div class="person"><h4>F. Intern</h4><div class="role">Graduate Intern</div><p class="muted">Assists with experiments and analysis.</p></div>
-        <div class="person"><h4>G. Admin</h4><div class="role">Operations</div><p class="muted">Project coordination and outreach.</p></div>
-      </div>
-
-      <!-- Timeline -->
-      <div style="margin-top:26px">
-        <h3 style="color:var(--accent);margin-bottom:12px">Lab Timeline</h3>
-        <div class="timeline">
-          <div class="evt"><h5>2025 — Major Milestone</h5><p>First tabletop demonstration of stable entanglement-assisted sensing across a meter baseline.</p></div>
-          <div class="evt"><h5>2024 — Publication</h5><p>Key theoretical paper published on micro-singularity constraints.</p></div>
-          <div class="evt"><h5>2022 — Infrastructure</h5><p>Expanded low-background lab and installed next-gen readout electronics.</p></div>
-          <div class="evt"><h5>2020 — Foundation</h5><p>Vortex Lab formed with the goal of combining experiment and theory under a single roof.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TOOLS & LIVE WIDGETS -->
-  <section class="section">
-    <div class="container">
-      <h2 class="section-title">Interactive Tools</h2>
-      <p class="lead-muted center">Simple client-side tools for inspection and visualization (no server required).</p>
-
-      <!-- Simple canvas chart (vanilla) -->
-      <div style="margin-top:20px;display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start;justify-content:center">
-        <div style="background:#081018;padding:16px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);width:540px">
-          <h3 style="margin-top:0;color:var(--accent)">Simulated Signal vs Noise</h3>
-          <canvas id="vis-canvas" width="500" height="250" style="width:100%;height:auto;border-radius:6px;background:#020405"></canvas>
-          <p class="muted" style="margin-top:10px">Real-time simulation (client-side) showing pseudo-random signals with a small injected 'event'.</p>
-        </div>
-
-        <div style="width:300px">
-          <h3 style="color:var(--accent)">Controls</h3>
-          <label>Noise amplitude: <input id="noise-amp" type="range" min="0" max="1" step="0.01" value="0.35"></label>
-          <label style="display:block;margin-top:8px">Event amplitude: <input id="event-amp" type="range" min="0" max="2" step="0.01" value="1.0"></label>
-          <label style="display:block;margin-top:8px">Event rate (s): <input id="event-rate" type="range" min="1" max="10" step="1" value="6"></label>
-          <button id="toggle-sim" class="btn" style="margin-top:12px;width:100%">Start / Pause</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACCORDION / FAQ -->
-  <section class="section dark">
-    <div class="container">
-      <h2 class="section-title">FAQ</h2>
-      <p class="lead-muted center">Questions we often get from students, collaborators, and the public.</p>
-
-      <div class="accordion" id="faq">
-        <div class="accordion-item">
-          <button aria-expanded="false">How can I collaborate with Vortex Lab? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>We welcome collaboration — email the Head Physicist with a concise proposal, CV, and a short statement of what you bring and what you expect to achieve together.</p>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button aria-expanded="false">Do you publish data and code? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>Yes — we release data and analysis pipelines where possible, respecting privacy and embargoes for sensitive results. See our publications list for dataset DOIs.</p>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button aria-expanded="false">Can I visit the lab? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>Visits are by appointment and subject to safety briefings. Contact our operations team for scheduling and visitor policies.</p>
-          </div>
-        </div>
-
-        <div class="accordion-item">
-          <button aria-expanded="false">How do you fund your work? <span aria-hidden="true">+</span></button>
-          <div class="panel">
-            <p>Funding comes from research grants, collaborations, and private donations. We actively pursue funding to keep projects open and reproducible.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="section">
-    <div class="container">
-      <h2 class="section-title">Contact</h2>
-      <p class="lead-muted center">For collaboration requests, media inquiries, or speaking invitations, reach out below.</p>
-
-      <form class="contact-form" id="contactForm" onsubmit="return false;">
-        <label for="name">Name</label>
-        <input id="name" type="text" placeholder="Your name" required>
-
-        <label for="email">Email</label>
-        <input id="email" type="email" placeholder="you@example.com" required>
-
-        <label for="subject">Subject</label>
-        <input id="subject" type="text" placeholder="Short subject">
-
-        <label for="message">Message</label>
-        <textarea id="message" placeholder="Write your message here..." required></textarea>
-
-        <div class="form-actions">
-          <button id="sendBtn" class="btn">Send Message</button>
-          <div style="color:var(--muted);font-size:0.95rem">Or email <a href="mailto:info@vortexlab.org" style="color:var(--accent)">info@vortexlab.org</a></div>
-        </div>
-
-        <div id="formStatus" style="margin-top:12px;color:var(--muted)"></div>
-      </form>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>© <span id="year"></span> Vortex Lab — Head Physicist: Nimish Upadhyay</div>
-      <div class="socials">
-        <a href="#" title="GitHub">GitHub</a>
-        <a href="#" title="Twitter">Twitter</a>
-        <a href="#" title="LinkedIn">LinkedIn</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ===========================
-       Inline JavaScript (interactive)
-       All logic is embedded to keep the page single-file
-       =========================== -->
-  <script>
-    // set year
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Smooth nav behavior - highlight simple
-    (function(){
-      const links = document.querySelectorAll('nav.primary a');
-      for(const a of links){
-        a.addEventListener('click', (e)=>{
-          // allow anchor normal behavior for accessibility, but smooth scroll cloud
-          const href = a.getAttribute('href');
-          if(href && href.startsWith('#')){
-            e.preventDefault();
-            const el = document.querySelector(href);
-            if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-          }
-        });
+function makeFunction(expr) {
+  // Returns function(x, params) -> number or throws
+  const sanitized = sanitizeExpr(expr);
+  // We'll allow parameters a,b,... by keeping them as variables defined inside function via params object
+  const code = `
+    "use strict";
+    const {a=1,b=1} = params || {};
+    return (function(x){
+      try{
+        return Number(${sanitized});
+      }catch(e){
+        return NaN;
       }
-    })();
+    })(x);
+  `;
+  // Use new Function to create a wrapper that accepts x and params
+  try{
+    return new Function('x','params', code);
+  }catch(e){
+    // fallback: return a function that yields NaN
+    return function(){ return NaN; };
+  }
+}
 
-    // Accordion behavior
-    (function(){
-      const items = document.querySelectorAll('.accordion-item');
-      items.forEach(item=>{
-        const btn = item.querySelector('button');
-        const panel = item.querySelector('.panel');
-        btn.addEventListener('click', ()=>{
-          const expanded = btn.getAttribute('aria-expanded') === 'true';
-          btn.setAttribute('aria-expanded', String(!expanded));
-          if(!expanded){
-            panel.style.display = 'block';
-            btn.querySelector('span').textContent = '−';
-          } else {
-            panel.style.display = 'none';
-            btn.querySelector('span').textContent = '+';
-          }
-        });
-      });
-    })();
+/* ---------- Canvas & plotting setup ---------- */
+const canvas = document.getElementById('graph');
+const ctx = canvas.getContext('2d');
 
-    // Contact form fake send (client-only)
-    (function(){
-      const form = document.getElementById('contactForm');
-      const send = document.getElementById('sendBtn');
-      const status = document.getElementById('formStatus');
+let DPR = Math.max(window.devicePixelRatio || 1, 1);
+function fixDPR(){
+  DPR = Math.max(window.devicePixelRatio || 1, 1);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.round(rect.width * DPR);
+  canvas.height = Math.round(rect.height * DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', () => { fixDPR(); draw(); });
 
-      send.addEventListener('click', ()=>{
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const message = document.getElementById('message').value.trim();
-        if(!name || !email || !message){
-          status.textContent = 'Please fill required fields.';
-          status.style.color = 'salmon';
-          return;
-        }
-        // demo only
-        status.style.color = 'var(--muted)';
-        status.textContent = 'Message saved locally — this demo site has no backend. Copy the message before leaving the page.';
-        // emulate saving to localStorage temporarily
-        const saved = JSON.parse(localStorage.getItem('vortex_messages')||'[]');
-        saved.push({name,email,subject:document.getElementById('subject').value||'',message,time:new Date().toISOString()});
-        localStorage.setItem('vortex_messages', JSON.stringify(saved));
-      });
-    })();
+/* Viewport in math coords */
+let view = {
+  xmin: -10, xmax: 10,
+  ymin: -6, ymax: 6
+};
 
-    // ===== Simple signal visualization (canvas) =====
-    (function(){
-      const canvas = document.getElementById('vis-canvas');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const W = canvas.width;
-      const H = canvas.height;
+function resetViewFromX(minX,maxX){
+  view.xmin = minX; view.xmax = maxX;
+  const w = view.xmax - view.xmin;
+  // choose a default vertical range
+  view.ymin = -Math.max(6, w*0.5); view.ymax = Math.max(6, w*0.5);
+}
 
-      let running = true;
-      let t = 0;
-      let noiseAmpEl = document.getElementById('noise-amp');
-      let eventAmpEl = document.getElementById('event-amp');
-      let eventRateEl = document.getElementById('event-rate');
-      let toggle = document.getElementById('toggle-sim');
+/* transform helpers */
+function xToPx(x){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  return (x - view.xmin) / (view.xmax - view.xmin) * w;
+}
+function yToPx(y){
+  const rect = canvas.getBoundingClientRect();
+  const h = rect.height;
+  return (1 - (y - view.ymin) / (view.ymax - view.ymin)) * h;
+}
+function pxToX(px){ const rect = canvas.getBoundingClientRect(); return view.xmin + (px/rect.width)*(view.xmax-view.xmin); }
+function pyToY(py){ const rect = canvas.getBoundingClientRect(); return view.ymin + (1 - py/rect.height)*(view.ymax-view.ymin); }
 
-      toggle.addEventListener('click', ()=>{ running = !running; toggle.textContent = running ? 'Pause' : 'Start'; });
+/* ---------- Drawing ---------- */
+function clear(){
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0,0,rect.width,rect.height);
+  // background
+  ctx.fillStyle = '#051122';
+  ctx.fillRect(0,0,rect.width,rect.height);
+}
 
-      function drawGrid(){
-        ctx.fillStyle = '#020405';
-        ctx.fillRect(0,0,W,H);
-        ctx.strokeStyle = 'rgba(255,255,255,0.02)';
-        ctx.lineWidth = 1;
-        for(let x=0;x<W;x+=50){ ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-        for(let y=0;y<H;y+=50){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-      }
+function drawGrid(){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width, h = rect.height;
+  // nice tick spacing based on view width
+  const xRange = view.xmax - view.xmin;
+  const yRange = view.ymax - view.ymin;
+  const xStep = niceStep(xRange/10);
+  const yStep = niceStep(yRange/8);
+  ctx.lineWidth = 1;
+  // vertical grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  for(let x = Math.floor(view.xmin/xStep)*xStep; x<=view.xmax; x+=xStep){
+    const px = xToPx(x);
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+  }
+  // horizontal grid
+  for(let y = Math.floor(view.ymin/yStep)*yStep; y<=view.ymax; y+=yStep){
+    const py = yToPx(y);
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
+  }
+  // axes
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  // y axis (x=0)
+  if(view.xmin <= 0 && view.xmax >= 0){
+    const px = xToPx(0);
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+  }
+  // x axis (y=0)
+  if(view.ymin <= 0 && view.ymax >= 0){
+    const py = yToPx(0);
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
+  }
+  // axis labels
+  ctx.fillStyle = '#9fb6c9';
+  ctx.font = '11px system-ui, Arial';
+  for(let x = Math.floor(view.xmin/xStep)*xStep; x<=view.xmax; x+=xStep){
+    const px = xToPx(x);
+    const py = yToPx(0);
+    ctx.fillText(+x.toFixed(2), px+4, Math.min(h-6, py-6));
+  }
+  for(let y = Math.floor(view.ymin/yStep)*yStep; y<=view.ymax; y+=yStep){
+    const py = yToPx(y);
+    ctx.fillText(+y.toFixed(2), 4, py-4);
+  }
+}
+function niceStep(raw){
+  // approximate to 1,2,5 * 10^n
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+  const base = raw / pow;
+  if(base <= 1.5) return 1*pow;
+  if(base <= 3) return 2*pow;
+  if(base <= 7) return 5*pow;
+  return 10*pow;
+}
 
-      function noise(x){ return (Math.sin(x*12.345)+Math.sin(x*7.23)+Math.sin(x*3.7))*0.33; }
+function sampleFunction(fn, samples){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const points = [];
+  const step = (view.xmax - view.xmin) / samples;
+  for(let i=0;i<=samples;i++){
+    const x = view.xmin + i*step;
+    let y = fn(x);
+    if(!isFinite(y)) y = NaN;
+    points.push({x,y});
+  }
+  return points;
+}
 
-      let lastEvent = 0;
-      function step(){
-        if(!running){ requestAnimationFrame(step); return; }
-        t += 0.02;
-        drawGrid();
+function drawFunction(points, style){
+  ctx.lineWidth = style.width || 2;
+  ctx.strokeStyle = style.color || '#06b6d4';
+  ctx.beginPath();
+  let started=false;
+  for(let i=0;i<points.length;i++){
+    const p = points[i];
+    if(Number.isFinite(p.y)){
+      const px = xToPx(p.x);
+      const py = yToPx(p.y);
+      if(!started){ ctx.moveTo(px,py); started=true; } else ctx.lineTo(px,py);
+    } else {
+      started=false;
+    }
+  }
+  ctx.stroke();
+}
 
-        // parameters (controlled by UI)
-        const noiseAmp = parseFloat(noiseAmpEl.value);
-        const eventAmp = parseFloat(eventAmpEl.value);
-        const eventRate = parseFloat(eventRateEl.value);
+function drawDerivative(fn, samples){
+  // numerical derivative using central difference
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const pts = [];
+  const dx = (view.xmax - view.xmin) / (samples*8);
+  for(let i=0;i<=samples;i++){
+    const x = view.xmin + (i/samples)*(view.xmax-view.xmin);
+    const y1 = fn(x-dx), y2 = fn(x+dx);
+    const dy = (y2 - y1)/(2*dx);
+    pts.push({x, y: dy});
+  }
+  drawFunction(pts, {color:'#f97316', width:1.6});
+}
 
-        // generate waveform data
-        ctx.beginPath();
-        for(let x=0;x<W;x++){
-          const time = t + x/60;
-          let y = H/2 + noise(time)*noiseAmp*H*0.35;
-          // occasionally inject an event
-          if((t - lastEvent) > eventRate && Math.random()<0.01){
-            lastEvent = t;
-          }
-          if((t - lastEvent) < 0.25){ // short event
-            const ph = (t - lastEvent)/0.25;
-            const burst = Math.exp(-8*(ph-0.5)*(ph-0.5)) * eventAmp * H*0.15;
-            y -= burst;
-          }
-          if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
-        }
-        ctx.strokeStyle = 'rgba(0,255,255,0.9)';
-        ctx.lineWidth = 2;
-        ctx.stroke();
+function drawIntegral(fn, samples){
+  // simple Riemann sum shading between xmin..xmax
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const dx = (view.xmax - view.xmin) / samples;
+  ctx.fillStyle = 'rgba(34,197,94,0.12)';
+  ctx.beginPath();
+  for(let i=0;i<=samples;i++){
+    const x = view.xmin + i*dx;
+    const y = fn(x);
+    if(!isFinite(y)){ // skip discontinuities: close path and start new
+      continue;
+    }
+    const px = xToPx(x);
+    const py = yToPx(y);
+    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  }
+  // close shape to x-axis
+  const xend = xToPx(view.xmax);
+  const xstart = xToPx(view.xmin);
+  const y0 = yToPx(0);
+  ctx.lineTo(xend, y0);
+  ctx.lineTo(xstart, y0);
+  ctx.closePath();
+  ctx.fill();
+}
 
-        // axis
-        ctx.strokeStyle='rgba(255,255,255,0.06)';
-        ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
+/* ---------- Interaction & state ---------- */
+let currentFnText = document.getElementById('fn').value;
+let fn = makeFunction(currentFnText);
 
-        requestAnimationFrame(step);
-      }
+function draw(){
+  fixDPR();
+  clear();
+  const rect = canvas.getBoundingClientRect();
+  // grid
+  if(document.getElementById('gridToggle').checked) drawGrid();
+  // sample count depends on width for smoothness
+  const samples = Math.max(300, Math.round(rect.width * 1.1));
+  // draw integral first (so function is on top)
+  if(document.getElementById('intToggle').checked){
+    try{ drawIntegral((x)=>safeEval(fn,x), samples); }catch(e){}
+  }
+  // function
+  try{
+    const pts = sampleFunction((x)=>safeEval(fn,x), Math.round(samples));
+    drawFunction(pts, {color:'#06b6d4', width:2.5});
+  }catch(e){}
+  // derivative
+  if(document.getElementById('derivToggle').checked){
+    try{ drawDerivative((x)=>safeEval(fn,x), Math.round(samples/2)); }catch(e){}
+  }
+  // coordinate overlay (already handled in mousemove)
+}
 
-      requestAnimationFrame(step);
-    })();
+/* safeEval wrapper to call the compiled function and protect from exceptions */
+function safeEval(func, x){
+  try{
+    const aVal = Number(document.getElementById('a').value) || 0;
+    const bVal = Number(document.getElementById('b').value) || 0;
+    const res = func(x, {a: aVal, b: bVal});
+    if(typeof res === 'number' && !Number.isFinite(res)) return NaN;
+    return Number(res);
+  }catch(e){
+    return NaN;
+  }
+}
 
-    // Small keyboard helper: pressing "p" focuses contact name
-    document.addEventListener('keydown', (e)=>{
-      if(e.key.toLowerCase()==='p'){
-        const el = document.getElementById('name');
-        if(el){ el.focus(); }
-      }
-    });
+/* ---------- UI wiring ---------- */
+document.getElementById('plotBtn').addEventListener('click', ()=>{
+  currentFnText = document.getElementById('fn').value;
+  fn = makeFunction(currentFnText);
+  // update view bounds from inputs
+  const xmin = Number(document.getElementById('xmin').value);
+  const xmax = Number(document.getElementById('xmax').value);
+  if(isFinite(xmin) && isFinite(xmax) && xmax > xmin) resetViewFromX(xmin,xmax);
+  draw();
+});
+document.getElementById('a').addEventListener('input', (e)=>{ document.getElementById('aval').textContent = e.target.value; draw(); });
+document.getElementById('b').addEventListener('input', (e)=>{ document.getElementById('bval').textContent = e.target.value; draw(); });
+document.querySelectorAll('.chip[data-preset]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ document.getElementById('fn').value = btn.dataset.preset; document.getElementById('plotBtn').click(); });
+});
+document.querySelectorAll('.presets .chip').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ document.getElementById('fn').value = btn.dataset.fn; document.getElementById('plotBtn').click(); });
+});
+document.getElementById('resetView').addEventListener('click', ()=>{
+  const xmin = Number(document.getElementById('xmin').value);
+  const xmax = Number(document.getElementById('xmax').value);
+  resetViewFromX(xmin || -10, xmax || 10);
+  draw();
+});
+document.getElementById('exportPNG').addEventListener('click', ()=>{
+  // create a temp canvas to export at higher resolution
+  const rect = canvas.getBoundingClientRect();
+  const tmp = document.createElement('canvas');
+  const scale = 2;
+  tmp.width = rect.width*scale; tmp.height = rect.height*scale;
+  const tctx = tmp.getContext('2d');
+  // paint white background to avoid transparent export
+  tctx.fillStyle = '#00121a';
+  tctx.fillRect(0,0,tmp.width,tmp.height);
+  // draw the current canvas scaled (just copy)
+  tctx.drawImage(canvas, 0, 0, tmp.width, tmp.height);
+  const dataUrl = tmp.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = dataUrl; a.download = 'mathvis.png';
+  document.body.appendChild(a); a.click(); a.remove();
+});
 
-    // Accessibility: ensure internal links focusable
-    (function(){
-      const internal = document.querySelectorAll('a[href^="#"]');
-      internal.forEach(a=>{
-        a.addEventListener('click', ()=>{
-          const target = document.querySelector(a.getAttribute('href'));
-          if(target) target.setAttribute('tabindex','-1');
-        });
-      });
-    })();
+/* ---------- Mouse interaction: zoom, pan, coords ---------- */
+let isPanning=false, panStart=null;
+canvas.addEventListener('mousedown', (ev)=>{
+  isPanning=true;
+  panStart = {x: ev.clientX, y: ev.clientY, view: {...view}};
+  canvas.style.cursor = 'grabbing';
+});
+window.addEventListener('mouseup', ()=>{ isPanning=false; canvas.style.cursor='default'; });
+window.addEventListener('mousemove', (ev)=>{
+  const rect = canvas.getBoundingClientRect();
+  const relX = ev.clientX - rect.left;
+  const relY = ev.clientY - rect.top;
+  const x = pxToX(relX);
+  const y = pyToY(relY);
 
-    // end of JS
-  </script>
+  document.getElementById('coordStatus').textContent = `x: ${x.toFixed(4)} , y: ${y.toFixed(4)}`;
 
-  <!-- big comment block to add lines but keep file readable -->
-  <!--
-    Vortex Lab single-file website
-    - Use this file as index.html in your GitHub Pages repo
-    - Everything is inlined (styles + scripts)
-    - To make it more professional:
-      * Replace placeholder text with real content
-      * Add real publication DOIs and links
-      * Replace inline images with repository images or CDN-hosted images
-      * Add analytics and server-side contact endpoint if desired
-  -->
+  if(isPanning && panStart){
+    const dxPix = ev.clientX - panStart.x;
+    const dyPix = ev.clientY - panStart.y;
+    const rect = canvas.getBoundingClientRect();
+    const dx = (dxPix/rect.width) * (panStart.view.xmax - panStart.view.xmin);
+    const dy = (dyPix/rect.height) * (panStart.view.ymax - panStart.view.ymin);
+    view.xmin = panStart.view.xmin - dx;
+    view.xmax = panStart.view.xmax - dx;
+    view.ymin = panStart.view.ymin + dy;
+    view.ymax = panStart.view.ymax + dy;
+    draw();
+  }
+});
 
+canvas.addEventListener('wheel', (ev)=>{
+  ev.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = ev.clientX - rect.left;
+  const mouseY = ev.clientY - rect.top;
+  const zoomFactor = ev.deltaY > 0 ? 1.12 : 0.88; // zoom out/in
+  const wx = view.xmin + (mouseX/rect.width)*(view.xmax - view.xmin);
+  const wy = view.ymin + (1 - mouseY/rect.height)*(view.ymax - view.ymin);
+  // new ranges
+  const newWidth = (view.xmax - view.xmin) * zoomFactor;
+  const newHeight = (view.ymax - view.ymin) * zoomFactor;
+  view.xmin = wx - (mouseX/rect.width)*newWidth;
+  view.xmax = view.xmin + newWidth;
+  view.ymin = wy - (1 - mouseY/rect.height)*newHeight;
+  view.ymax = view.ymin + newHeight;
+  draw();
+}, {passive:false});
+
+/* ---------- Expression safety note
+   We compile the expression to JS, mapping common math functions to Math.*, and using new Function.
+   This is simple and works well for typical analytic expressions. Avoid executing untrusted code.
+---------- */
+
+/* ---------- small helper to update on startup ---------- */
+function init(){
+  // set canvas size and initial view from inputs
+  const xmin = Number(document.getElementById('xmin').value);
+  const xmax = Number(document.getElementById('xmax').value);
+  resetViewFromX(isFinite(xmin)?xmin:-10, isFinite(xmax)?xmax:10);
+  fn = makeFunction(document.getElementById('fn').value);
+  fixDPR();
+  draw();
+}
+init();
+
+/* ---------- keyboard shortcuts ---------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'r' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); document.getElementById('plotBtn').click(); }
+  if(e.key === 'h'){ alert('MathVis help:\\n- Plot: click Plot\\n- Zoom: mouse wheel\\n- Pan: drag\\n- Derivative/Integral: toggles in left panel\\n- Use ^ for power, sin(), cos(), exp(), ln(), sqrt(), pi, e'); }
+});
+
+/* ---------- small helpful inline tests for common JS parse issues ---------- */
+/* Not necessary but keeps drawing stable */
+setInterval(()=>{ /* tick to keep canvas crisp if something else changed */ }, 5000);
+</script>
 </body>
 </html>
