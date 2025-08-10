@@ -1,664 +1,549 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>MiniSocial — Frontend-Only Social App</title>
-  <style>
-    /* ----- Basic layout & theme ----- */
-    :root{
-      --primary:#1877f2;
-      --bg:#f0f2f5;
-      --card:#fff;
-      --muted:#65676b;
-      --radius:12px;
-      --shadow: 0 6px 18px rgba(15,23,42,0.08);
-      --maxw:1000px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
-      background:var(--bg);
-      color:#111827;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    header{
-      background:linear-gradient(90deg,var(--primary),#0057d9);
-      color:white;
-      padding:10px 16px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      position:sticky;
-      top:0;
-      z-index:5;
-    }
-    header .brand{font-weight:700; font-size:18px}
-    header .search{
-      margin-left:16px;
-      flex:1;
-    }
-    .container{
-      max-width:var(--maxw);
-      margin:18px auto;
-      display:grid;
-      grid-template-columns:260px 1fr 300px;
-      gap:16px;
-      padding:0 12px;
-    }
-    @media(max-width:980px){
-      .container{grid-template-columns:1fr; padding:12px}
-      .rightpane{order:3}
-      .leftpane{order:1}
-      .main{order:2}
-    }
-
-    /* ----- cards ----- */
-    .card{
-      background:var(--card);
-      border-radius:var(--radius);
-      padding:12px;
-      box-shadow:var(--shadow);
-    }
-    .leftpane .profile-pic{
-      width:64px; height:64px; border-radius:50%;
-      background:linear-gradient(135deg,#6EE7B7,#3B82F6);
-      display:inline-flex; align-items:center; justify-content:center;
-      color:white; font-weight:700;
-      font-size:20px;
-    }
-    .muted{color:var(--muted)}
-    .btn{
-      display:inline-block; padding:8px 12px; border-radius:8px;
-      background:var(--primary); color:white; border:none; cursor:pointer;
-      box-shadow:0 6px 12px rgba(24,119,242,0.12);
-    }
-    .btn.secondary{background:transparent; color:var(--primary); border:1px solid rgba(24,119,242,0.12)}
-    .center{text-align:center}
-
-    /* ----- new post ----- */
-    .new-post{display:flex; gap:12px; align-items:flex-start}
-    .new-post textarea{flex:1; min-height:70px; resize:vertical; padding:8px; border-radius:10px; border:1px solid #e6e6e6}
-    .post-actions{display:flex; gap:8px; align-items:center; margin-top:8px}
-
-    /* ----- feed ----- */
-    .feed .post{margin-bottom:12px; padding:12px; border-radius:10px; background:var(--card)}
-    .post .meta{display:flex; gap:10px; align-items:center}
-    .avatar{width:46px;height:46px;border-radius:50%;background:#ddd;display:inline-flex;align-items:center;justify-content:center;font-weight:700}
-    .post img.media{max-width:100%; border-radius:8px; margin-top:8px}
-    .post .actions{display:flex; gap:6px; margin-top:8px}
-    .like-btn.active{color:#e0245e}
-
-    /* ----- right pane ----- */
-    .suggestion .user-row{display:flex; gap:10px; align-items:center; justify-content:space-between; padding:8px 0}
-    .comment-list{margin-top:8px; border-top:1px solid #f0f0f0; padding-top:6px}
-
-    /* small utilities */
-    input[type="text"], input[type="search"]{padding:8px 10px; border-radius:8px; border:1px solid #e6e6e6; width:100%}
-    .small{font-size:13px}
-    .pill{background:#eef3ff;color:#084298;padding:4px 8px;border-radius:999px;font-size:12px}
-    .timestamp{color:#9aa0a6;font-size:12px}
-    a.link{color:var(--primary); text-decoration:none}
-    footer{margin:30px 0; text-align:center; color:var(--muted); font-size:13px}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MathVis — Interactive Math Visualizer</title>
+<style>
+  /* Basic layout */
+  :root{
+    --bg:#0f1724;
+    --panel:#0b1220;
+    --accent:#06b6d4;
+    --muted:#94a3b8;
+    --card:#0b1220aa;
+    --glass: rgba(255,255,255,0.02);
+  }
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#e6eef6;background:linear-gradient(180deg,#061025 0%, #061427 60%);-webkit-font-smoothing:antialiased}
+  .wrap{display:flex;flex-direction:column;height:100vh;gap:10px;padding:14px;box-sizing:border-box}
+  header{display:flex;align-items:center;gap:12px}
+  header h1{font-size:18px;margin:0;color:var(--accent)}
+  header p{margin:0;color:var(--muted);font-size:13px}
+  .main{display:flex;flex:1;gap:12px;min-height:0}
+  /* Left controls panel */
+  .panel{width:340px;max-width:40%;background:var(--panel);border-radius:12px;padding:14px;box-sizing:border-box;box-shadow:0 6px 18px rgba(2,6,23,0.6);overflow:auto}
+  .panel label{display:block;color:var(--muted);font-size:13px;margin-bottom:6px}
+  .input, .row{display:flex;gap:8px;align-items:center}
+  .input input[type="text"], .input select{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#eef2ff;font-size:14px}
+  .small{font-size:13px;color:var(--muted)}
+  .btn{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;color:#042027;cursor:pointer;font-weight:600}
+  .control{background:var(--glass);padding:10px;border-radius:8px;margin-bottom:10px}
+  .slider{width:100%}
+  .presets{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--muted);cursor:pointer;font-size:13px}
+  /* Right canvas area */
+  .viewer{flex:1;display:flex;flex-direction:column;gap:10px}
+  .canvas-card{flex:1;border-radius:12px;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));box-shadow:inset 0 0 0 1px rgba(255,255,255,0.02);display:flex;flex-direction:column;min-height:0}
+  canvas{border-radius:8px;display:block;width:100%;height:100%}
+  .toolbar{display:flex;gap:8px;align-items:center}
+  .status{margin-left:auto;color:var(--muted);font-size:13px}
+  footer{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+  .legend{display:flex;gap:10px;align-items:center}
+  .legend span{display:inline-flex;gap:6px;align-items:center}
+  .swatch{width:12px;height:6px;border-radius:2px;display:inline-block}
+  @media (max-width:880px){
+    .main{flex-direction:column}
+    .panel{width:100%;max-width:none;order:2}
+    .viewer{order:1}
+  }
+</style>
 </head>
 <body>
-
+<div class="wrap">
   <header>
-    <div class="brand">MiniSocial</div>
-
-    <div class="search">
-      <input id="globalSearch" type="search" placeholder="Search posts or users..." />
-    </div>
-
-    <div id="headerControls"></div>
+    <h1>MathVis</h1>
+    <p>Interactive math visualizer — enter functions, zoom/pan, show derivative & integral.</p>
   </header>
 
-  <div class="container">
-    <!-- left: profile & navigation -->
-    <div class="leftpane">
-      <div class="card" id="leftCard">
-        <div id="leftProfileArea" class="center">
-          <!-- filled by JS -->
+  <div class="main">
+    <aside class="panel" aria-label="Controls">
+      <div class="control" style="margin-bottom:12px;">
+        <label for="fn">Function f(x) — use a and b as parameters</label>
+        <div class="input">
+          <input id="fn" type="text" value="a*sin(b*x) + 0.2*x" aria-label="Function input" />
+          <button id="plotBtn" class="btn" title="Plot">Plot</button>
         </div>
-        <hr />
-        <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center">
-          <button class="btn" onclick="navigateTo('#/feed')">Feed</button>
-          <button class="btn secondary" onclick="navigateTo('#/explore')">Explore</button>
-          <button class="btn secondary" onclick="navigateTo('#/profile')">My Profile</button>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="chip" data-preset="sin">a*sin(b*x)</button>
+          <button class="chip" data-preset="poly">x^3 - 3*x</button>
+          <button class="chip" data-preset="gauss">exp(-x^2)</button>
+          <button class="chip" data-preset="recip">1/x</button>
         </div>
       </div>
 
-      <div style="height:12px"></div>
-
-      <div class="card">
-        <div class="small muted">Your Stats</div>
-        <div style="display:flex; gap:10px; margin-top:8px; justify-content:space-between">
-          <div class="center">
-            <div style="font-weight:700" id="statPosts">0</div>
-            <div class="muted small">Posts</div>
+      <div class="control">
+        <label class="small">Parameters</label>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="flex:1">
+            <label class="small">a = <span id="aval">1</span></label>
+            <input id="a" class="slider" type="range" min="-5" max="5" step="0.01" value="1" />
           </div>
-          <div class="center">
-            <div style="font-weight:700" id="statFollowers">0</div>
-            <div class="muted small">Followers</div>
-          </div>
-          <div class="center">
-            <div style="font-weight:700" id="statFollowing">0</div>
-            <div class="muted small">Following</div>
+          <div style="flex:1">
+            <label class="small">b = <span id="bval">1</span></label>
+            <input id="b" class="slider" type="range" min="-10" max="10" step="0.01" value="1" />
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- main: feed / pages -->
-    <main class="main">
-      <div id="pageContent">
-        <!-- pages injected here -->
-      </div>
-    </main>
-
-    <!-- right: suggestions & notifications -->
-    <aside class="rightpane">
-      <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center">
-          <div style="font-weight:700">Notifications</div>
-          <div class="pill" id="notifCount">0</div>
+      <div class="control">
+        <label class="small">Viewport / Sampling</label>
+        <div class="row" style="gap:6px;">
+          <label class="small">x-min</label>
+          <input id="xmin" type="number" value="-10" style="width:70px;padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#eef2ff" />
+          <label class="small">x-max</label>
+          <input id="xmax" type="number" value="10" style="width:70px;padding:6px;border-radius:6px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:#eef2ff" />
         </div>
-        <div id="notifications" style="margin-top:10px" class="small muted">No notifications yet.</div>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <label style="font-size:13px;color:var(--muted)"><input id="gridToggle" type="checkbox" checked /> Grid</label>
+          <label style="font-size:13px;color:var(--muted)"><input id="derivToggle" type="checkbox" /> Derivative</label>
+          <label style="font-size:13px;color:var(--muted)"><input id="intToggle" type="checkbox" /> Integral area</label>
+        </div>
       </div>
 
-      <div style="height:12px"></div>
-
-      <div class="card suggestion">
-        <div style="font-weight:700">Suggestions</div>
-        <div id="suggestionsList" style="margin-top:8px"></div>
+      <div class="control">
+        <label class="small">Tools</label>
+        <div style="display:flex;gap:8px">
+          <button id="resetView" class="chip">Reset view</button>
+          <button id="exportPNG" class="chip">Export PNG</button>
+          <button id="help" class="chip">Help</button>
+        </div>
+        <p class="small" style="margin-top:8px">Use mouse wheel to zoom, drag to pan, hover to see coordinates. Function parser accepts ^ for power, and standard names like sin, cos, exp, ln.</p>
       </div>
+
+      <div class="control">
+        <label class="small">Presets / Examples</label>
+        <div class="presets">
+          <button class="chip" data-fn="sin(x) * exp(-x/5)">Damped sine</button>
+          <button class="chip" data-fn="0.1*x^3 - x">Cubic</button>
+          <button class="chip" data-fn="3/(1 + x^2)">Lorentzian</button>
+          <button class="chip" data-fn="a*exp(-b*(x-2)^2)">Gaussian</button>
+        </div>
+      </div>
+
+      <footer>
+        <div class="small">MathVis • JavaScript only</div>
+        <div class="small">zoom: wheel • pan: drag</div>
+      </footer>
     </aside>
+
+    <section class="viewer" aria-label="Graph viewer">
+      <div class="canvas-card">
+        <div class="toolbar" style="margin-bottom:6px">
+          <div class="legend">
+            <span><i class="swatch" style="background:#06b6d4"></i> f(x)</span>
+            <span><i class="swatch" style="background:#f97316;width:12px;height:6px"></i> derivative</span>
+            <span><i class="swatch" style="background:#22c55e;width:12px;height:6px"></i> integral</span>
+          </div>
+          <div class="status" id="coordStatus">x: — , y: —</div>
+        </div>
+
+        <div style="flex:1;min-height:0">
+          <canvas id="graph"></canvas>
+        </div>
+      </div>
+    </section>
   </div>
+</div>
 
-  <footer>
-    Built with ❤️ by you — frontend demo (no backend). Use responsibly.
-  </footer>
+<script>
+/* MathVis — inline JS
+   Features:
+   - parse simple math expressions with known functions
+   - draw grid/axes, plot function
+   - zoom/pan, mouse coords
+   - derivative (numerical), integral shading (Riemann)
+   - export PNG
+*/
 
-  <script>
-    /*************************************************************************
-     * MiniSocial - Frontend-only social app
-     * Features:
-     * - Simple mock auth (username only)
-     * - localStorage persistence (users, posts, follows, comments, likes)
-     * - Feed, profile, explore, search, notifications
-     *
-     * This is a single-file app for learning and prototyping. Extend as needed.
-     *************************************************************************/
+/* ---------- Utilities: expression -> JS function ---------- */
+function sanitizeExpr(expr) {
+  // Lowercase, remove dangerous characters (keep letters, numbers, operators, parentheses, ., ^ , spaces)
+  // Allow letters for function names (a..z) and x
+  expr = expr.replace(/[^0-9a-zA-Z+\-*/^().,_\s%]/g, '');
+  // replace caret with ** for power
+  expr = expr.replace(/\^/g, '**');
+  // function name replacements to Math.* (ln -> Math.log, log -> Math.log10 if specified, but use Math.log for ln)
+  const fnMap = {
+    'sin': 'Math.sin','cos':'Math.cos','tan':'Math.tan',
+    'asin':'Math.asin','acos':'Math.acos','atan':'Math.atan',
+    'sqrt':'Math.sqrt','exp':'Math.exp','ln':'Math.log',
+    'log':'Math.log','abs':'Math.abs','ceil':'Math.ceil','floor':'Math.floor',
+    'round':'Math.round','pow':'Math.pow'
+  };
+  // replace function names with Math.<name>
+  Object.keys(fnMap).forEach(k => {
+    // word boundary to avoid replacing inside variable names
+    const re = new RegExp('\\b'+k+'\\s*\\(', 'gi');
+    expr = expr.replace(re, fnMap[k] + '(');
+  });
+  // constants
+  expr = expr.replace(/\bpi\b/gi, 'Math.PI');
+  expr = expr.replace(/\be\b/gi, 'Math.E');
+  return expr;
+}
 
-    /* ---------- Utilities ---------- */
-    function uid(prefix='id'){ return prefix + '_' + Math.random().toString(36).slice(2,9) }
-    function now(){ return new Date().toISOString() }
-    function timeAgo(iso){
-      const d = new Date(iso);
-      const s = Math.floor((Date.now()-d.getTime())/1000);
-      if(s < 60) return s + 's';
-      if(s < 3600) return Math.floor(s/60)+'m';
-      if(s < 86400) return Math.floor(s/3600)+'h';
-      const days = Math.floor(s/86400);
-      return days+'d';
-    }
-    function persist(){ localStorage.setItem('mini_social_db', JSON.stringify(DB)) }
-    function loadDB(){
-      const raw = localStorage.getItem('mini_social_db');
-      if(!raw) {
-        // seed example data
-        const alice = {id: 'user_alice', username:'alice', name:'Alice Roy', bio:'Math lover and JEE aspirant', avatarColor:'#6EE7B7', joined: now()};
-        const bob   = {id: 'user_bob', username:'bob', name:'Bob Singh', bio:'Coding & music', avatarColor:'#60A5FA', joined: now()};
-        const carla = {id: 'user_carla', username:'carla', name:'Carla', bio:'Teacher', avatarColor:'#FCA5A5', joined: now()};
-        const posts = [
-          {id:uid('p'), author:alice.id, text:"Happy studying! Here's a trick for integrals...", media:null, created: now(), likes:[], comments:[]},
-          {id:uid('p'), author:bob.id, text:"Made a mini math visualizer today. Feedback welcome!", media:null, created: now(), likes:[], comments:[]}
-        ];
-        const users = [alice,bob,carla];
-        const follows = { [alice.id]: [bob.id], [bob.id]: [], [carla.id]: [] }; // who each user follows
-        return {
-          users, posts, follows, notifications: [], lastSessionUser: null
-        };
+function makeFunction(expr) {
+  // Returns function(x, params) -> number or throws
+  const sanitized = sanitizeExpr(expr);
+  // We'll allow parameters a,b,... by keeping them as variables defined inside function via params object
+  const code = `
+    "use strict";
+    const {a=1,b=1} = params || {};
+    return (function(x){
+      try{
+        return Number(${sanitized});
+      }catch(e){
+        return NaN;
       }
-      return JSON.parse(raw);
+    })(x);
+  `;
+  // Use new Function to create a wrapper that accepts x and params
+  try{
+    return new Function('x','params', code);
+  }catch(e){
+    // fallback: return a function that yields NaN
+    return function(){ return NaN; };
+  }
+}
+
+/* ---------- Canvas & plotting setup ---------- */
+const canvas = document.getElementById('graph');
+const ctx = canvas.getContext('2d');
+
+let DPR = Math.max(window.devicePixelRatio || 1, 1);
+function fixDPR(){
+  DPR = Math.max(window.devicePixelRatio || 1, 1);
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.round(rect.width * DPR);
+  canvas.height = Math.round(rect.height * DPR);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+}
+window.addEventListener('resize', () => { fixDPR(); draw(); });
+
+/* Viewport in math coords */
+let view = {
+  xmin: -10, xmax: 10,
+  ymin: -6, ymax: 6
+};
+
+function resetViewFromX(minX,maxX){
+  view.xmin = minX; view.xmax = maxX;
+  const w = view.xmax - view.xmin;
+  // choose a default vertical range
+  view.ymin = -Math.max(6, w*0.5); view.ymax = Math.max(6, w*0.5);
+}
+
+/* transform helpers */
+function xToPx(x){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  return (x - view.xmin) / (view.xmax - view.xmin) * w;
+}
+function yToPx(y){
+  const rect = canvas.getBoundingClientRect();
+  const h = rect.height;
+  return (1 - (y - view.ymin) / (view.ymax - view.ymin)) * h;
+}
+function pxToX(px){ const rect = canvas.getBoundingClientRect(); return view.xmin + (px/rect.width)*(view.xmax-view.xmin); }
+function pyToY(py){ const rect = canvas.getBoundingClientRect(); return view.ymin + (1 - py/rect.height)*(view.ymax-view.ymin); }
+
+/* ---------- Drawing ---------- */
+function clear(){
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0,0,rect.width,rect.height);
+  // background
+  ctx.fillStyle = '#051122';
+  ctx.fillRect(0,0,rect.width,rect.height);
+}
+
+function drawGrid(){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width, h = rect.height;
+  // nice tick spacing based on view width
+  const xRange = view.xmax - view.xmin;
+  const yRange = view.ymax - view.ymin;
+  const xStep = niceStep(xRange/10);
+  const yStep = niceStep(yRange/8);
+  ctx.lineWidth = 1;
+  // vertical grid lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  for(let x = Math.floor(view.xmin/xStep)*xStep; x<=view.xmax; x+=xStep){
+    const px = xToPx(x);
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+  }
+  // horizontal grid
+  for(let y = Math.floor(view.ymin/yStep)*yStep; y<=view.ymax; y+=yStep){
+    const py = yToPx(y);
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
+  }
+  // axes
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  // y axis (x=0)
+  if(view.xmin <= 0 && view.xmax >= 0){
+    const px = xToPx(0);
+    ctx.beginPath(); ctx.moveTo(px,0); ctx.lineTo(px,h); ctx.stroke();
+  }
+  // x axis (y=0)
+  if(view.ymin <= 0 && view.ymax >= 0){
+    const py = yToPx(0);
+    ctx.beginPath(); ctx.moveTo(0,py); ctx.lineTo(w,py); ctx.stroke();
+  }
+  // axis labels
+  ctx.fillStyle = '#9fb6c9';
+  ctx.font = '11px system-ui, Arial';
+  for(let x = Math.floor(view.xmin/xStep)*xStep; x<=view.xmax; x+=xStep){
+    const px = xToPx(x);
+    const py = yToPx(0);
+    ctx.fillText(+x.toFixed(2), px+4, Math.min(h-6, py-6));
+  }
+  for(let y = Math.floor(view.ymin/yStep)*yStep; y<=view.ymax; y+=yStep){
+    const py = yToPx(y);
+    ctx.fillText(+y.toFixed(2), 4, py-4);
+  }
+}
+function niceStep(raw){
+  // approximate to 1,2,5 * 10^n
+  const pow = Math.pow(10, Math.floor(Math.log10(raw)));
+  const base = raw / pow;
+  if(base <= 1.5) return 1*pow;
+  if(base <= 3) return 2*pow;
+  if(base <= 7) return 5*pow;
+  return 10*pow;
+}
+
+function sampleFunction(fn, samples){
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const points = [];
+  const step = (view.xmax - view.xmin) / samples;
+  for(let i=0;i<=samples;i++){
+    const x = view.xmin + i*step;
+    let y = fn(x);
+    if(!isFinite(y)) y = NaN;
+    points.push({x,y});
+  }
+  return points;
+}
+
+function drawFunction(points, style){
+  ctx.lineWidth = style.width || 2;
+  ctx.strokeStyle = style.color || '#06b6d4';
+  ctx.beginPath();
+  let started=false;
+  for(let i=0;i<points.length;i++){
+    const p = points[i];
+    if(Number.isFinite(p.y)){
+      const px = xToPx(p.x);
+      const py = yToPx(p.y);
+      if(!started){ ctx.moveTo(px,py); started=true; } else ctx.lineTo(px,py);
+    } else {
+      started=false;
     }
+  }
+  ctx.stroke();
+}
 
-    /* ---------- Simple DB in-memory + localStorage ---------- */
-    let DB = loadDB();
+function drawDerivative(fn, samples){
+  // numerical derivative using central difference
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const pts = [];
+  const dx = (view.xmax - view.xmin) / (samples*8);
+  for(let i=0;i<=samples;i++){
+    const x = view.xmin + (i/samples)*(view.xmax-view.xmin);
+    const y1 = fn(x-dx), y2 = fn(x+dx);
+    const dy = (y2 - y1)/(2*dx);
+    pts.push({x, y: dy});
+  }
+  drawFunction(pts, {color:'#f97316', width:1.6});
+}
 
-    // currently logged in user id (null if none)
-    let currentUser = DB.lastSessionUser || null;
-
-    /* ---------- Rendering helpers ---------- */
-    function el(tag, attrs={}, children=''){
-      const e = document.createElement(tag);
-      for(const k in attrs){
-        if(k==='onclick'){ e.addEventListener('click', attrs[k]) }
-        else if(k==='html'){ e.innerHTML = attrs[k] }
-        else e.setAttribute(k, attrs[k]);
-      }
-      if(typeof children === 'string') e.appendChild(document.createTextNode(children));
-      else if(Array.isArray(children)) children.forEach(c => e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c));
-      else if(children instanceof Node) e.appendChild(children);
-      return e;
+function drawIntegral(fn, samples){
+  // simple Riemann sum shading between xmin..xmax
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width;
+  const dx = (view.xmax - view.xmin) / samples;
+  ctx.fillStyle = 'rgba(34,197,94,0.12)';
+  ctx.beginPath();
+  for(let i=0;i<=samples;i++){
+    const x = view.xmin + i*dx;
+    const y = fn(x);
+    if(!isFinite(y)){ // skip discontinuities: close path and start new
+      continue;
     }
+    const px = xToPx(x);
+    const py = yToPx(y);
+    if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  }
+  // close shape to x-axis
+  const xend = xToPx(view.xmax);
+  const xstart = xToPx(view.xmin);
+  const y0 = yToPx(0);
+  ctx.lineTo(xend, y0);
+  ctx.lineTo(xstart, y0);
+  ctx.closePath();
+  ctx.fill();
+}
 
-    /* ---------- Auth / Header ---------- */
-    function updateHeader(){
-      const root = document.getElementById('headerControls');
-      root.innerHTML = '';
-      if(currentUser){
-        const u = getUser(currentUser);
-        const btn = el('div', {class:'small muted'}, `Hi, ${u.name.split(' ')[0]}`);
-        const logout = el('button', {class:'btn secondary', onclick: logout}, 'Logout');
-        root.appendChild(btn);
-        root.appendChild(logout);
-      } else {
-        const login = el('button', {class:'btn', onclick: ()=>showModalLogin()}, 'Login / Sign up');
-        root.appendChild(login);
-      }
-      updateLeftProfile();
-    }
+/* ---------- Interaction & state ---------- */
+let currentFnText = document.getElementById('fn').value;
+let fn = makeFunction(currentFnText);
 
-    function showModalLogin(){
-      const name = prompt('Enter your display name (e.g. Rahul Kumar)');
-      if(!name) return;
-      const username = prompt('Choose a short username (letters/numbers, lowercase). This will be your public handle:');
-      if(!username) return;
-      // ensure unique username
-      if(DB.users.find(u => u.username === username)){
-        alert('Username taken. Try again.');
-        return;
-      }
-      const user = { id: uid('user'), username, name, bio:'', avatarColor: '#'+Math.floor(Math.random()*16777215).toString(16), joined: now() };
-      DB.users.push(user);
-      DB.follows[user.id] = [];
-      currentUser = user.id;
-      DB.lastSessionUser = currentUser;
-      persist();
-      updateHeader();
-      navigateTo('#/profile');
-    }
+function draw(){
+  fixDPR();
+  clear();
+  const rect = canvas.getBoundingClientRect();
+  // grid
+  if(document.getElementById('gridToggle').checked) drawGrid();
+  // sample count depends on width for smoothness
+  const samples = Math.max(300, Math.round(rect.width * 1.1));
+  // draw integral first (so function is on top)
+  if(document.getElementById('intToggle').checked){
+    try{ drawIntegral((x)=>safeEval(fn,x), samples); }catch(e){}
+  }
+  // function
+  try{
+    const pts = sampleFunction((x)=>safeEval(fn,x), Math.round(samples));
+    drawFunction(pts, {color:'#06b6d4', width:2.5});
+  }catch(e){}
+  // derivative
+  if(document.getElementById('derivToggle').checked){
+    try{ drawDerivative((x)=>safeEval(fn,x), Math.round(samples/2)); }catch(e){}
+  }
+  // coordinate overlay (already handled in mousemove)
+}
 
-    function logout(){
-      currentUser = null;
-      DB.lastSessionUser = null;
-      persist();
-      updateHeader();
-      navigateTo('#/feed');
-    }
+/* safeEval wrapper to call the compiled function and protect from exceptions */
+function safeEval(func, x){
+  try{
+    const aVal = Number(document.getElementById('a').value) || 0;
+    const bVal = Number(document.getElementById('b').value) || 0;
+    const res = func(x, {a: aVal, b: bVal});
+    if(typeof res === 'number' && !Number.isFinite(res)) return NaN;
+    return Number(res);
+  }catch(e){
+    return NaN;
+  }
+}
 
-    /* ---------- Data helpers ---------- */
-    function getUser(idOrUsername){
-      if(!idOrUsername) return null;
-      if(idOrUsername.startsWith('user_')) return DB.users.find(u => u.id === idOrUsername);
-      return DB.users.find(u => u.username === idOrUsername || u.id === idOrUsername);
-    }
-    function getPostsForFeed(userId){
-      // show posts from people you follow + your posts, sorted by time desc
-      if(!userId) return DB.posts.slice().sort((a,b)=>b.created.localeCompare(a.created));
-      const following = DB.follows[userId] || [];
-      return DB.posts.filter(p => p.author === userId || following.includes(p.author)).sort((a,b)=>b.created.localeCompare(a.created));
-    }
-    function createPost(text, mediaDataURL){
-      if(!currentUser){ alert('Please login to post'); return; }
-      const post = { id: uid('p'), author: currentUser, text: text||'', media: mediaDataURL||null, created: now(), likes: [], comments: [] };
-      DB.posts.unshift(post);
-      persist();
-      addNotification(`${getUser(currentUser).name} created a post`);
-      renderCurrentPage();
-    }
-    function toggleLike(postId){
-      if(!currentUser){ alert('Login to like'); return; }
-      const p = DB.posts.find(x => x.id === postId);
-      const idx = p.likes.indexOf(currentUser);
-      if(idx === -1) p.likes.push(currentUser);
-      else p.likes.splice(idx,1);
-      persist();
-      renderCurrentPage();
-      addNotification(`${getUser(currentUser).name} liked a post`);
-    }
-    function addComment(postId, text){
-      if(!currentUser){ alert('Login to comment'); return; }
-      const p = DB.posts.find(x => x.id === postId);
-      p.comments.push({ id: uid('c'), author: currentUser, text, created: now() });
-      persist();
-      renderCurrentPage();
-      addNotification(`${getUser(currentUser).name} commented: "${text.slice(0,30)}"`);
-    }
-    function followToggle(targetUserId){
-      if(!currentUser){ alert('Login to follow'); return; }
-      if(currentUser === targetUserId) return;
-      const arr = DB.follows[currentUser] || [];
-      const idx = arr.indexOf(targetUserId);
-      if(idx === -1) arr.push(targetUserId);
-      else arr.splice(idx,1);
-      DB.follows[currentUser] = arr;
-      persist();
-      renderCurrentPage();
-      addNotification(`${getUser(currentUser).name} ${idx===-1 ? 'followed' : 'unfollowed'} ${getUser(targetUserId).name}`);
-    }
+/* ---------- UI wiring ---------- */
+document.getElementById('plotBtn').addEventListener('click', ()=>{
+  currentFnText = document.getElementById('fn').value;
+  fn = makeFunction(currentFnText);
+  // update view bounds from inputs
+  const xmin = Number(document.getElementById('xmin').value);
+  const xmax = Number(document.getElementById('xmax').value);
+  if(isFinite(xmin) && isFinite(xmax) && xmax > xmin) resetViewFromX(xmin,xmax);
+  draw();
+});
+document.getElementById('a').addEventListener('input', (e)=>{ document.getElementById('aval').textContent = e.target.value; draw(); });
+document.getElementById('b').addEventListener('input', (e)=>{ document.getElementById('bval').textContent = e.target.value; draw(); });
+document.querySelectorAll('.chip[data-preset]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ document.getElementById('fn').value = btn.dataset.preset; document.getElementById('plotBtn').click(); });
+});
+document.querySelectorAll('.presets .chip').forEach(btn=>{
+  btn.addEventListener('click', ()=>{ document.getElementById('fn').value = btn.dataset.fn; document.getElementById('plotBtn').click(); });
+});
+document.getElementById('resetView').addEventListener('click', ()=>{
+  const xmin = Number(document.getElementById('xmin').value);
+  const xmax = Number(document.getElementById('xmax').value);
+  resetViewFromX(xmin || -10, xmax || 10);
+  draw();
+});
+document.getElementById('exportPNG').addEventListener('click', ()=>{
+  // create a temp canvas to export at higher resolution
+  const rect = canvas.getBoundingClientRect();
+  const tmp = document.createElement('canvas');
+  const scale = 2;
+  tmp.width = rect.width*scale; tmp.height = rect.height*scale;
+  const tctx = tmp.getContext('2d');
+  // paint white background to avoid transparent export
+  tctx.fillStyle = '#00121a';
+  tctx.fillRect(0,0,tmp.width,tmp.height);
+  // draw the current canvas scaled (just copy)
+  tctx.drawImage(canvas, 0, 0, tmp.width, tmp.height);
+  const dataUrl = tmp.toDataURL('image/png');
+  const a = document.createElement('a');
+  a.href = dataUrl; a.download = 'mathvis.png';
+  document.body.appendChild(a); a.click(); a.remove();
+});
 
-    function addNotification(text){
-      DB.notifications.unshift({ id: uid('n'), text, created: now(), read:false });
-      if(DB.notifications.length > 40) DB.notifications.pop();
-      persist();
-      renderNotifications();
-    }
+/* ---------- Mouse interaction: zoom, pan, coords ---------- */
+let isPanning=false, panStart=null;
+canvas.addEventListener('mousedown', (ev)=>{
+  isPanning=true;
+  panStart = {x: ev.clientX, y: ev.clientY, view: {...view}};
+  canvas.style.cursor = 'grabbing';
+});
+window.addEventListener('mouseup', ()=>{ isPanning=false; canvas.style.cursor='default'; });
+window.addEventListener('mousemove', (ev)=>{
+  const rect = canvas.getBoundingClientRect();
+  const relX = ev.clientX - rect.left;
+  const relY = ev.clientY - rect.top;
+  const x = pxToX(relX);
+  const y = pyToY(relY);
 
-    /* ---------- Rendering parts of UI ---------- */
-    function updateLeftProfile(){
-      const area = document.getElementById('leftProfileArea');
-      area.innerHTML = '';
-      if(currentUser){
-        const u = getUser(currentUser);
-        const avatar = el('div', {class:'profile-pic'}, u.name.split(' ').map(s=>s[0]).slice(0,2).join(''));
-        avatar.style.background = u.avatarColor;
-        const name = el('div', {}, u.name);
-        const handle = el('div', {class:'muted small'}, '@'+u.username);
-        const bio = el('div', {class:'muted small'}, u.bio || 'No bio yet');
-        const edit = el('div', {style:'margin-top:8px'}, el('button',{class:'btn secondary', onclick: ()=>editProfile()}, 'Edit Profile'));
-        area.appendChild(avatar); area.appendChild(document.createElement('br'));
-        area.appendChild(name); area.appendChild(handle); area.appendChild(bio); area.appendChild(edit);
-      } else {
-        const txt = el('div', {}, 'Not logged in');
-        const btn = el('div', {style:'margin-top:8px'}, el('button',{class:'btn', onclick: ()=>showModalLogin()}, 'Create Account'));
-        area.appendChild(txt); area.appendChild(btn);
-      }
-      // stats
-      document.getElementById('statPosts').innerText = DB.posts.filter(p => p.author === currentUser).length || 0;
-      const followers = Object.keys(DB.follows || {}).filter(k => (DB.follows[k]||[]).includes(currentUser)).length;
-      document.getElementById('statFollowers').innerText = followers;
-      document.getElementById('statFollowing').innerText = (DB.follows[currentUser]||[]).length;
-    }
+  document.getElementById('coordStatus').textContent = `x: ${x.toFixed(4)} , y: ${y.toFixed(4)}`;
 
-    function renderNotifications(){
-      const node = document.getElementById('notifications');
-      const countNode = document.getElementById('notifCount');
-      if(!DB.notifications.length){ node.innerHTML = '<div class="muted small">No notifications yet.</div>'; countNode.innerText='0'; return; }
-      node.innerHTML = '';
-      DB.notifications.slice(0,6).forEach(n => {
-        const row = el('div', {class:'small'}, timeAgo(n.created) + ' — ' + n.text);
-        node.appendChild(row);
-      });
-      const unread = DB.notifications.length;
-      countNode.innerText = unread;
-    }
+  if(isPanning && panStart){
+    const dxPix = ev.clientX - panStart.x;
+    const dyPix = ev.clientY - panStart.y;
+    const rect = canvas.getBoundingClientRect();
+    const dx = (dxPix/rect.width) * (panStart.view.xmax - panStart.view.xmin);
+    const dy = (dyPix/rect.height) * (panStart.view.ymax - panStart.view.ymin);
+    view.xmin = panStart.view.xmin - dx;
+    view.xmax = panStart.view.xmax - dx;
+    view.ymin = panStart.view.ymin + dy;
+    view.ymax = panStart.view.ymax + dy;
+    draw();
+  }
+});
 
-    function renderSuggestions(){
-      const target = document.getElementById('suggestionsList');
-      target.innerHTML = '';
-      // recommend random users not followed by currentUser
-      const candidates = DB.users.filter(u => u.id !== currentUser && !(DB.follows[currentUser]||[]).includes(u.id));
-      if(candidates.length ===0){
-        target.innerHTML = '<div class="muted small">No suggestions</div>'; return;
-      }
-      shuffle(candidates).slice(0,4).forEach(u => {
-        const row = el('div', {class:'user-row'});
-        const left = el('div', {}, [
-          el('div', {class:'avatar', style:'width:36px;height:36px;font-size:14px;background:'+u.avatarColor}, u.name.split(' ').map(s=>s[0]).slice(0,2).join('')),
-          el('div', {style:'display:inline-block;margin-left:8px;vertical-align:middle'}, [el('div', {style:'font-weight:600'}, u.name), el('div',{class:'small muted'}, '@'+u.username)])
-        ]);
-        const followBtn = el('button', {class:'btn', onclick: ()=>{ followToggle(u.id); renderSuggestions(); }}, 'Follow');
-        row.appendChild(left); row.appendChild(followBtn);
-        target.appendChild(row);
-      })
-    }
+canvas.addEventListener('wheel', (ev)=>{
+  ev.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = ev.clientX - rect.left;
+  const mouseY = ev.clientY - rect.top;
+  const zoomFactor = ev.deltaY > 0 ? 1.12 : 0.88; // zoom out/in
+  const wx = view.xmin + (mouseX/rect.width)*(view.xmax - view.xmin);
+  const wy = view.ymin + (1 - mouseY/rect.height)*(view.ymax - view.ymin);
+  // new ranges
+  const newWidth = (view.xmax - view.xmin) * zoomFactor;
+  const newHeight = (view.ymax - view.ymin) * zoomFactor;
+  view.xmin = wx - (mouseX/rect.width)*newWidth;
+  view.xmax = view.xmin + newWidth;
+  view.ymin = wy - (1 - mouseY/rect.height)*newHeight;
+  view.ymax = view.ymin + newHeight;
+  draw();
+}, {passive:false});
 
-    function shuffle(arr){ return arr.slice().sort(()=>Math.random()-0.5) }
+/* ---------- Expression safety note
+   We compile the expression to JS, mapping common math functions to Math.*, and using new Function.
+   This is simple and works well for typical analytic expressions. Avoid executing untrusted code.
+---------- */
 
-    /* ---------- Pages ---------- */
-    function renderFeedPage(){
-      const content = document.getElementById('pageContent');
-      content.innerHTML = '';
+/* ---------- small helper to update on startup ---------- */
+function init(){
+  // set canvas size and initial view from inputs
+  const xmin = Number(document.getElementById('xmin').value);
+  const xmax = Number(document.getElementById('xmax').value);
+  resetViewFromX(isFinite(xmin)?xmin:-10, isFinite(xmax)?xmax:10);
+  fn = makeFunction(document.getElementById('fn').value);
+  fixDPR();
+  draw();
+}
+init();
 
-      const newPostCard = el('div', {class:'card new-post'}, [
-        el('div', {style:'flex:1'}, [
-          el('textarea', {id:'newPostText', placeholder:"What's happening?", style:'width:100%; min-height:70px; border-radius:10px; padding:8px; border:1px solid #e6e6e6'}, '')
-        ]),
-        el('div', {}, [
-          el('input', {type:'file', id:'newPostMedia', accept:'image/*', onchange: handleMediaSelect}),
-          el('div', {class:'post-actions'}, [
-            el('button', {class:'btn', onclick: ()=>submitNewPost()}, 'Post'),
-            el('button', {class:'btn secondary', onclick: ()=>{ document.getElementById('newPostText').value=''; document.getElementById('newPostMedia').value=''; }}, 'Clear')
-          ])
-        ])
-      ]);
-      content.appendChild(newPostCard);
+/* ---------- keyboard shortcuts ---------- */
+window.addEventListener('keydown', (e)=>{
+  if(e.key === 'r' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); document.getElementById('plotBtn').click(); }
+  if(e.key === 'h'){ alert('MathVis help:\\n- Plot: click Plot\\n- Zoom: mouse wheel\\n- Pan: drag\\n- Derivative/Integral: toggles in left panel\\n- Use ^ for power, sin(), cos(), exp(), ln(), sqrt(), pi, e'); }
+});
 
-      const feed = el('div', {class:'feed'}, '');
-      const posts = getPostsForFeed(currentUser);
-      posts.forEach(p => feed.appendChild(renderPost(p)));
-      content.appendChild(feed);
-    }
-
-    function handleMediaSelect(e){
-      // nothing: we will read file when posting
-    }
-
-    async function submitNewPost(){
-      const text = document.getElementById('newPostText').value.trim();
-      const fileInput = document.getElementById('newPostMedia');
-      let dataURL = null;
-      if(fileInput && fileInput.files && fileInput.files[0]){
-        dataURL = await fileToDataURL(fileInput.files[0]);
-      }
-      if(!text && !dataURL){ alert('Add text or an image'); return; }
-      createPost(text, dataURL);
-      document.getElementById('newPostText').value='';
-      fileInput.value='';
-    }
-
-    function fileToDataURL(file){
-      return new Promise((res,rej)=>{
-        const reader = new FileReader();
-        reader.onload = () => res(reader.result);
-        reader.onerror = rej;
-        reader.readAsDataURL(file);
-      })
-    }
-
-    function renderPost(p){
-      const author = getUser(p.author);
-      const post = el('div', {class:'post card'});
-      const meta = el('div', {class:'meta'});
-      const avatar = el('div', {class:'avatar', style:'background:'+author.avatarColor}, author.name.split(' ').map(s=>s[0]).slice(0,2).join(''));
-      const authorInfo = el('div', {}, [
-        el('div', {style:'font-weight:600'}, author.name + ' '), 
-        el('div', {class:'muted small'}, '@'+author.username + ' • ' + timeAgo(p.created))
-      ]);
-      const followBtn = el('button', {class:'btn secondary', onclick: ()=>followToggle(author.id)}, DB.follows[currentUser] && DB.follows[currentUser].includes(author.id) ? 'Following' : 'Follow');
-
-      meta.appendChild(avatar);
-      meta.appendChild(authorInfo);
-      meta.appendChild(el('div', {style:'flex:1'}));
-      meta.appendChild(followBtn);
-
-      post.appendChild(meta);
-      if(p.text) post.appendChild(el('div', {style:'margin-top:8px'}, p.text));
-      if(p.media) post.appendChild(el('img', {class:'media', src:p.media}));
-
-      // actions
-      const actions = el('div', {class:'actions'});
-      const likeBtn = el('button', {class:'small like-btn', onclick: ()=>toggleLike(p.id)}, `❤️ ${p.likes.length}`);
-      if(p.likes.includes(currentUser)) likeBtn.classList.add('active');
-      const commentBtn = el('button', {class:'small', onclick: ()=>toggleCommentBox(p.id)}, `💬 ${p.comments.length}`);
-      const shareBtn = el('button', {class:'small', onclick: ()=>{ navigator.clipboard?.writeText(location.href + '#/post/'+p.id); alert('Post link copied') }}, 'Share');
-      actions.appendChild(likeBtn);
-      actions.appendChild(commentBtn);
-      actions.appendChild(shareBtn);
-      post.appendChild(actions);
-
-      // comment area
-      const commentArea = el('div', {id:'carea_'+p.id, style:'display:none; margin-top:8px'});
-      const commentInput = el('input', {type:'text', placeholder:'Write a comment...', style:'width:100%; padding:8px; border-radius:8px; border:1px solid #e6e6e6'});
-      const cbtn = el('button', {class:'btn', onclick: ()=>{ addComment(p.id, commentInput.value); commentInput.value=''; }}, 'Comment');
-      commentArea.appendChild(commentInput); commentArea.appendChild(el('div',{style:'height:6px'})); commentArea.appendChild(cbtn);
-
-      // show comments
-      const commentsList = el('div', {class:'comment-list'});
-      p.comments.forEach(c => {
-        const cu = getUser(c.author);
-        const crow = el('div', {style:'padding:6px 0; border-bottom:1px dashed #f0f0f0'}, [
-          el('div', {style:'font-weight:700; display:inline-block; margin-right:8px'}, cu.name),
-          el('div', {class:'small muted', style:'display:inline-block'}, c.text),
-          el('div', {class:'muted small', style:'margin-left:8px; display:block'}, timeAgo(c.created))
-        ]);
-        commentsList.appendChild(crow);
-      });
-
-      post.appendChild(commentArea);
-      post.appendChild(commentsList);
-      return post;
-    }
-
-    function toggleCommentBox(postId){
-      const box = document.getElementById('carea_'+postId);
-      if(!box) return;
-      box.style.display = box.style.display === 'none' ? 'block' : 'none';
-    }
-
-    /* Profile page */
-    function renderProfilePage(username){
-      const content = document.getElementById('pageContent');
-      content.innerHTML = '';
-
-      let user;
-      if(!username) user = getUser(currentUser);
-      else user = DB.users.find(u => u.username === username || u.id === username);
-      if(!user){ content.appendChild(el('div', {class:'card'}, 'User not found')); return; }
-
-      const header = el('div', {class:'card'}, [
-        el('div', {style:'display:flex; gap:12px; align-items:center'}, [
-          el('div', {class:'avatar', style:'width:80px;height:80px;font-size:26px;background:'+user.avatarColor}, user.name.split(' ').map(s=>s[0]).slice(0,2).join('')),
-          el('div', {}, [ el('div', {style:'font-weight:800; font-size:18px'}, user.name), el('div', {class:'muted small'}, '@'+user.username ), el('div', {style:'margin-top:6px'}, el('div', {class:'small muted'}, user.bio || 'No bio')) ])
-        ])
-      ]);
-      content.appendChild(header);
-
-      const followArea = el('div', {class:'card'}, [
-        el('div', {}, [ el('div', {style:'font-weight:700'}, 'Connections'), el('div', {class:'small muted'}, `${Object.keys(DB.follows || {}).filter(k => (DB.follows[k]||[]).includes(user.id)).length} followers • ${(DB.follows[user.id]||[]).length} following`) ]),
-        el('div', {style:'margin-top:8px'}, (currentUser !== user.id) ? el('button',{class:'btn', onclick: ()=>followToggle(user.id)}, (DB.follows[currentUser]||[]).includes(user.id) ? 'Unfollow' : 'Follow') : el('button',{class:'btn secondary', onclick: ()=>editProfile()}, 'Edit profile'))
-      ]);
-      content.appendChild(followArea);
-
-      // posts by user
-      const postWrap = el('div', {class:'card'}, [ el('div',{style:'font-weight:700'}, user.name + "'s posts"), el('div',{id:'userPosts'}) ]);
-      content.appendChild(postWrap);
-      const userPosts = DB.posts.filter(p => p.author === user.id).sort((a,b)=>b.created.localeCompare(a.created));
-      const upnode = content.querySelector('#userPosts');
-      if(userPosts.length ===0) upnode.appendChild(el('div',{class:'muted small'}, 'No posts yet'));
-      userPosts.forEach(p => upnode.appendChild(renderPost(p)));
-    }
-
-    /* Explore page */
-    function renderExplorePage(){
-      const content = document.getElementById('pageContent');
-      content.innerHTML = '';
-      content.appendChild(el('div',{class:'card'}, el('div',{style:'font-weight:700'}, 'Explore')));
-      const trending = el('div', {class:'card'}, el('div',{}, 'Trending posts'));
-      // show top liked posts
-      const top = DB.posts.slice().sort((a,b)=> b.likes.length - a.likes.length).slice(0,6);
-      if(top.length===0) top.push(el('div',{class:'muted small'}, 'No posts yet'));
-      top.forEach(p => trending.appendChild(renderPost(p)));
-      content.appendChild(trending);
-
-      // show users
-      const usersCard = el('div', {class:'card'}, el('div', {style:'font-weight:700'}, 'Discover people'));
-      DB.users.forEach(u => {
-        usersCard.appendChild(el('div', {style:'padding:8px 0; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; align-items:center'}, [
-          el('div', {}, [ el('div',{style:'font-weight:700'}, u.name), el('div',{class:'small muted'}, '@'+u.username) ]),
-          el('button', {class:'btn', onclick: ()=>{ navigateTo('#/profile/'+u.username) }}, 'Visit')
-        ]));
-      });
-      content.appendChild(usersCard);
-    }
-
-    /* Post page (single) */
-    function renderPostPage(postId){
-      const p = DB.posts.find(x => x.id === postId);
-      const content = document.getElementById('pageContent');
-      content.innerHTML = '';
-      if(!p) { content.appendChild(el('div',{class:'card'}, 'Post not found')); return; }
-      const postCard = renderPost(p);
-      postCard.classList.add('card');
-      content.appendChild(postCard);
-    }
-
-    /* ---------- Profile editing ---------- */
-    function editProfile(){
-      if(!currentUser) return alert('Login first');
-      const u = getUser(currentUser);
-      const name = prompt('Name', u.name);
-      if(name) u.name = name;
-      const bio = prompt('Bio', u.bio || '');
-      if(bio !== null) u.bio = bio;
-      persist();
-      updateLeftProfile();
-      renderCurrentPage();
-    }
-
-    /* ---------- Router & navigation ---------- */
-    function navigateTo(hash){
-      location.hash = hash;
-    }
-    function handleRoute(){
-      const hash = location.hash || '#/feed';
-      const parts = hash.split('/');
-      updateHeader(); renderNotifications(); renderSuggestions();
-      if(hash.startsWith('#/feed')) renderFeedPage();
-      else if(hash.startsWith('#/explore')) renderExplorePage();
-      else if(hash.startsWith('#/profile')){
-        const username = parts[2];
-        renderProfilePage(username);
-      }
-      else if(hash.startsWith('#/post')){
-        const postId = parts[2];
-        renderPostPage(postId);
-      } else renderFeedPage();
-    }
-    window.addEventListener('hashchange', handleRoute);
-
-    /* ---------- Search ---------- */
-    document.getElementById('globalSearch').addEventListener('input', (e)=>{
-      const q = e.target.value.trim().toLowerCase();
-      if(!q) return;
-      // show quick results overlay (simple)
-      const users = DB.users.filter(u => u.name.toLowerCase().includes(q) || u.username.includes(q));
-      const posts = DB.posts.filter(p => (p.text || '').toLowerCase().includes(q));
-      const content = document.getElementById('pageContent');
-      content.innerHTML = '';
-      content.appendChild(el('div',{class:'card'}, [el('div',{style:'font-weight:700'}, `Search results for "${q}"`)]));
-      const usersCard = el('div',{class:'card'}, [el('div',{style:'font-weight:700'}, 'Users')]);
-      users.forEach(u => usersCard.appendChild(el('div',{style:'padding:8px 0; display:flex; justify-content:space-between; align-items:center'}, [ el('div',{}, [el('div',{style:'font-weight:700'}, u.name), el('div',{class:'muted small'}, '@'+u.username)]), el('button',{class:'btn', onclick: ()=>navigateTo('#/profile/'+u.username)}, 'View') ])));
-      content.appendChild(usersCard);
-      const postsCard = el('div',{class:'card'}, [el('div',{style:'font-weight:700'}, 'Posts')]);
-      posts.forEach(p => postsCard.appendChild(renderPost(p)));
-      content.appendChild(postsCard);
-    });
-
-    /* ---------- Initial setup & utilities ---------- */
-    function renderCurrentPage(){ handleRoute(); updateLeftProfile(); renderSuggestions(); renderNotifications(); }
-    function boot(){
-      persist(); updateHeader(); renderCurrentPage();
-      // handle direct hash to post or profile
-      handleRoute();
-    }
-
-    // persist DB periodically to avoid accidental loss
-    setInterval(persist, 2000);
-
-    // expose some functions to console for debugging
-    window.DB = DB;
-    window.createPost = createPost;
-    window.getUser = getUser;
-
-    // start
-    boot();
-
-  </script>
+/* ---------- small helpful inline tests for common JS parse issues ---------- */
+/* Not necessary but keeps drawing stable */
+setInterval(()=>{ /* tick to keep canvas crisp if something else changed */ }, 5000);
+</script>
 </body>
 </html>
